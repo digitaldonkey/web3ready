@@ -8,6 +8,19 @@ module.exports = {
     '@vue/airbnb',
   ],
   rules: {
+    'semi': ["error", "never"],
+    "comma-dangle": ["error", "only-multiline"],
+    'max-len': ["error", { "code": 140 }],
+    'brace-style': ["error", "stroustrup"],
+    'quote-props': ["error", "as-needed", { "numbers": true }],
+    'no-param-reassign': ['error', {
+      props: true,
+      ignorePropertyModificationsFor: [
+        'state', // for vuex state
+        'acc', // for reduce accumulators
+        'e' // for e.returnvalue
+      ]
+    }],
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
   },

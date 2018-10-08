@@ -1,6 +1,6 @@
 // Web3 init interface.
-import MetamaskLogic from './web3ProviderApi/Metamask'
-import WalletConnectLogic from './web3ProviderApi/WalletConnect'
+import MetamaskLogic from '../web3ProviderApi/Metamask'
+import WalletConnectLogic from '../web3ProviderApi/WalletConnect'
 
 export default {
   // Key must match signer.id

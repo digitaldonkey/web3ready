@@ -3,10 +3,16 @@
 
     <span class="connect-web3--info">
       <button
-        v-if="signerId === null || !isValidated"
+        v-if="signerId === null && !isValidated"
         class="button button--primary"
         @click="selectDialogOpen = true"
       >{{ $t("app.main.connectButton") }}</button>
+
+      <span v-if="signerId !== null && !isValidated">
+        <img
+        class="loading-image"
+        src="./assets/loader.svg" />
+      </span>
 
       <span v-if="signerId !== null && isValidated">
 
@@ -208,6 +214,12 @@ export default {
   }
   .modal-content {
     text-align: left;
+  }
+  .loading-image {
+    display: inline-block;
+    vertical-align: bottom;
+    width: 30px;
+    height: 28px;
   }
 </style>
 

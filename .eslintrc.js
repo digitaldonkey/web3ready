@@ -13,6 +13,11 @@ module.exports = {
     'max-len': ["error", { "code": 140 }],
     'brace-style': ["error", "stroustrup"],
     'quote-props': ["error", "as-needed", { "numbers": true }],
+    // don't require .vue extension when importing
+    'import/extensions': ['error', 'always', {
+      js: 'never',
+      vue: 'never'
+    }],
     'no-param-reassign': ['error', {
       props: true,
       ignorePropertyModificationsFor: [

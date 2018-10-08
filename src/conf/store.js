@@ -8,7 +8,6 @@ const Web3ReadyPlugin = (store) => {
   // signerId set
   store.subscribe(async (mutation, state) => {
     if (mutation.type === 'signerId') {
-
       // eslint-disable-next-line
       console.log('signerId@plugin', state.signerId)
 
@@ -23,7 +22,6 @@ const Web3ReadyPlugin = (store) => {
   // web3 initialized
   store.subscribe(async (mutation, state) => {
     if (mutation.type === 'web3') {
-
       // eslint-disable-next-line
       console.log('web3@plugin', typeof state.web3 === 'function' && typeof state.web3() === 'object')
 
@@ -36,7 +34,6 @@ const Web3ReadyPlugin = (store) => {
   // networkId set
   store.subscribe(async (mutation, state) => {
     if (mutation.type === 'networkId') {
-
       // eslint-disable-next-line
       console.log('networkId@plugin', state.networkId)
 
@@ -96,8 +93,9 @@ const store = new Vuex.Store({
   actions: {
     // Actions are required to resolve promises.
     async web3({ state, commit }) {
+      const Web3Module = await import(/* webpackChunkName: "web3" */ '../web3')
       const web3 = await Vue.prototype.web3ProviderApi[state.signerId].createProvider(
-        Vue.prototype.Web3,
+        Web3Module.default(), // Equals Web3 prototype.
         (account) => {
           store.dispatch('account', account)
         },

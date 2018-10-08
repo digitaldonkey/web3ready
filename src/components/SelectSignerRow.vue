@@ -1,7 +1,6 @@
 <template>
   <div :class="className" >
     <div
-      :style="{ backgroundImage: `url('${ background }')` }"
       class="signer--logo"
     />
     <p
@@ -52,7 +51,7 @@ export default {
     },
     background() {
       // eslint-disable-next-line
-      return require(`../assets/logos/${this.id}.svg`)
+      return `../assets/logos/${this.id}.svg`
     },
     buttonBackground() {
       return this.isAvailable() ? { backgroundColor: `${this.buttonColor}` } : {}
@@ -65,7 +64,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style scoped lang="scss">
 .signer {
   position: relative;
   height: 102px;
@@ -73,65 +72,71 @@ export default {
   background: rgb(245, 246, 250);
   border-radius: 14px 10px 10px 14px;
   margin-bottom: 20px;
-}
-
-@media (min-width: 450px) {
-  .signer {
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    justify-content: space-between;
+  @media (min-width: 450px) {
+    & {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+      justify-content: space-between;
+    }
   }
-}
+  &--logo {
+    height: 102px;
+    min-width: 180px;
+    border-radius: 14px 10px 10px 14px;
 
-.signer--logo {
-  height: 102px;
-  min-width: 180px;
-  border-radius: 14px 10px 10px 14px;
-  background:  0 center no-repeat;
-  background-size: contain;
-  max-width: 220px;
-}
+    max-width: 220px;
 
-@media (max-width: 450px) {
-  .walletConnect .signer--logo {
-    max-width: 86px;
-    min-width: 86px;
-    background-size: cover;
+
+    .metamask & {
+      background: transparent url('../assets/logos/metamask.svg') 0 center no-repeat;
+      background-size: contain;
+    }
+
+    .walletConnect & {
+      background: transparent url('../assets/logos/walletConnect.svg') 0 center no-repeat;
+      max-width: 86px;
+      min-width: 86px;
+      background-size: cover;
+    }
+
   }
-}
 
-.signer--text {
-  display: none;
-  color: rgb(102, 102, 102);
-  flex-grow: 2;
-  padding-left: 10px;
-}
-@media (min-width: 679px) {
-  .signer--text {
-    display: block;
+  &--text {
+    display: none;
+    color: rgb(102, 102, 102);
+    flex-grow: 2;
+    padding-left: 10px;
+    @media (min-width: 679px) {
+      & {
+        display: block;
+      }
+    }
+    > a {
+      color: rgb(102, 102, 102);
+    }
   }
-}
 
-.signer--button {
-  box-sizing: border-box;
-  border: 0;
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-}
-.signer--button > .button {
-  color: #fff;
-}
-@media (min-width: 450px) {
-  .signer--button {
-    position: relative;
-    bottom: auto;
-    right: auto;
+  &--button {
+    box-sizing: border-box;
+    border: 0;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    > .button {
+      color: #fff;
+      margin: 0 20px;
+    }
+    @media (min-width: 450px) {
+      & {
+        position: relative;
+        bottom: auto;
+        right: auto;
+      }
+    }
   }
-}
-.signer--button > .button {
-  margin: 0 20px;
+
+
 }
 </style>
 

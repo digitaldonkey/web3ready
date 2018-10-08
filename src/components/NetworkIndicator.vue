@@ -4,30 +4,27 @@
   >
     <span
       v-tooltip="tooltip"
-      class="connect-web3--network-indicator-icon"
+      class="network-indicator--icon"
     >
-      <img
+
+      <span
         v-if="isOk"
-        class="img ok"
-        src="../assets/statusIndicator/ok.svg"
-        alt="ok"
-      >
-      <img
+        class="network-indicator--icon-status icon-ok"
+      />
+
+      <span
         v-if="isUnknown"
-        class="img warning"
-        src="../assets/statusIndicator/unknown.svg"
-        alt="warning"
-      >
-      <img
+        class="network-indicator--icon-status icon-unknown"
+      />
+
+      <span
         v-if="isError"
-        class="img error"
-        src="../assets/statusIndicator/error.svg"
-        alt="error"
-      >
+        class="network-indicator--icon-status icon-error"
+      />
     </span>
     <span
       v-if="!tiny"
-      class="connect-web3--network-indicator-info"
+      class="network-indicator--info"
     >
       {{ getMessage }}
     </span>
@@ -97,58 +94,56 @@ export default {
     },
     className() {
       if (this.tiny) {
-        return 'connect-web3--network-indicator connect-web3--network-indicator-tiny'
+        return 'network-indicator network-indicator--tiny'
       }
-      return 'connect-web3--network-indicator connect-web3--network-indicator-large'
+      return 'network-indicator network-indicator--large'
     }
   },
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-.connect-web3--network-indicator {
-  display: flex;
-  align-items: center;
-}
-.connect-web3--network-indicator-large {
-  padding-bottom: 1em;
-}
-@media (min-width: 600px) {
-  .connect-web3--network-indicator-large {
-    padding: 1em 0;
+
+<style scoped lang="scss">
+
+  .network-indicator {
+    display: flex;
+    align-items: center;
+
+    &--large {
+      padding-bottom: 1em;
+      @media (min-width: 600px) {
+        & {
+          padding: 1em 0;
+        }
+      }
+    }
+    &--tiny {
+      display: inline-block;
+      vertical-align: middle;
+    }
+    &--icon {
+      position: relative;
+      background: transparent url('../assets/statusIndicator/ethereum.svg') center left no-repeat;
+      background-size: contain;
+      vertical-align: top;
+      margin: 0 10px 0 5px;
+      cursor: help;
+      display: inline-block;
+      height: 30px;
+      width: 28px;
+      flex-basis: 28px;
+      flex-grow: 0;
+      flex-shrink: 0;
+    }
+    &--icon-status {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      bottom: 0;
+      right: -10px;
+    }
+    &--info {
+      padding-left: 1em;
+    }
   }
-}
-@media (min-width: 600px) {
-  .connect-web3--network-indicator-large {
-    padding: 1em 0;
-  }
-}
-.connect-web3--network-indicator-icon {
-  position: relative;
-  background: transparent url('../assets/statusIndicator/ethereum.svg') center left no-repeat;
-  background-size: contain;
-  vertical-align: top;
-  margin: 0 10px 0 5px;
-  cursor: help;
-  display: inline-block;
-  height: 30px;
-  width: 28px;
-  flex-basis: 28px;
-  flex-grow: 0;
-  flex-shrink: 0;
-}
-.connect-web3--network-indicator-icon .img {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  bottom: 0;
-  right: -10px;
-}
-.connect-web3--network-indicator-tiny {
-  display: inline-block;
-}
-.connect-web3--network-indicator-info {
-  padding-left: 1em;
-}
 </style>

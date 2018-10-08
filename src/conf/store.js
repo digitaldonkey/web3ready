@@ -9,8 +9,7 @@ const Web3ReadyPlugin = (store) => {
   store.subscribe(async (mutation, state) => {
     if (mutation.type === 'signerId') {
       // eslint-disable-next-line
-      console.log('signerId@plugin', state.signerId)
-
+      // console.log('signerId@plugin', state.signerId)
       if (state.signerId === null) {
         store.commit('web3', null)
       }
@@ -23,8 +22,7 @@ const Web3ReadyPlugin = (store) => {
   store.subscribe(async (mutation, state) => {
     if (mutation.type === 'web3') {
       // eslint-disable-next-line
-      console.log('web3@plugin', typeof state.web3 === 'function' && typeof state.web3() === 'object')
-
+      // console.log('web3@plugin', typeof state.web3 === 'function' && typeof state.web3() === 'object')
       if (state.web3 === null) {
         store.commit('networkId', null)
         store.commit('account', null)
@@ -35,8 +33,7 @@ const Web3ReadyPlugin = (store) => {
   store.subscribe(async (mutation, state) => {
     if (mutation.type === 'networkId') {
       // eslint-disable-next-line
-      console.log('networkId@plugin', state.networkId)
-
+      // console.log('networkId@plugin', state.networkId)
       if (state.networkId === null) {
         store.commit('account', null)
       }
@@ -75,16 +72,12 @@ const store = new Vuex.Store({
     ],
   },
   getters: {
+    // eslint-disable-next-line
     isValidated: (state) => {
-      const valid = state.networkId
+      return state.networkId
           && state.web3
           && state.account
           && state.networkId.toString() === state.requiredNetwork
-
-      // eslint-disable-next-line
-      console.log('valid@getters->isValidated', valid)
-
-      return valid
     },
     requiredNetwork(state) {
       return state.requiredNetwork.toString()
@@ -95,7 +88,7 @@ const store = new Vuex.Store({
     async web3({ state, commit }) {
       const Web3Module = await import(/* webpackChunkName: "web3" */ '../web3')
       const web3 = await Vue.prototype.web3ProviderApi[state.signerId].createProvider(
-        Web3Module.default(), // Equals Web3 prototype.
+        Web3Module.default(), // Web3 Factory.
         (account) => {
           store.dispatch('account', account)
         },

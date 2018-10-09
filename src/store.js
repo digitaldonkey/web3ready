@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import VuexPersistence from 'vuex-persist'
 
-import config from './example.data'
+import config from './conf/example.data'
 
 Vue.use(Vuex)
 
@@ -79,7 +79,7 @@ const store = new Vuex.Store({
   actions: {
     // Actions are required to resolve promises.
     async web3({ state, commit }) {
-      const Web3Module = await import(/* webpackChunkName: "web3" */ '../web3')
+      const Web3Module = await import(/* webpackChunkName: "web3" */ './async/web3')
       const web3 = await Vue.prototype.web3ProviderApi[state.signerId].createProvider(
         Web3Module.default(), // Web3 Factory.
         (account) => {

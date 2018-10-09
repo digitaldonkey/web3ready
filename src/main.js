@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VTooltip from 'v-tooltip'
 
 import App from './App'
-import store from './conf/store'
+import store from './store'
 import i18n from './conf/i18n'
 // import tooltip from './tooltip'
 import web3ApiProviderApi from './conf/web3ProviderApi'

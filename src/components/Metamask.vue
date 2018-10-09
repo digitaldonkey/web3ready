@@ -1,21 +1,16 @@
 <template>
-  <div
-    class="signer"
-  >
+  <div class="signer">
     <div
       class="signer--logo"
     />
     <div class="signer--dialog">
-      <!--<div>isValidNetwork: {{ isValidNetwork }}</div>-->
-      <!--<div>isAccountUnLocked: {{ isAccountUnLocked }}</div>-->
-
-
       <NetworkIndicator
         :network_id="networkId"
         :required_network="requiredNetwork"
       />
-
-      <AccountIndicator :account="account" />
+      <AccountIndicator
+        :account="account"
+      />
     </div>
   </div>
 </template>
@@ -29,10 +24,6 @@ export default {
   name: 'Metamask',
   components: { NetworkIndicator, AccountIndicator },
   computed: {
-    logo() {
-      // eslint-disable-next-line
-      return require(`../assets/logos/metamask-stacked.svg`)
-    },
     isValidNetwork() {
       return this.networkId === this.requiredNetwork
     },
@@ -50,7 +41,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
   .signer {
     min-height: 102px;
     max-height: 100%;
@@ -81,5 +71,5 @@ export default {
         }
       }
     }
-}
+  }
 </style>

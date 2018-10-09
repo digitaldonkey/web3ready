@@ -1,11 +1,9 @@
 <template>
   <div :class="className" >
-    <div
-      class="signer--logo"
-    />
+    <div class="signer--logo" />
     <p
       class="signer--text"
-      v-html="text"
+      v-html="descriptionText"
     />
     <div class="signer--button">
       <button
@@ -14,14 +12,13 @@
         :style="buttonBackground"
         class="button"
       >
-        {{ buttonText }}
+        {{ text.buttonText }}
       </button>
     </div>
   </div>
 </template>
 
 <script>
-
 export default {
   props: {
     id: {
@@ -29,15 +26,7 @@ export default {
       required: true,
     },
     text: {
-      type: String,
-      required: true,
-    },
-    buttonText: {
-      type: String,
-      required: true,
-    },
-    buttonColor: {
-      type: String,
+      type: Object,
       required: true,
     },
     isAvailable: {
@@ -54,11 +43,15 @@ export default {
       return `../assets/logos/${this.id}.svg`
     },
     buttonBackground() {
-      return this.isAvailable() ? { backgroundColor: `${this.buttonColor}` } : {}
+      return this.isAvailable() ? { backgroundColor: `${this.text.buttonColor}` } : {}
     },
     isDisabled() {
       return !this.isAvailable()
     },
+    descriptionText() {
+      const data = this.text.description
+      return `${data.pre} <a href="${data.url}">${data.link}</a> ${data.post}`
+    }
   },
 }
 </script>
@@ -135,8 +128,6 @@ export default {
       }
     }
   }
-
-
 }
 </style>
 

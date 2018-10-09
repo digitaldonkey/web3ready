@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import VuexPersistence from 'vuex-persist'
 
+import config from './example.data'
+
 Vue.use(Vuex)
 
 const Web3ReadyPlugin = (store) => {
@@ -50,26 +52,17 @@ const persist = new VuexPersistence({
 const store = new Vuex.Store({
   plugins: [Web3ReadyPlugin, persist.plugin],
   state: {
-    requiredNetwork: '42',
+    requiredNetwork: config.requiredNetwork,
+    availableSigners: config.availableSigners,
+    dappName: config.dappName,
+    walletConnect: {
+      bridgeUrl: config.walletConnect.bridgeUrl
+    },
     // Final values
     signerId: null,
     web3: null,
     networkId: null,
     account: null,
-    availableSigners: [
-      {
-        id: 'metamask',
-        text: 'Connect to the <a href="https://metamask.io/" target="_blank"> MetaMask browser wallet</a>.',
-        buttonText: 'Connect to MetaMask',
-        buttonColor: 'rgb(246, 133, 27)',
-      },
-      {
-        id: 'walletConnect',
-        text: 'Scan a QR code to link your mobile wallet <a href="https://walletconnect.org/" target="_blank">using WalletConnect</a>.',
-        buttonText: 'Use WalletConnect',
-        buttonColor: 'rgb(64, 153, 255)',
-      },
-    ],
   },
   getters: {
     // eslint-disable-next-line

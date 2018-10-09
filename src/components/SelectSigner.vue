@@ -4,11 +4,13 @@
   >
     <ul>
       <li
-        v-for="signer in signersProcessed"
+        v-for="signer in signers"
         :key="signer.id"
       >
         <SelectSignerRow
-          v-bind="signer"
+          :id="signer.id"
+          :text="getTextData(signer.id)"
+          :isAvailable="getAvailableMethod(signer.id)"
         />
       </li>
     </ul>
@@ -17,6 +19,7 @@
 
 <script>
 import SelectSignerRow from './SelectSignerRow'
+
 
 export default {
   name: 'SelectSigner',
@@ -27,20 +30,14 @@ export default {
       required: true,
     },
   },
-  computed: {
-    signersProcessed() {
-      const prepared = []
-      this.signers.forEach((signer) => {
-        prepared.push(Object.assign(
-          signer,
-          {
-            isAvailable: this.web3ProviderApi[signer.id].isAvailable,
-          },
-        ))
-      })
-      return prepared
+  methods: {
+    getTextData(id) {
+      return this.$t(`globals.signers.${id}`)
     },
-  },
+    getAvailableMethod(id) {
+      return this.web3ProviderApi[id].isAvailable
+    }
+  }
 }
 </script>
 

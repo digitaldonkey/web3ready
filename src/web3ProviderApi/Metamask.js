@@ -6,11 +6,23 @@ export default class Metamask {
    * @param networkChange
    * @return {*}
    */
-  static createProvider(Web3, accountChange, networkChange) {
+  static async createProvider(Web3, accountChange, networkChange) {
     if (Metamask.isAvailable()) {
       return new Metamask(Web3, accountChange, networkChange)
     }
     return null
+  }
+
+  /**
+   * isAvailable()
+   *
+   *  Testing if the provider is available in the current environment.
+   *  The result is used to disable buttons.
+   *
+   * @return {boolean}
+   */
+  static isAvailable() {
+    return window.ethereum || (window.web3 !== 'undefined' && window.web3.currentProvider)
   }
 
   /**
@@ -38,17 +50,11 @@ export default class Metamask {
     this.getNetwork()
   }
 
-  static isAvailable() {
-    return window.ethereum || (window.web3 !== 'undefined' && window.web3.currentProvider)
-  }
-  static createWeb3Instance(Web3) {
-    // window.ethereum is the new default.
-    // window.web3.currentProvider is a legacy fallback.
-    if (window.ethereum) {
-      return new Web3(window.ethereum)
-    }
-    return new Web3(window.web3.currentProvider)
-  }
+  /**
+   * getNetwork()
+   *
+   * @return {Promise<String>}
+   */
   async getNetwork() {
     if (!this.networkId) {
       this.networkId = await this.web3.eth.net.getId()
@@ -56,6 +62,12 @@ export default class Metamask {
     }
     return this.networkId
   }
+
+  /**
+   * getDefaultAccount()
+   *
+   * @return {Promise<String>}
+   */
   async getDefaultAccount() {
     let accounts = null
 
@@ -77,6 +89,24 @@ export default class Metamask {
       return accounts[0].toLowerCase()
     }
     return null
+  }
+
+
+  /* ****************** NON API METHODS ****************** */
+
+  /**
+   * createWeb3Instance()
+   *
+   * @param Web3
+   * @return {*}
+   */
+  static createWeb3Instance(Web3) {
+    // window.ethereum is the new default.
+    // window.web3.currentProvider is a legacy fallback.
+    if (window.ethereum) {
+      return new Web3(window.ethereum)
+    }
+    return new Web3(window.web3.currentProvider)
   }
 
   /**

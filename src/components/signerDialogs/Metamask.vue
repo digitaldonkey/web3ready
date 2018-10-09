@@ -1,14 +1,17 @@
 <template>
   <div class="signer">
-    <div
-      class="signer--logo"
-    />
+    <div class="signer--logo" />
     <div class="signer--dialog">
+
+      <Loading v-if="!web3" />
+
       <NetworkIndicator
+        v-if="web3"
         :network_id="networkId"
         :required_network="requiredNetwork"
       />
       <AccountIndicator
+        v-if="web3"
         :account="account"
       />
     </div>
@@ -17,12 +20,17 @@
 
 <script>
 import { mapState } from 'vuex'
-import NetworkIndicator from './NetworkIndicator'
-import AccountIndicator from './AccountIndicator'
+import NetworkIndicator from '../NetworkIndicator'
+import AccountIndicator from '../AccountIndicator'
+import Loading from '../Loading'
 
 export default {
   name: 'Metamask',
-  components: { NetworkIndicator, AccountIndicator },
+  components: {
+    NetworkIndicator,
+    AccountIndicator,
+    Loading
+  },
   computed: {
     isValidNetwork() {
       return this.networkId === this.requiredNetwork
@@ -56,7 +64,7 @@ export default {
       margin: 0 auto;
       display: block;
       max-width: 13em;
-      background: transparent url('../assets/logos/metamask-stacked.svg') center center no-repeat;
+      background: transparent url('../../assets/logos/metamask-stacked.svg') center center no-repeat;
       @media (min-width: 600px) {
         & {
           height: auto;

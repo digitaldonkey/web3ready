@@ -10,9 +10,7 @@
         {{ $t("app.main.connectButton") }}
       </button>
 
-      <span v-if="signerId !== null && !isValidated">
-        <span class="loading-image"/>
-      </span>
+      <Loading v-if="signerId !== null && !isValidated" />
 
       <span v-if="signerId !== null && isValidated">
         <NetworkIndicator
@@ -44,6 +42,12 @@
         v-if="signerId === 'metamask' && !isValidated"
         class="modal-background"
       />
+
+      <WalletConnect
+        v-if="signerId === 'walletConnect' && !isValidated"
+        class="modal-background"
+      />
+
     </Modal>
 
   </div>
@@ -51,8 +55,10 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex'
+import Loading from './components/Loading'
 import SelectSigner from './components/SelectSigner'
-import Metamask from './components/Metamask'
+import Metamask from './components/signerDialogs/Metamask'
+import WalletConnect from './components/signerDialogs/WalletConnect'
 import NetworkIndicator from './components/NetworkIndicator'
 import AccountIndicator from './components/AccountIndicator'
 import Modal from './components/Modal'
@@ -61,8 +67,10 @@ import Modal from './components/Modal'
 export default {
   name: 'App',
   components: {
-    Metamask,
+    Loading,
     SelectSigner,
+    Metamask,
+    WalletConnect,
     NetworkIndicator,
     AccountIndicator,
     Modal,
@@ -131,17 +139,6 @@ export default {
   },
 }
 </script>
-
-<style scoped lang="scss">
-  .loading-image {
-    display: inline-block;
-    vertical-align: bottom;
-    width: 30px;
-    height: 28px;
-    background: transparent url('./assets/loader.svg') center left no-repeat;
-    background-size: contain;
-  }
-</style>
 
 <style lang="scss">
   .connect-web3,

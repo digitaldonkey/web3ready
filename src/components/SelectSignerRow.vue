@@ -10,7 +10,7 @@
         :id="id"
         :disabled="isDisabled"
         :style="buttonBackground"
-        class="button"
+        class="button select-signer"
       >
         {{ text.buttonText }}
       </button>
@@ -87,12 +87,32 @@ export default {
     }
 
     .walletConnect & {
-      background: transparent url('../assets/logos/walletConnect.svg') 0 center no-repeat;
+      background: transparent url('../assets/logos/walletConnect.svg') 20px center no-repeat;
       max-width: 86px;
       min-width: 86px;
-      background-size: cover;
+      background-size: 300%;
+      @media (min-width: 450px) {
+        background-size: calc(100% - 30px);
+        min-width: 200px;
+      }
+      @media (min-width: 800px) {
+        min-width: 250px;
+      }
     }
 
+    .ledger & {
+      max-width: 86px;
+      min-width: 86px;
+      background: transparent url('../assets/logos/ledger.svg') 20px center no-repeat;
+      background-size: 300%;
+      @media (min-width: 450px) {
+        background-size: calc(100% - 30px);
+        min-width: 200px;
+      }
+      @media (min-width: 800px) {
+        min-width: 250px;
+      }
+    }
   }
 
   &--text {
@@ -114,8 +134,8 @@ export default {
     box-sizing: border-box;
     border: 0;
     position: absolute;
-    bottom: 10px;
-    right: 10px;
+    bottom: 20px;
+    right: 0;
     > .button {
       color: #fff;
       margin: 0 20px;

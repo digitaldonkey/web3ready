@@ -3,15 +3,14 @@
     <div class="signer--logo" />
     <div class="signer--dialog">
 
-      <Loading v-if="!web3" />
-
+      <Loading v-if="!provider" />
       <NetworkIndicator
-        v-if="web3"
+        v-if="provider"
         :network_id="networkId"
         :required_network="requiredNetwork"
       />
       <AccountIndicator
-        v-if="web3"
+        v-if="provider"
         :account="account"
       />
     </div>
@@ -19,7 +18,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import NetworkIndicator from '../NetworkIndicator'
 import AccountIndicator from '../AccountIndicator'
 import Loading from '../Loading'
@@ -38,8 +37,10 @@ export default {
     isAccountUnLocked() {
       return !this.account
     },
+    ...mapGetters([
+      'provider'
+    ]),
     ...mapState([
-      'web3',
       'networkId',
       'account',
       'requiredNetwork',

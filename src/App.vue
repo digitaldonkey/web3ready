@@ -48,6 +48,11 @@
         class="modal-background"
       />
 
+      <Ledger
+        v-if="signerId === 'ledger' && !isValidated"
+        class="modal-background"
+      />
+
     </Modal>
 
   </div>
@@ -59,6 +64,7 @@ import Loading from './components/Loading'
 import SelectSigner from './components/SelectSigner'
 import Metamask from './components/signerDialogs/Metamask'
 import WalletConnect from './components/signerDialogs/WalletConnect'
+import Ledger from './components/signerDialogs/Ledger'
 import NetworkIndicator from './components/NetworkIndicator'
 import AccountIndicator from './components/AccountIndicator'
 import Modal from './components/Modal'
@@ -71,12 +77,14 @@ export default {
     SelectSigner,
     Metamask,
     WalletConnect,
+    Ledger,
     NetworkIndicator,
     AccountIndicator,
     Modal,
   },
   data() {
     return {
+      // selectDialogOpen: this.$store.signerId && !this.$store.isValidated,
       selectDialogOpen: !this.$store.isValidated,
     }
   },
@@ -95,7 +103,7 @@ export default {
   beforeCreate() {
     // Validate based on last provider selected.
     if (this.$store.state.signerId) {
-      this.$store.dispatch('web3')
+      this.$store.dispatch('provider')
     }
   },
   methods: {
@@ -105,6 +113,8 @@ export default {
     async resetProvider() {
       this.selectDialogOpen = true
       this.$store.commit('signerId', null)
+      this.$store.commit('provider', null)
+      this.$store.commit('account', null)
     },
     dialogClick(event) {
       if (event.target.hash === '#back') {
@@ -118,7 +128,7 @@ export default {
         }
         event.preventDefault()
       }
-      if (event.target.tagName === 'BUTTON') {
+      if (event.target.classList.contains('select-signer')) {
         this.selectProvider(event.target.id)
       }
     },
@@ -145,6 +155,7 @@ export default {
   .tooltip {
     font-family: -apple-system, system-ui, BlinkMacSystemFont, "SF Pro Text", Roboto, Helvetica, Arial, sans-serif;
     font-size: 1rem;
+    line-height: 1.4;
   }
 
   .connect-web3 {

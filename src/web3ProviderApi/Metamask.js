@@ -22,7 +22,7 @@ export default class Metamask {
    * @return {boolean}
    */
   static isAvailable() {
-    return window.ethereum || (window.web3 !== 'undefined' && window.web3.currentProvider)
+    return window.ethereum || (typeof window.web3 !== 'undefined' && window.web3.currentProvider)
   }
 
   /**
@@ -106,7 +106,10 @@ export default class Metamask {
     if (window.ethereum) {
       return new Web3(window.ethereum)
     }
-    return new Web3(window.web3.currentProvider)
+    if (window.web3 && window.web3.currentProvider) {
+      return new Web3(window.web3.currentProvider)
+    }
+    return null
   }
 
   /**

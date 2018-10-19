@@ -1,10 +1,24 @@
 <template>
-  <span class="loading-image" />
+  <span :class="className" />
 </template>
 
 <script>
 export default {
   name: 'Loading',
+  props: {
+    centered: {
+      type: Boolean,
+      default: false,
+    }
+  },
+  computed: {
+    className() {
+      if (this.centered) {
+        return 'loading-image loading-image--centered'
+      }
+      return 'loading-image'
+    }
+  }
 }
 </script>
 
@@ -18,5 +32,10 @@ export default {
     background: transparent url('../assets/loader.svg') center no-repeat;
     background-size: contain;
     margin: 0 auto;
+
+    &.loading-image--centered {
+      display: block;
+      margin: 1em auto;
+    }
   }
 </style>

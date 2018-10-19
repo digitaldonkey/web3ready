@@ -1,3 +1,5 @@
+const fs = require('fs')
+
 module.exports = {
   chainWebpack: config => {
     // Change default SVG loader.
@@ -12,5 +14,16 @@ module.exports = {
       .use('svg-url-loader')
       .loader('svg-url-loader')
       .end()
-  }
+  },
+  devServer: {
+    open: process.platform === 'darwin',
+    host: 'localhost', // You may set 0.0.0.0, but it will brake ssl setup.
+    port: 8080,
+    hotOnly: false,
+    https: {
+      key: fs.readFileSync('./ssl/server.key'),
+      cert: fs.readFileSync('./ssl/server.crt'),
+      ca: fs.readFileSync('./ssl/rootCA.pem'),
+    },
+  },
 }

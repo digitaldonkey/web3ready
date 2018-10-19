@@ -1,12 +1,14 @@
 export default {
-  requiredNetwork: '42',
+  requiredNetwork: '1',
   dappName: 'INSERT_A_UNIQUE_DAPP_NAME',
-  rpcUrl: 'https://kovan.infura.io/drupal',
+  rpcUrl: 'https://mainnet.infura.io/drupal',
   walletConnect: {
     bridgeUrl: 'https://bridge.walletconnect.org',
+    // bridgeUrl: 'https://test-bridge.walletconnect.org',
   },
   availableSigners: [
     { id: 'metamask' },
     { id: 'walletConnect' },
+    { id: 'ledger' },
   ],
 }

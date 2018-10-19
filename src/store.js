@@ -13,19 +13,19 @@ const Web3ReadyPlugin = (store) => {
       // eslint-disable-next-line
       console.log('signerId@plugin', state.signerId)
       if (state.signerId === null) {
-        store.commit('web3', null)
+        store.commit('provider', null)
       }
       else {
-        store.dispatch('web3')
+        store.dispatch('provider')
       }
     }
   })
   // web3 initialized
   store.subscribe(async (mutation, state) => {
-    if (mutation.type === 'web3') {
+    if (mutation.type === 'provider') {
       // eslint-disable-next-line
-      console.log('web3@plugin', typeof state.web3 === 'function' && typeof state.web3() === 'object')
-      if (state.web3 === null) {
+      console.log('web3@plugin', typeof state.provider === 'function' && state.provider().web3)
+      if (state.provider === null) {
         store.commit('networkId', null)
         store.commit('account', null)
       }
@@ -46,7 +46,13 @@ const Web3ReadyPlugin = (store) => {
 
 const persist = new VuexPersistence({
   storage: window.localStorage,
-  reducer: state => ({ signerId: state.signerId }),
+  reducer: (state) => {
+    return {
+      signerId: state.signerId,
+      // Persisting only data for selected provider.
+      lastAccountData: state.lastAccountData,
+    }
+  },
 })
 
 const store = new Vuex.Store({
@@ -56,20 +62,26 @@ const store = new Vuex.Store({
     availableSigners: config.availableSigners,
     dappName: config.dappName,
     rpcUrl: config.rpcUrl,
+    lastAccountData: null,
     walletConnect: {
       bridgeUrl: config.walletConnect.bridgeUrl
     },
     // Final values
     signerId: null,
-    web3: null,
+    provider: null,
     networkId: null,
     account: null,
   },
   getters: {
-    // eslint-disable-next-line
+    provider(state) {
+      if (typeof state.provider === 'function') {
+        return state.provider()
+      }
+      return null
+    },
     isValidated: (state) => {
       return state.networkId
-          && state.web3
+          && state.provider
           && state.account
           && state.networkId.toString() === state.requiredNetwork
     },
@@ -82,13 +94,20 @@ const store = new Vuex.Store({
         dappName: state.dappName,
         rpcUrl: state.rpcUrl
       }
+    },
+    ledgerConfig(state) {
+      return {
+        dappName: state.dappName,
+        rpcUrl: state.rpcUrl,
+        networkId: state.requiredNetwork,
+      }
     }
   },
   actions: {
     // Actions are required to resolve promises.
-    async web3({ state, commit }) {
+    async provider({ state, commit }) {
       const Web3Module = await import(/* webpackChunkName: "web3" */ './async/web3')
-      const web3 = await Vue.prototype.web3ProviderApi[state.signerId].createProvider(
+      const provider = await Vue.prototype.web3ProviderApi[state.signerId].createProvider(
         Web3Module.default, // Web3 Factory.
         (account) => {
           this.dispatch('account', account)
@@ -97,7 +116,8 @@ const store = new Vuex.Store({
           this.dispatch('networkId', networkId)
         }
       )
-      commit('web3', () => web3)
+      console.log(provider, 'provider @ STORE')
+      commit('provider', () => provider)
     },
     async networkId({ commit }, networkId) {
       // const netId = await Vue.prototype.web3ProviderApi[state.signerId].getNetwork(state.web3())
@@ -105,8 +125,12 @@ const store = new Vuex.Store({
         commit('networkId', networkId.toString())
       }
     },
-    async account({ commit }, account) {
+    async account({ getters, commit }, account) {
       // await Vue.prototype.web3ProviderApi[state.signerId].getDefaultAccount(state.web3())
+      console.log('WEB3 READY', {
+        web3: getters.provider.web3,
+        account
+      })
       commit('account', account)
     },
   },
@@ -115,14 +139,17 @@ const store = new Vuex.Store({
     signerId(state, signerId) {
       state.signerId = signerId
     },
-    web3(state, web3) {
-      state.web3 = web3
+    provider(state, provider) {
+      state.provider = provider
     },
     networkId(state, networkId) {
       state.networkId = networkId
     },
     account(state, account) {
       state.account = account
+    },
+    lastAccountData(state, lastAccountData) {
+      state.lastAccountData = lastAccountData
     },
   },
   strict: process.env.NODE_ENV !== 'production',

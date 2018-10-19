@@ -20,6 +20,27 @@ const messages = {
         accountOkInfo: 'Account is unlocked.',
         accountLockedInfo: 'Account is locked. Please unlock your account by entering your password '
         + 'or approve this application using your Wallet.',
+      },
+      walletConnect: {
+        instructions: {
+          summary: 'Scan QR code with your WalletConnect compatible Wallet'
+        }
+      },
+      ledger: {
+        deviceStatus: {
+          heading: 'Connect to Ledger hardware Wallet',
+          introText: 'Please connect and unlock your device, select Ethereum app and make sure to enable Browser support in app settings.',
+          waitingForDevice: 'Waiting for device',
+          retry: {
+            instructions: 'Failed to connect, please check your device',
+            buttonText: 'Try again',
+          }
+        },
+        selectAccount: {
+          heading: 'Select account address',
+          shouldRemember: 'Remember for this app?',
+          selectAccount: 'Chose default Account'
+        },
       }
     },
     globals: {
@@ -68,6 +89,17 @@ const messages = {
             url: 'https://walletconnect.org',
           },
           buttonColor: 'rgb(64, 153, 255)',
+        },
+        ledger: {
+          label: 'Ledger Wallet',
+          buttonText: 'Use Ledger Wallet',
+          description: {
+            pre: 'Use',
+            link: 'Ledger hardware wallet',
+            post: 'to connect.',
+            url: 'https://www.ledger.com/',
+          },
+          buttonColor: 'rgb(65, 204, 180)',
         },
       },
     }

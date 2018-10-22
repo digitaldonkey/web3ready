@@ -13,7 +13,13 @@ const Web3ReadyPlugin = (store) => {
       // eslint-disable-next-line
       console.log('signerId@plugin', state.signerId)
       if (state.signerId === null) {
-        store.commit('provider', null)
+
+        // TODO HOW TO DESTROY SESSION AND LISTENING?
+
+        if (state.provider) {
+          store.getters.provider.destroy()
+          store.commit('provider', null)
+        }
       }
       else {
         store.dispatch('provider')

@@ -8,4 +8,6 @@ These Certs are included in vue.config.js devServer section.
 
 On OSX: import rootCA.pem to your keychain by double clicking the file. After import set trust to "always trust".
 
+Based on:
+
 https://medium.freecodecamp.org/how-to-get-https-working-on-your-local-development-environment-in-5-minutes-7af615770eec

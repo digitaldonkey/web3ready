@@ -3,7 +3,7 @@
     <div class="signer--logo" />
     <div class="signer--dialog">
 
-      <Loading v-if="!provider" />
+      <Loading v-if="!provider" :centered="true"/>
       <NetworkIndicator
         v-if="provider"
         :network_id="networkId"
@@ -28,15 +28,9 @@ export default {
   components: {
     NetworkIndicator,
     AccountIndicator,
-    Loading
+    Loading,
   },
   computed: {
-    isValidNetwork() {
-      return this.networkId === this.requiredNetwork
-    },
-    isAccountUnLocked() {
-      return !this.account
-    },
     ...mapGetters([
       'provider'
     ]),
@@ -74,6 +68,7 @@ export default {
     }
     .signer--dialog {
       padding: 20px;
+      flex-grow: 1;
       @media (min-width: 600px) {
         & {
           padding: 40px;

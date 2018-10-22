@@ -74,8 +74,6 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex'
-import NetworkIndicator from '../NetworkIndicator'
-import AccountIndicator from '../AccountIndicator'
 import Loading from '../Loading'
 
 export default {

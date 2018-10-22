@@ -25,6 +25,10 @@ export default class Metamask {
     return window.ethereum || (typeof window.web3 !== 'undefined' && window.web3.currentProvider)
   }
 
+  destroy() {
+    console.log('DeSTROY PROVIDER')
+  }
+
   /**
    * Prefer Factory class
    * Metamask.createProvider(Web3, accountChange, networkChange)

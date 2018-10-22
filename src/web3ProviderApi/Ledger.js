@@ -26,6 +26,11 @@ export default class Ledger {
     return document.location.protocol === 'https:'
   }
 
+
+  destroy() {
+    console.log('DeSTROY PROVIDER')
+  }
+
   /* ****************** NON API METHODS ******************
    *
    * Web3 provider API

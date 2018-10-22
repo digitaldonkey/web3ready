@@ -9,12 +9,12 @@ export default class WalletConnect {
    * @return {*}
    */
   static async createProvider(Web3, accountChange, networkChange) {
-    const WalletConnectProvider = await import(/* webpackChunkName: "walletConnect" */ '../async/walletConnect')
+    const libraries = await import(/* webpackChunkName: "walletConnect" */ '../async/walletConnect')
     return new WalletConnect(
       Web3,
       accountChange,
       networkChange,
-      WalletConnectProvider.default
+      libraries
     )
   }
 
@@ -27,19 +27,22 @@ export default class WalletConnect {
     return true
   }
 
+  destroy() {
+    console.log('I WANT TO STOP LISTENING NOW', this.walletconnect)
+    // this.walletconnect.deleteLocalSession()
+  }
+
   /**
    * getNetwork()
    *
    * @return {Promise<string>}
    */
   async getNetwork() {
-    console.log(this.networkId, 'this.networkId')
     if (!this.networkId) {
-      console.log(this.networkId, 'this.networkId')
       this.networkId = await this.web3.eth.net.getId()
-      console.log(this.networkId, 'this.networkId')
       this.networkChange(this.networkId)
     }
+    console.log(this.networkId, 'this.networkId @ web3ProviderApi/WalletConnect.js')
     return this.networkId
   }
 
@@ -49,42 +52,14 @@ export default class WalletConnect {
    * @return {Promise<String>}
    */
   async getDefaultAccount() {
-
-    console.log('getDefaultAccount() IS NOT IMPLEMENTED')
+    const sessionStatus = this.walletconnect.getSessionStatus()
+    console.log(sessionStatus, 'this.walletconnect.getSessionStatus')
+    if (this.walletconnect.accounts.length) {
+      console.log('FOUND ACCOUNT NOW')
+      return this.walletconnect.accounts[0]
+    }
+    console.log('NO ACCOUNT')
     return null
-  }
-
-
-  async requestAccount() {
-    // eslint-disable-next-line
-    console.log('requestAccount()', this.web3.currentProvider.walletconnect)
-    console.log(this.web3.currentProvider.walletconnect.accounts, 'this.web3.currentProvider.walletconnect.accounts')
-    console.log(this.web3.eth.getAccounts, 'this.web3.eth.getAccounts')
-
-    try {
-      let accounts = null
-      console.log(accounts, 'accounts 1')
-      accounts = await this.web3.eth.getAccounts()
-      console.log(accounts, 'accounts 2')
-
-      if (!accounts || !accounts.length) {
-        console.log(this.web3.currentProvider, 'this.web3.currentProvider')
-        const uri = this.web3.currentProvider.walletconnect.uri
-        console.log(uri, 'uri')
-
-        // Listen for session status
-        await this.web3.currentProvider.walletconnect.listenSessionStatus()
-
-        // Get Accounts Again
-        accounts = await this.web3.eth.getAccounts()
-      }
-    }
-    catch (error) {
-      // eslint-disable-next-line
-      console.log(error, 'ERROR@requestAccount')
-    }
-
-
   }
 
   /**
@@ -94,24 +69,67 @@ export default class WalletConnect {
    * @param Web3
    * @param accountChange
    * @param networkChange
-   * @param WalletConnectProvider
+   * @param libraries
    */
-  constructor(Web3, accountChange, networkChange, WalletConnectProvider) {
-    this.web3 = new Web3(new WalletConnectProvider(store.getters.walletConnectConfig))
+  constructor(Web3, accountChange, networkChange, libraries) {
+    this.qrImage = libraries.qrImage
+
+    const walletConnectProvider = new libraries.WalletConnectProvider(store.getters.walletConnectConfig)
+
+    this.web3 = new Web3(walletConnectProvider)
+
     this.account = null
     this.networkId = null
+
+    this.walletconnect = this.web3.currentProvider.walletconnect
     this.accountChange = accountChange
     // Metamask requires only initial Network set.
     // Browser reloads at Metamask Network change.
     this.networkChange = networkChange
 
-    // Refresh every POLL_INTERVAL [ms].
-    this.POLL_INTERVAL = 800
+    // Display QR Code URI
+    this.uri = null
 
-    // Account change handler.
-    // this.watchAccountChange()
-    // this.getNetwork()
+    // Async init walletConnect session.
     this.requestAccount()
+
+    this.POLL_INTERVAL = 800
+    this.TIMEOUT = 5 * 60 * 1000 // 5 min.
+  }
+
+  getImage() {
+    if (this.uri) {
+      const buffer = this.qrImage.imageSync(this.uri, { type: 'svg' })
+      return `data:image/svg+xml;charset=UTF-8,${buffer}`
+    }
+    return null
+  }
+
+  async requestAccount() {
+
+    try {
+      if (!this.account) {
+        let accounts = await this.web3.eth.getAccounts()
+        console.log('accounts 1', accounts)
+
+        if (!accounts.length) {
+          // Display QR Code URI
+          this.uri = await this.walletconnect.uri
+
+          console.log('accounts URI', this.uri)
+          this.session = await this.walletconnect.listenSessionStatus(this.POLL_INTERVAL, this.TIMEOUT)
+          console.log('this.session', this.session)
+
+          accounts = await this.web3.eth.getAccounts()
+          console.log('accounts 2', accounts)
+        }
+        console.log(this.account, 'accounts 2 (after init session')
+      }
+    }
+    catch (error) {
+      // eslint-disable-next-line
+      console.log(error, 'ERROR @ web3ProviderApi/WalletConnect.js')
+    }
   }
 
   /**
@@ -129,7 +147,7 @@ export default class WalletConnect {
       this.account = account
       this.accountChange(account)
     }
-    // await Metamask.waitFor(this.POLL_INTERVAL)
+    await WalletConnect.waitFor(this.POLL_INTERVAL)
     this.watchAccountChange()
   }
 

@@ -25,8 +25,13 @@ export default class Metamask {
     return window.ethereum || (typeof window.web3 !== 'undefined' && window.web3.currentProvider)
   }
 
-  destroy() {
-    console.log('DeSTROY PROVIDER')
+  /**
+   * Is user interaction required to unlock the account.
+   *
+   * @return {boolean}
+   */
+  static get canAutoValidate() {
+    return true
   }
 
   /**

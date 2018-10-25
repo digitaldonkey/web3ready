@@ -2,15 +2,17 @@
   <div class="connect-web3">
 
     <span class="connect-web3--info">
+
       <button
-        v-if="signerId === null && !isValidated"
+        v-if="showConnectAction"
         class="button button--primary"
-        @click="selectDialogOpen = true"
+        @click="isDialogOpen = true"
       >
         {{ $t("app.main.connectButton") }}
       </button>
 
       <Loading v-if="signerId !== null && !isValidated" />
+
 
       <span v-if="signerId !== null && isValidated">
         <NetworkIndicator
@@ -24,13 +26,13 @@
         />
         <button
           class="button mini button--transparent"
-          @click="resetProvider"
+          @click="changeProvider"
         >{{ $t("app.main.changeButton") }}</button>
       </span>
     </span>
 
     <Modal
-      v-if="selectDialogOpen && !isValidated"
+      v-if="isDialogOpen && !isValidated"
       :signerId="signerId"
       :clickHandler="dialogClick"
     >
@@ -59,6 +61,7 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import { mapState, mapGetters } from 'vuex'
 import Loading from './components/Loading'
 import SelectSigner from './components/SelectSigner'
@@ -84,15 +87,27 @@ export default {
   },
   data() {
     return {
-      // selectDialogOpen: this.$store.signerId && !this.$store.isValidated,
-      selectDialogOpen: !this.$store.isValidated,
+      isDialogOpen: false,
+      isLoading: true
     }
   },
   computed: {
+    showConnectAction() {
+      if (this.$store.state.signerId === null) {
+        return true
+      }
+      if (this.$store.state.signerId) {
+        if (Vue.prototype.web3ProviderApi[this.$store.state.signerId].canAutoValidate) {
+          return false
+        }
+      }
+      return !this.$store.getters.isValidated
+    },
     ...mapState([
       'availableSigners',
       'signerId',
       'account',
+      'resetProvider',
       'networkId',
       'requiredNetwork',
     ]),
@@ -103,18 +118,30 @@ export default {
   beforeCreate() {
     // Validate based on last provider selected.
     if (this.$store.state.signerId) {
-      this.$store.dispatch('provider')
+      if (Vue.prototype.web3ProviderApi[this.$store.state.signerId].canAutoValidate) {
+        this.$store.dispatch('provider')
+      }
+      else {
+        this.$store.commit('signerId', null)
+      }
     }
+  },
+  watch: {
+    isValidated: {
+      handler(isValidated) {
+        if (isValidated) {
+          this.isDialogOpen = false
+        }
+      }
+    },
   },
   methods: {
     async selectProvider(id) {
       this.$store.commit('signerId', id)
     },
-    async resetProvider() {
-      this.selectDialogOpen = true
-      this.$store.commit('signerId', null)
-      this.$store.commit('provider', null)
-      this.$store.commit('account', null)
+    async changeProvider() {
+      this.$store.dispatch('resetProvider')
+      this.isDialogOpen = true
     },
     dialogClick(event) {
       if (event.target.hash === '#back') {
@@ -122,7 +149,7 @@ export default {
         event.preventDefault()
       }
       else if (!this.isDialogContent(event)) {
-        this.selectDialogOpen = false
+        this.isDialogOpen = false
         if (!this.isValidated) {
           this.$store.commit('signerId', null)
         }
@@ -133,6 +160,7 @@ export default {
       }
     },
     isDialogContent(event) {
+      // Clicks outside .modal-content will close dialogue.
       if (!event.path) {
         return false
       }

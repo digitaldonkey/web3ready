@@ -5,10 +5,36 @@
 
       <Loading v-if="!qrImage" :centered="true"/>
 
-      <div v-if="qrImage">
-        <img :src="qrImage"/>
-        <p>{{ $t("app.walletConnect.instructions.summary") }}</p>
+      <div  v-if="!account">
+        <div v-if="qrImage && isListening">
+          <img :src="qrImage"/>
+        </div>
+
+        <div class="restart-listening" v-if="qrImage && !isListening">
+          <div class="restart-listening--content">
+            <div>
+              {{ $t("app.ledger.deviceStatus.retry.instructions") }}
+              <button
+                class="button mini"
+                @click="listenSessionStatus"
+              >{{ $t("app.ledger.deviceStatus.retry.buttonText") }}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div
+          v-if="qrImage"
+          class="info">
+          {{ $t("app.walletConnect.instructions.summary") }}
+        </div>
       </div>
+
+      <NetworkIndicator
+        v-if="provider"
+        :network_id="networkId"
+        :required_network="requiredNetwork"
+      />
 
     </div>
   </div>
@@ -24,7 +50,11 @@ export default {
   name: 'WalletConnect',
   data() {
     return {
-      qrImage: null
+      POLL_INTERVAL: 1000, // 1 sec
+      TIMEOUT: 5 * 60 * 1000, // 5 min. 5 * 60 * 1000
+      qrImage: null,
+      isListening: null,
+      wcSession: null,
     }
   },
   components: {
@@ -32,11 +62,32 @@ export default {
     NetworkIndicator,
     AccountIndicator,
   },
+  created() {
+    if (this.provider) {
+      // this.getQrImage()
+      this.initSession()
+    }
+  },
   watch: {
     provider: {
       handler(provider) {
         if (provider) {
-          this.getQrImage()
+          // this.getQrImage()
+          this.initSession()
+        }
+      }
+    },
+    qrImage: {
+      handler(img) {
+        if (img) {
+          this.listenSessionStatus()
+        }
+      }
+    },
+    wcSession: {
+      handler(session) {
+        if (session) {
+          this.provider.web3.eth.getAccounts()
         }
       }
     },
@@ -58,20 +109,23 @@ export default {
     ])
   },
   methods: {
-    async getQrImage() {
-      if (this.provider && this.provider.web3 && this.provider.getImage) {
-        const image = await this.provider.getImage()
-        if (image) {
-          this.qrImage = image
-        }
-        else {
-          await this.waitFor(500)
-          this.getQrImage()
-        }
-      }
+    async initSession() {
+      // This will cause walletConnect to initialize a Session.
+      await this.provider.web3.eth.getAccounts()
+      this.qrImage = await this.provider.image
     },
-    async waitFor(ms) {
-      return new Promise(resolve => setTimeout(resolve, ms))
+    async listenSessionStatus() {
+      if (this.qrImage) {
+        this.isListening = true
+        try {
+          this.wcSession = await this.provider.web3.currentProvider.walletconnect.listenSessionStatus(this.POLL_INTERVAL, this.TIMEOUT)
+        }
+        catch (e) {
+          // eslint-disable-next-line
+          console.log(e, 'ERROR or TIMEOUT @ walletconnect.listenSessionStatus()')
+        }
+        this.isListening = false
+      }
     }
   },
 }
@@ -82,7 +136,7 @@ export default {
     min-height: 102px;
     max-height: 100%;
     overflow: scroll;
-    @media (min-width: 600px) {
+    @media (min-width: 550px) {
       & {
         display: flex;
         justify-content:space-between;
@@ -90,27 +144,73 @@ export default {
     }
     .signer--logo {
       width: 100%;
-      min-height: 6em;
+      min-height: 5em;
       margin: 10px auto;
       display: block;
-      max-width: 16em;
+      max-width: 250px;
       background: transparent url('../../assets/logos/walletConnect.svg') center no-repeat;
       background-size: contain;
-      @media (min-width: 600px) {
+      @media (min-width: 379px) {
+        & {
+          margin-top: 1em;
+        }
+      }
+      @media (min-width: 550px) {
         & {
           height: auto;
-          width: 40%;
-          margin-left: 40px;
+          width: 55%;
+          margin-left: 1em;
+        }
+      }
+      @media (min-width: 700px) {
+        & {
+          height: auto;
+          width: 50%;
+          margin-left: 2em;
         }
       }
     }
     .signer--dialog {
-      padding: 20px;
-      @media (min-width: 600px) {
+      padding: 0 1em;
+      img {
+        display: block;
+      }
+      .restart-listening{
+        // Keep square shape as QR-image.
+        padding-bottom: 100%;
+        width: 100%;
+        position: relative;
+        .restart-listening--content {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          .button {
+            display: block;
+            margin:  1em auto 0;
+          }
+        }
+
+      }
+      .info {
+        text-align: center;
+        margin-top: .5em;
+      }
+
+      @media (min-width: 550px) {
         & {
-          padding: 40px;
+          padding: 1em;
           align-self: flex-end;
           flex-grow: 1;
+        }
+      }
+      @media (min-width: 700px) {
+        & {
+          padding: 2em 1em;
         }
       }
     }

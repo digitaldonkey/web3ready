@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import VuexPersistence from 'vuex-persist'
+import 'custom-event-polyfill'
 
 import config from './conf/example.data'
 
@@ -13,11 +14,10 @@ const Web3ReadyPlugin = (store) => {
       // eslint-disable-next-line
       console.log('signerId@plugin', state.signerId)
       if (state.signerId === null) {
-
-        // TODO HOW TO DESTROY SESSION AND LISTENING?
-
         if (state.provider) {
-          store.getters.provider.destroy()
+          if (typeof store.getters.provider.destroy === 'function') {
+            store.getters.provider.destroy()
+          }
           store.commit('provider', null)
         }
       }
@@ -52,13 +52,11 @@ const Web3ReadyPlugin = (store) => {
 
 const persist = new VuexPersistence({
   storage: window.localStorage,
-  reducer: (state) => {
-    return {
-      signerId: state.signerId,
-      // Persisting only data for selected provider.
-      lastAccountData: state.lastAccountData,
-    }
-  },
+  reducer: state => ({
+    signerId: state.signerId,
+    // Persisting only data for selected provider.
+    lastAccountData: state.lastAccountData,
+  })
 })
 
 const store = new Vuex.Store({
@@ -86,10 +84,13 @@ const store = new Vuex.Store({
       return null
     },
     isValidated: (state) => {
-      return state.networkId
+      const isValidated = state.networkId
           && state.provider
           && state.account
           && state.networkId.toString() === state.requiredNetwork
+      // eslint-disable-next-line
+      console.log('isValidated @ isValidated()', isValidated)
+      return isValidated
     },
     requiredNetwork(state) {
       return state.requiredNetwork.toString()
@@ -122,23 +123,36 @@ const store = new Vuex.Store({
           this.dispatch('networkId', networkId)
         }
       )
-      console.log(provider, 'provider @ STORE')
       commit('provider', () => provider)
+    },
+    async resetProvider({ commit }) {
+      commit('signerId', null)
+      commit('provider', null)
+      commit('account', null)
     },
     async networkId({ commit }, networkId) {
       // const netId = await Vue.prototype.web3ProviderApi[state.signerId].getNetwork(state.web3())
       if (networkId) {
         commit('networkId', networkId.toString())
       }
+      this.dispatch('callWeb3Ready')
     },
-    async account({ getters, commit }, account) {
+    async account({ commit }, account) {
       // await Vue.prototype.web3ProviderApi[state.signerId].getDefaultAccount(state.web3())
-      console.log('WEB3 READY', {
-        web3: getters.provider.web3,
-        account
-      })
       commit('account', account)
+      this.dispatch('callWeb3Ready')
     },
+    callWeb3Ready({ getters }) {
+      if (getters.isValidated) {
+        const event = new CustomEvent('web3Ready', {
+          detail: {
+            web3: getters.provider.web3,
+            account: this.state.account,
+          }
+        })
+        window.dispatchEvent(event)
+      }
+    }
   },
   mutations: {
     // Mutations MUST be synchronous.

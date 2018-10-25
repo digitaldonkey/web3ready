@@ -28,8 +28,8 @@ export default class WalletConnect {
   }
 
   destroy() {
-    console.log('I WANT TO STOP LISTENING NOW', this.walletconnect)
-    // this.walletconnect.deleteLocalSession()
+    this.shouldWatch = false
+    this.web3.currentProvider.walletconnect.stopLastListener()
   }
 
   /**
@@ -42,7 +42,6 @@ export default class WalletConnect {
       this.networkId = await this.web3.eth.net.getId()
       this.networkChange(this.networkId)
     }
-    console.log(this.networkId, 'this.networkId @ web3ProviderApi/WalletConnect.js')
     return this.networkId
   }
 
@@ -52,14 +51,7 @@ export default class WalletConnect {
    * @return {Promise<String>}
    */
   async getDefaultAccount() {
-    const sessionStatus = this.walletconnect.getSessionStatus()
-    console.log(sessionStatus, 'this.walletconnect.getSessionStatus')
-    if (this.walletconnect.accounts.length) {
-      console.log('FOUND ACCOUNT NOW')
-      return this.walletconnect.accounts[0]
-    }
-    console.log('NO ACCOUNT')
-    return null
+    return this.account
   }
 
   /**
@@ -78,58 +70,48 @@ export default class WalletConnect {
 
     this.web3 = new Web3(walletConnectProvider)
 
-    this.account = null
-    this.networkId = null
-
-    this.walletconnect = this.web3.currentProvider.walletconnect
     this.accountChange = accountChange
-    // Metamask requires only initial Network set.
-    // Browser reloads at Metamask Network change.
     this.networkChange = networkChange
 
     // Display QR Code URI
-    this.uri = null
+    this._uri = null
+    this._account = null
+    this.networkId = null
 
-    // Async init walletConnect session.
-    this.requestAccount()
-
-    this.POLL_INTERVAL = 800
-    this.TIMEOUT = 5 * 60 * 1000 // 5 min.
+    this.POLL_INTERVAL = 1000
+    this.shouldWatch = true
+    this.watchAccountChange()
+    this.getNetwork()
   }
 
-  getImage() {
-    if (this.uri) {
-      const buffer = this.qrImage.imageSync(this.uri, { type: 'svg' })
-      return `data:image/svg+xml;charset=UTF-8,${buffer}`
-    }
-    return null
+  get account() {
+    return this._account
   }
 
-  async requestAccount() {
+  set account(val) {
+    this._account = val
+    this.accountChange(val)
+  }
 
-    try {
-      if (!this.account) {
-        let accounts = await this.web3.eth.getAccounts()
-        console.log('accounts 1', accounts)
-
-        if (!accounts.length) {
-          // Display QR Code URI
-          this.uri = await this.walletconnect.uri
-
-          console.log('accounts URI', this.uri)
-          this.session = await this.walletconnect.listenSessionStatus(this.POLL_INTERVAL, this.TIMEOUT)
-          console.log('this.session', this.session)
-
-          accounts = await this.web3.eth.getAccounts()
-          console.log('accounts 2', accounts)
-        }
-        console.log(this.account, 'accounts 2 (after init session')
-      }
+  get uri() {
+    if (!this._uri) {
+      return this.getUri()
     }
-    catch (error) {
-      // eslint-disable-next-line
-      console.log(error, 'ERROR @ web3ProviderApi/WalletConnect.js')
-    }
+    return this._uri
+  }
+
+  get image() {
+    return this.getImage()
+  }
+
+  async getUri() {
+    return this.web3.currentProvider.walletconnect.uri
+  }
+
+  async getImage() {
+    this._uri = await this.getUri()
+    const buffer = this.qrImage.imageSync(this.uri, { type: 'svg' })
+    return `data:image/svg+xml;charset=UTF-8,${buffer}`
   }
 
   /**
@@ -142,13 +124,13 @@ export default class WalletConnect {
    * @returns {Promise<void>}
    */
   async watchAccountChange() {
-    const account = await this.getDefaultAccount()
-    if (this.account !== account) {
-      this.account = account
-      this.accountChange(account)
+    if (this.web3.currentProvider.walletconnect.accounts.length) {
+      [this.account] = this.web3.currentProvider.walletconnect.accounts
     }
-    await WalletConnect.waitFor(this.POLL_INTERVAL)
-    this.watchAccountChange()
+    else if (this.shouldWatch) {
+      await WalletConnect.waitFor(this.POLL_INTERVAL)
+      this.watchAccountChange()
+    }
   }
 
   /**

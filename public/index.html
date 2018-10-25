@@ -13,5 +13,21 @@
     </noscript>
     <div id="app"></div>
     <!-- built files will be auto injected -->
+
+  <script>
+    /**
+     * Initialize you Web3 Application easily:
+     */
+    window, (event) => {
+      console.log(
+        'Event: web3Ready @ index.html',
+        {
+          web3: event.detail.web3,
+          account: event.detail.account,
+        }
+      )
+    })
+  </script>
+
   </body>
 </html>

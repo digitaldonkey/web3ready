@@ -1,0 +1,25 @@
+/**
+ * VARIABLES
+ *
+ * Only Abstract SCSS.
+ *
+ * Don't put anything which would render into css here.
+ *
+**/
+
+// Overlay backgrounds
+$borderRadius: 14px 10px 10px 14px;
+
+// Signer Colors
+$color_metamsk: rgb(246, 133, 27);
+$color_walletConnect: rgb(64, 153, 255);
+$color_ledger: rgb(65, 204, 180);
+
+//
+$color_text_light: rgb(102, 102, 102);
+
+// Buttons
+$color_primary: $color_walletConnect;
+$color_primary_contrast: rgba(255, 255, 255, 0.96);
+
+$button_shadow: rgba(50, 50, 93, 0.11) 0 4px 6px 0, rgba(0, 0, 0, 0.08) 0 1px 3px 0, rgba(0, 0, 0, 0.06) 0 0 1px 0 inset;

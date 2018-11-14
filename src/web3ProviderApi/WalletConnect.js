@@ -30,7 +30,10 @@ export default class WalletConnect {
   destroy() {
     this.shouldWatch = false
     this.web3.currentProvider.walletconnect.stopLastListener()
+    this.web3.currentProvider.walletconnect.engine.stop()
   }
+
+  /* ****************** NON API METHODS ****************** */
 
   /**
    * getNetwork()
@@ -69,7 +72,6 @@ export default class WalletConnect {
     const walletConnectProvider = new libraries.WalletConnectProvider(store.getters.walletConnectConfig)
 
     this.web3 = new Web3(walletConnectProvider)
-
     this.accountChange = accountChange
     this.networkChange = networkChange
 

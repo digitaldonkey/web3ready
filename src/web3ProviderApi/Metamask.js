@@ -1,14 +1,41 @@
 export default class Metamask {
   /**
+   * createProvider()
+   *
+   * Required function to initialize provider and web3.
+   *
+   * @param Web3
+   * @param accountChange
+   *   Commit account change to App.
+   * @param networkChange
+   *  Commit network change to App.
+   * @param resetProvider Function
+   *   Resets the App state to default.
+   * @return {*}
+   */
+  static async createProvider(Web3, accountChange, networkChange, resetProvider) {
+    if (Metamask.isAvailable()) {
+      return new Metamask(Web3, accountChange, networkChange, resetProvider, false)
+    }
+    return null
+  }
+
+  /**
+   * createAutovalidateProvider()
+   *
+   * Optionally provide a auto-initializing provider.
+   * If the provider supports it provider can try to do "reconnect".
+   * In case reconnect fails you must call resetProvider(). This limits states to
+   * "connected" and "no provider selected".
    *
    * @param Web3
    * @param accountChange
    * @param networkChange
    * @return {*}
    */
-  static async createProvider(Web3, accountChange, networkChange) {
+  static async createAutovalidateProvider(Web3, accountChange, networkChange, resetProvider) {
     if (Metamask.isAvailable()) {
-      return new Metamask(Web3, accountChange, networkChange)
+      return new Metamask(Web3, accountChange, networkChange, resetProvider, true)
     }
     return null
   }
@@ -26,13 +53,13 @@ export default class Metamask {
   }
 
   /**
-   * Is user interaction required to unlock the account.
-   *
-   * @return {boolean}
+   * Optionally destroy watchers, if you need.
    */
-  static get canAutoValidate() {
-    return true
+  destroy() {
+    this.shouldWatch = false
   }
+
+  /* ****************** NON API METHODS ****************** */
 
   /**
    * Prefer Factory class
@@ -41,8 +68,10 @@ export default class Metamask {
    * @param Web3
    * @param accountChange
    * @param networkChange
+   * @param resetProvider
+   *
    */
-  constructor(Web3, accountChange, networkChange) {
+  constructor(Web3, accountChange, networkChange, resetProvider, shouldAutovalidate) {
     this.web3 = this.constructor.createWeb3Instance(Web3)
     this.account = null
     this.networkId = null
@@ -50,12 +79,21 @@ export default class Metamask {
     // Metamask requires only initial Network set.
     // Browser reloads at Metamask Network change.
     this.networkChange = networkChange
+    // Reset the provider if validation fails or lock status change.
+    this.resetProvider = resetProvider
 
     // Refresh every POLL_INTERVAL [ms].
     this.POLL_INTERVAL = 800
+    this.shouldWatch = true
 
-    // Account change handler.
-    this.watchAccountChange()
+    // Ask unlock only if user requested it.
+    // If auto validation fails we will silently unset the provider.
+    if (shouldAutovalidate) {
+      this.tryAutoConnect()
+    }
+    else {
+      this.getDefaultAccount()
+    }
     this.getNetwork()
   }
 
@@ -74,6 +112,8 @@ export default class Metamask {
 
   /**
    * getDefaultAccount()
+   *
+   * Ask user to unlock account.
    *
    * @return {Promise<String>}
    */
@@ -95,13 +135,47 @@ export default class Metamask {
     }
 
     if (accounts && accounts.length > 0) {
-      return accounts[0].toLowerCase()
+      this.account = accounts[0]
+      this.accountChange(this.account)
+      this.watchAccountChange()
+    }
+  }
+
+  /**
+   * tryAutoConnect()
+   *
+   * Get account if unlocked.
+   * If locked we'll unset provider, so that the user will never get unlock
+   * requests from MM without previous "Connect to Ethereum" click.
+   *
+   * @return {Promise<void>}
+   */
+  async tryAutoConnect() {
+    const account = await this.getAccount()
+    if (account) {
+      this.accountChange(account)
+      this.watchAccountChange()
+    }
+    else {
+      this.resetProvider()
+    }
+  }
+
+  /**
+   * getAccount()
+   *
+   * Get account, Don't request unlock.
+   *
+   * @return {Promise<String|null>}
+   *   If account available return account.
+   */
+  async getAccount() {
+    const accounts = await this.web3.eth.getAccounts()
+    if (accounts.length > 0) {
+      return accounts[0]
     }
     return null
   }
-
-
-  /* ****************** NON API METHODS ****************** */
 
   /**
    * createWeb3Instance()
@@ -131,13 +205,20 @@ export default class Metamask {
    * @returns {Promise<void>}
    */
   async watchAccountChange() {
-    const account = await this.getDefaultAccount()
+    const account = await this.getAccount()
+    // Changed account
     if (this.account !== account) {
       this.account = account
-      this.accountChange(account)
+      this.accountChange(this.account)
+      // Changed to null/account is locked.
+      if (!account) {
+        this.resetProvider()
+      }
     }
     await Metamask.waitFor(this.POLL_INTERVAL)
-    this.watchAccountChange()
+    if (this.shouldWatch) {
+      this.watchAccountChange()
+    }
   }
 
   /**

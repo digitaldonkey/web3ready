@@ -121,9 +121,34 @@ const store = new Vuex.Store({
         },
         (networkId) => {
           this.dispatch('networkId', networkId)
+        },
+        () => {
+          this.dispatch('resetProvider')
         }
       )
       commit('provider', () => provider)
+    },
+    async providerAutoValidate({ state, commit }) {
+      const Web3Module = await import(/* webpackChunkName: "web3" */ './async/web3')
+      const provider = await Vue.prototype.web3ProviderApi[state.signerId].createAutovalidateProvider(
+        Web3Module.default, // Web3 Factory.
+        (account) => {
+          this.dispatch('account', account)
+        },
+        (networkId) => {
+          this.dispatch('networkId', networkId)
+        },
+        () => {
+          this.dispatch('resetProvider')
+        },
+        true
+      )
+      if (provider) {
+        commit('provider', () => provider)
+      }
+      else {
+        commit('signerId', null)
+      }
     },
     async resetProvider({ commit }) {
       commit('signerId', null)

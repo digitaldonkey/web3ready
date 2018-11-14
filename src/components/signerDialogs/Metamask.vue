@@ -1,7 +1,7 @@
 <template>
-  <div class="signer">
-    <div class="signer--logo" />
-    <div class="signer--dialog">
+  <div :class="$style.signer">
+    <div :class="$style.logo" />
+    <div :class="$style.dialog">
 
       <Loading v-if="!provider" :centered="true"/>
       <NetworkIndicator
@@ -43,17 +43,18 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" module>
+  @import "../../styles/_abstract";
+
   .signer {
-    min-height: 102px;
-    max-height: 100%;
-    overflow: scroll;
+    @extend %modal-background;
+
     @media (min-width: 600px) {
       & {
         display: flex;
       }
     }
-    .signer--logo {
+    .logo {
       width: 100%;
       height: 11em;
       margin: 0 auto;
@@ -66,7 +67,7 @@ export default {
         }
       }
     }
-    .signer--dialog {
+    .dialog {
       padding: 20px;
       flex-grow: 1;
       @media (min-width: 600px) {

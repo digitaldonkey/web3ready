@@ -1,16 +1,14 @@
 <template>
-  <div :class="className" >
-    <div class="signer--logo" />
+  <div :class="$style.signer" >
+    <div :class="logoClassName" />
     <p
-      class="signer--text"
+      :class="$style.text"
       v-html="descriptionText"
     />
-    <div class="signer--button">
+    <div :class="buttonClassName">
       <button
-        :id="id"
         :disabled="isDisabled"
-        :style="buttonBackground"
-        class="button select-signer"
+        @click="selectProvider(id)"
       >
         {{ text.buttonText }}
       </button>
@@ -33,65 +31,62 @@ export default {
       type: Function,
       required: true,
     },
+    selectProvider: {
+      type: Function,
+      required: true,
+    },
   },
   computed: {
-    className() {
-      return `signer ${this.id}`
+    logoClassName() {
+      return [this.$style.logo, this.$style[this.id]]
     },
-    background() {
-      // eslint-disable-next-line
-      return `../assets/logos/${this.id}.svg`
-    },
-    buttonBackground() {
-      return this.isAvailable() ? { backgroundColor: `${this.text.buttonColor}` } : {}
+    buttonClassName() {
+      return [this.$style.buttonWrapper, this.$style[this.id]]
     },
     isDisabled() {
       return !this.isAvailable()
     },
     descriptionText() {
       const data = this.text.description
-      return `${data.pre} <a href="${data.url}">${data.link}</a> ${data.post}`
+      return `${data.pre} <a href="${data.url}">${data.link}</a>${data.post}`
     }
   },
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
-.signer {
-  position: relative;
-  height: 102px;
-  width: 100%;
-  background: rgb(245, 246, 250);
-  border-radius: 14px 10px 10px 14px;
-  margin-bottom: 20px;
-  @media (min-width: 450px) {
-    & {
-      display: flex;
-      align-items: center;
-      flex-direction: row;
-      justify-content: space-between;
+<style lang="scss" module>
+  @import "../styles/_abstract";
+
+  .signer {
+    @extend %modal-background;
+    position: relative;
+
+    @media (min-width: 470px) {
+      & {
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        justify-content: space-between;
+      }
     }
   }
-  &--logo {
+
+  .logo {
     height: 102px;
     min-width: 180px;
-    border-radius: 14px 10px 10px 14px;
-
+    border-radius: $borderRadius; // Same as modal-background.
     max-width: 220px;
-
-
-    .metamask & {
+    &.metamask {
       background: transparent url('../assets/logos/metamask.svg') 0 center no-repeat;
       background-size: contain;
     }
-
-    .walletConnect & {
+    &.walletConnect {
       background: transparent url('../assets/logos/walletConnect.svg') 20px center no-repeat;
       max-width: 86px;
       min-width: 86px;
       background-size: 300%;
-      @media (min-width: 450px) {
+      @media (min-width: 470px) {
         background-size: calc(100% - 30px);
         min-width: 200px;
       }
@@ -99,13 +94,12 @@ export default {
         min-width: 250px;
       }
     }
-
-    .ledger & {
+    &.ledger {
       max-width: 86px;
       min-width: 86px;
       background: transparent url('../assets/logos/ledger.svg') 20px center no-repeat;
       background-size: 300%;
-      @media (min-width: 450px) {
+      @media (min-width: 470px) {
         background-size: calc(100% - 30px);
         min-width: 200px;
       }
@@ -115,9 +109,38 @@ export default {
     }
   }
 
-  &--text {
+  .buttonWrapper {
+    box-sizing: border-box;
+    border: 0;
+    position: absolute;
+    bottom: 20px;
+    right: 0;
+    > button {
+      @extend %button;
+      color: #fff;
+      margin: 0 20px;
+    }
+    @media (min-width: 470px) {
+      & {
+        position: relative;
+        bottom: auto;
+        right: auto;
+      }
+    }
+    &.metamask > button {
+      background: $color_metamsk;
+    }
+    &.walletConnect > button {
+      background: $color_walletConnect;
+    }
+    &.ledger > button {
+      background: $color_ledger;
+    }
+  }
+
+  .text {
     display: none;
-    color: rgb(102, 102, 102);
+    color: $color_text_light;
     flex-grow: 2;
     padding-left: 10px;
     @media (min-width: 679px) {
@@ -126,34 +149,7 @@ export default {
       }
     }
     > a {
-      color: rgb(102, 102, 102);
+      color: $color_text_light;
     }
   }
-
-  &--button {
-    box-sizing: border-box;
-    border: 0;
-    position: absolute;
-    bottom: 20px;
-    right: 0;
-    > .button {
-      color: #fff;
-      margin: 0 20px;
-    }
-    @media (min-width: 450px) {
-      & {
-        position: relative;
-        bottom: auto;
-        right: auto;
-      }
-    }
-  }
-}
-</style>
-
-<style>
-/* v-html doesn't support scoped styles. */
-.signer--text > a {
-  color: rgb(102, 102, 102);
-}
 </style>

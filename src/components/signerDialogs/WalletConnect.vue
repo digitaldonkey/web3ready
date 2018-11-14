@@ -1,40 +1,31 @@
 <template>
-  <div class="signer">
-    <div class="signer--logo"/>
-    <div class="signer--dialog">
+  <div :class="$style.signer">
+    <div :class="$style.logo"/>
+    <div :class="$style.dialog">
 
       <Loading v-if="!qrImage" :centered="true"/>
 
-      <div  v-if="!account">
-        <div v-if="qrImage && isListening">
-          <img :src="qrImage"/>
-        </div>
-
-        <div class="restart-listening" v-if="qrImage && !isListening">
-          <div class="restart-listening--content">
-            <div>
-              {{ $t("app.ledger.deviceStatus.retry.instructions") }}
-              <button
-                class="button mini"
-                @click="listenSessionStatus"
-              >{{ $t("app.ledger.deviceStatus.retry.buttonText") }}
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div
-          v-if="qrImage"
-          class="info">
-          {{ $t("app.walletConnect.instructions.summary") }}
-        </div>
+      <div v-if="isListening && qrImage">
+        <img :src="qrImage"/>
+      </div>
+      <div
+        v-if="isListening"
+        :class="$style.info">
+        {{ $t("app.walletConnect.deviceStatus.waitingQr") }}
       </div>
 
-      <NetworkIndicator
-        v-if="provider"
-        :network_id="networkId"
-        :required_network="requiredNetwork"
-      />
+      <div :class="$style.restartListening" v-if="qrImage && !isListening">
+        <div :class="$style.restartListeningContent">
+          <div>
+            {{ $t("app.walletConnect.deviceStatus.retry.instructions") }}
+            <button
+              :class="$style.button"
+              @click="listenSessionStatus"
+            >{{ $t("app.walletConnect.deviceStatus.retry.buttonText") }}
+            </button>
+          </div>
+        </div>
+      </div>
 
     </div>
   </div>
@@ -42,8 +33,6 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex'
-import NetworkIndicator from '../NetworkIndicator'
-import AccountIndicator from '../AccountIndicator'
 import Loading from '../../components/Loading'
 
 export default {
@@ -59,8 +48,6 @@ export default {
   },
   components: {
     Loading,
-    NetworkIndicator,
-    AccountIndicator,
   },
   created() {
     if (this.provider) {
@@ -111,7 +98,7 @@ export default {
   methods: {
     async initSession() {
       // This will cause walletConnect to initialize a Session.
-      await this.provider.web3.eth.getAccounts()
+      await this.provider.web3.currentProvider.walletconnect.initSession()
       this.qrImage = await this.provider.image
     },
     async listenSessionStatus() {
@@ -131,18 +118,20 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" module>
+  @import "../../styles/_abstract";
+
   .signer {
-    min-height: 102px;
-    max-height: 100%;
-    overflow: scroll;
+    @extend %modal-background;
+
     @media (min-width: 550px) {
       & {
         display: flex;
         justify-content:space-between;
       }
     }
-    .signer--logo {
+
+    .logo {
       width: 100%;
       min-height: 5em;
       margin: 10px auto;
@@ -158,29 +147,43 @@ export default {
       @media (min-width: 550px) {
         & {
           height: auto;
-          width: 55%;
+          width: 50%;
           margin-left: 1em;
         }
       }
       @media (min-width: 700px) {
         & {
           height: auto;
-          width: 50%;
           margin-left: 2em;
         }
       }
     }
-    .signer--dialog {
+
+    .dialog {
       padding: 0 1em;
+      @media (min-width: 550px) {
+        & {
+          padding: 1em;
+          align-self: flex-end;
+          width: 50%;
+        }
+      }
+      @media (min-width: 700px) {
+        & {
+          padding: 2em 1em;
+        }
+      }
+
       img {
         display: block;
       }
-      .restart-listening{
+
+      .restartListening{
         // Keep square shape as QR-image.
         padding-bottom: 100%;
         width: 100%;
         position: relative;
-        .restart-listening--content {
+        .restartListeningContent {
           position: absolute;
           top: 0;
           left: 0;
@@ -189,29 +192,21 @@ export default {
           display: flex;
           align-items: center;
           justify-content: center;
+
           .button {
+            @extend %button;
+            font-size: .78571429rem;
+            background: $color_walletConnect;
+            color: $color_primary_contrast;
             display: block;
             margin:  1em auto 0;
           }
         }
-
       }
+
       .info {
         text-align: center;
-        margin-top: .5em;
-      }
-
-      @media (min-width: 550px) {
-        & {
-          padding: 1em;
-          align-self: flex-end;
-          flex-grow: 1;
-        }
-      }
-      @media (min-width: 700px) {
-        & {
-          padding: 2em 1em;
-        }
+        padding: 0.5em 0.5em 0;
       }
     }
   }

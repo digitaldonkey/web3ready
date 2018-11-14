@@ -1,0 +1,102 @@
+/**
+ * Only Abstract SCSS.
+ *
+ * Don't put anything which would render into css here.
+ *
+**/
+
+@import "./_variables";
+
+%modal-background {
+  min-height: 102px;
+  max-height: 100%;
+  overflow: scroll;
+
+  background: rgb(245, 246, 250);
+  border-radius: $borderRadius;
+}
+
+%button{
+  cursor: pointer;
+  display: inline-block;
+  min-height: 1em;
+  outline: 0;
+  border: 1px solid transparent;
+  vertical-align: baseline;
+  margin: 0 .25em 0 0;
+  padding: .78571429em 1.5em .78571429em;
+  text-transform: none;
+  text-shadow: none;
+  line-height: inherit;
+  font-size: 1rem;
+  font-style: normal;
+  text-align: center;
+  text-decoration: none;
+  border-radius: .28571429rem;
+  will-change: transform;
+  transition: all 0.15s ease 0s;
+  white-space: nowrap;
+  max-width: 19.75em;
+
+  &:disabled {
+    background: rgb(217, 217, 217) !important;
+    color: rgb(133, 133, 133) !important;
+    cursor: not-allowed;
+  }
+  &:hover {
+    box-shadow: none;
+    opacity: .9;
+  }
+}
+
+//.button {
+//  cursor: pointer;
+//  display: inline-block;
+//  min-height: 1em;
+//  outline: 0;
+//  border: 1px solid transparent;
+//  vertical-align: baseline;
+//  margin: 0 .25em 0 0;
+//  padding: .78571429em 1.5em .78571429em;
+//  text-transform: none;
+//  text-shadow: none;
+//  line-height: inherit;
+//  font-size: 1rem;
+//  font-style: normal;
+//  text-align: center;
+//  text-decoration: none;
+//  border-radius: .28571429rem;
+//  will-change: transform;
+//  transition: all 0.15s ease 0s;
+//  white-space: nowrap;
+//  max-width: 19.75em;
+//
+//  &.mini {
+//    font-size: .78571429rem;
+//  }
+//  &:disabled {
+//    background: rgb(217, 217, 217);
+//    color: rgb(133, 133, 133);
+//    cursor: not-allowed;
+//  }
+//  &:hover {
+//    box-shadow: none;
+//    opacity: .9;
+//  }
+//
+//  &--primary {
+//    color: rgba(255, 255, 255, 0.96);
+//    background: rgb(64, 153, 255);
+//    box-shadow: rgba(50, 50, 93, 0.11) 0 4px 6px 0, rgba(0, 0, 0, 0.08) 0 1px 3px 0, rgba(0, 0, 0, 0.06) 0 0 1px 0 inset;
+//  }
+//  &--transparent {
+//    text-decoration: underline;
+//    background: none;
+//
+//    &:hover {
+//      border: 1px solid #d6d6d6;
+//      background: rgba(133, 133, 133, 0.49);
+//      box-shadow: rgba(50, 50, 93, 0.11) 0 4px 6px 0, rgba(0, 0, 0, 0.08) 0 1px 3px 0, rgba(0, 0, 0, 0.06) 0 0 1px 0 inset;
+//    }
+//  }
+//}

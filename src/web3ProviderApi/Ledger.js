@@ -26,23 +26,7 @@ export default class Ledger {
     return document.location.protocol === 'https:'
   }
 
-  /* ****************** NON API METHODS ******************
-   *
-   * Web3 provider API
-   *
-   * A web3 provider consists of a Vue signerDialog Component
-   * and a web3ProviderApi Class.
-   *
-   * The Web3 provider API provides a Web3 instance which takes care of any
-   * special provider dependent problems. This includes non standard solutions
-   * and the WebUI required to interact with the providers.
-   *
-   * On the DAPP dev side of things you can use
-   *
-   *  web3Ready(web3, account = null) ???
-   *
-   *
-  */
+  /* ****************** NON API METHODS ****************** */
 
   /**
    * Prefer Factory class

@@ -1,28 +1,30 @@
 <template>
   <div
-    class="connect-web3--modal modal"
+    :class="$style.overlay"
     @click="clickHandler"
   >
-    <div class="modal-body">
+    <div :class="$style.modal">
 
-      <div class="modal-header">
+      <div :class="$style.header">
         <a
           v-if="signerId"
-          class="modal-actions--left"
+          :class="$style.actionBack"
           href="#back"
-        ><span class="modal-actions--back">←</span>{{ $t("app.modal.backLink") }}</a>
+        >
+          <span >←</span>{{ $t("app.modal.backLink") }}
+        </a>
         <a
-          class="modal-actions--close-x"
+          :class="$style.actionCloseX"
           href="#"
         >&times;</a>
       </div>
 
-      <div class="modal-content">
+      <div :class="$style.modalContent">
         <slot />
       </div>
 
       <a
-        class="modal-actions--close-text"
+        :class="$style.actionCloseFooter"
         href="#close"
       >{{ $t("app.modal.closeText") }}</a>
     </div>
@@ -30,7 +32,6 @@
 </template>
 
 <script>
-
 export default {
   name: 'Modal',
   props: {
@@ -46,8 +47,8 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
-  .modal {
+<style lang="scss" module>
+  .overlay {
     background-color: rgba(0,0,0,.6);
     display: flex;
     justify-content: center;
@@ -60,63 +61,58 @@ export default {
     text-align: center;
     max-height: 100%;
     overflow: scroll;
+  }
 
-    .modal-background {
-      background: rgb(245, 246, 250);
-      border-radius: 14px 10px 10px 14px;
-      margin-bottom: 1em;
-    }
+  .modal {
+    width: 100%;
+    max-width: 880px;
+    padding: 20px;
+    max-height: 100%;
+  }
 
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap-reverse;
-      line-height: 26px;
-      height: 26px;
-      margin-bottom: 10px;
-      color: #fff;
-
-      & > a {
-        color: #fff;
-        text-decoration: none;
-      }
-
-      .modal-actions--left {
-        font-size: 120%;
-        display: inline-block;
-        font-weight: bold;
-        text-transform: uppercase;
-      }
-      .modal-actions--back {
-        font-size: 20px;
-        display: inline-block;
-        padding-right: 5px;
-      }
-      .modal-actions--close-x {
-        display: inline-block;
-        font-size: 44px;
-        text-align: right;
-        flex-grow: 1;
-        line-height: 18px;
-      }
-    }
-
-    .modal-actions--close-text {
+  .header {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap-reverse;
+    line-height: 26px;
+    height: 26px;
+    margin-bottom: 10px;
+    color: #fff;
+    & > a {
       color: #fff;
       text-decoration: none;
-      font-size: small;
-      padding-bottom: 20px;
     }
+  }
 
-    .modal-body {
-      width: 100%;
-      max-width: 880px;
-      padding: 20px;
-      max-height: 100%;
+  .actionBack {
+    font-size: 120%;
+    display: inline-block;
+    font-weight: bold;
+    text-transform: uppercase;
+    >span {
+      font-size: 20px;
+      display: inline-block;
+      padding-right: 5px;
     }
+  }
 
-    .modal-content {
-      text-align: left;
-    }
+  .actionCloseX {
+    display: inline-block;
+    font-size: 44px;
+    text-align: right;
+    flex-grow: 1;
+    line-height: 18px;
+  }
+
+  .modalContent {
+    text-align: left;
+    margin-bottom: 1em;
+  }
+
+  .actionCloseFooter {
+    color: #fff;
+    text-decoration: none;
+    font-size: small;
+    padding-bottom: 20px;
   }
 </style>

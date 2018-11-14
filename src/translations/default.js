@@ -22,8 +22,12 @@ const messages = {
         + 'or approve this application using your Wallet.',
       },
       walletConnect: {
-        instructions: {
-          summary: 'Scan QR code with your WalletConnect compatible Wallet'
+        deviceStatus: {
+          waitingQr: 'Scan QR code with your WalletConnect compatible Wallet',
+          retry: {
+            instructions: 'Session timed out.',
+            buttonText: 'Try again',
+          }
         }
       },
       ledger: {
@@ -70,14 +74,13 @@ const messages = {
       signers: {
         metamask: {
           label: 'Metamask',
-          buttonText: 'Connect to MetaMask',
+          buttonText: 'Connect with MetaMask',
           description: {
             pre: 'Connect to the ',
             link: 'MetaMask browser wallet',
             post: '.',
             url: 'https://metamask.io',
           },
-          buttonColor: 'rgb(246, 133, 27)',
         },
         walletConnect: {
           label: 'WalletConnect',
@@ -88,18 +91,16 @@ const messages = {
             post: '.',
             url: 'https://walletconnect.org',
           },
-          buttonColor: 'rgb(64, 153, 255)',
         },
         ledger: {
           label: 'Ledger Wallet',
           buttonText: 'Use Ledger Wallet',
           description: {
             pre: 'Use',
-            link: 'Ledger hardware wallet',
+            link: 'Ledger hardware wallet ',
             post: 'to connect.',
             url: 'https://www.ledger.com/',
           },
-          buttonColor: 'rgb(65, 204, 180)',
         },
       },
     }

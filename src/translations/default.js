@@ -23,7 +23,7 @@ const messages = {
       },
       walletConnect: {
         deviceStatus: {
-          waitingQr: 'Scan QR code with your WalletConnect compatible Wallet',
+          waitingQr: 'Scan QR code with a WalletConnect-compatible wallet',
           retry: {
             instructions: 'Session timed out.',
             buttonText: 'Try again',

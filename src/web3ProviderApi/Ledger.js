@@ -80,6 +80,7 @@ export default class Ledger {
     }
     this.accountChange(val)
   }
+
   get defaultAccount() {
     return this.defaultAccount ? this.defaultAccount : null
   }

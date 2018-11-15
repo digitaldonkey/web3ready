@@ -135,7 +135,7 @@ export default class Metamask {
     }
 
     if (accounts && accounts.length > 0) {
-      this.account = accounts[0]
+      [this.account] = accounts
       this.accountChange(this.account)
       this.watchAccountChange()
     }

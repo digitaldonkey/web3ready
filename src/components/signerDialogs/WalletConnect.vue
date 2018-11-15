@@ -33,7 +33,7 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex'
-import Loading from '../../components/Loading'
+import Loading from '../Loading'
 
 export default {
   name: 'WalletConnect',

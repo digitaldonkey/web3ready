@@ -8,19 +8,19 @@ module.exports = {
     '@vue/airbnb',
   ],
   rules: {
-    'semi': ['error', 'never'],
+    semi: ['error', 'never'],
     'comma-dangle': ['error', 'only-multiline'],
-    'max-len': ['error', { 'code': 140 }],
+    'max-len': ['error', { code: 140 }],
     'brace-style': ['error', 'stroustrup'],
-    'quote-props': ['error', 'as-needed', { 'numbers': true }],
+    'quote-props': ['error', 'as-needed', { numbers: true }],
     // don't require .vue extension when importing
     'import/extensions': ['error', 'always', {
       js: 'never',
       vue: 'never'
     }],
     'no-underscore-dangle': ['error', {
-      'enforceInMethodNames': true,
-      'allowAfterThis': true,
+      enforceInMethodNames: true,
+      allowAfterThis: true,
     }],
     'no-param-reassign': ['error', {
       props: true,
@@ -36,4 +36,4 @@ module.exports = {
   parserOptions: {
     parser: 'babel-eslint',
   },
-};
+}

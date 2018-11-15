@@ -11,6 +11,17 @@ Development goals
 * Common UI for multiple Dapps. The idea is simplify web3 interaction by providing the **same interaction pattern to connect to any web3 Dapp**. 
 * Multilingual (but not yet translated. See src/translations)
 
+## Sneak preview
+
+Some of the current screens. 
+
+![Select provider](https://github.com/digitaldonkey/web3ready/blob/master/docs/selectProvider.png?raw=true)
+![Metamask if unlocked](https://github.com/digitaldonkey/web3ready/blob/master/docs/Metamask.png?raw=true)
+![Connect with WalletConnect](https://github.com/digitaldonkey/web3ready/blob/master/docs/walletConnect.png?raw=true)
+![Connect with Ledger](https://github.com/digitaldonkey/web3ready/blob/master/docs/ledger.png?raw=true)
+
+Design credits got to [Balance Manager](https://manager.balance.io/).
+
 ## Usage
 
 ```

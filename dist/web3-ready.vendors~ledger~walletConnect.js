@@ -1,4 +1,4 @@
-(window["web3Ready_jsonp"] = window["web3Ready_jsonp"] || []).push([[2],{
+(window["web3Ready_jsonp"] = window["web3Ready_jsonp"] || []).push([[1],{
 
 /***/ "3022":
 /***/ (function(module, exports, __webpack_require__) {

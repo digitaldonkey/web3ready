@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve --name web3-ready --target lib ./src/main.js",
-    "build": "vue-cli-service build --target wc-async --name web3-ready './src/App.vue'",
+    "build": "vue-cli-service build --target wc-async --name web3-ready ./src/App.vue",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
@@ -30,6 +30,7 @@
     "@vue/cli-plugin-eslint": "^3.1.5",
     "@vue/cli-service": "^3.1.4",
     "@vue/eslint-config-airbnb": "^4.0.0",
+    "copy-webpack-plugin": "^4.6.0",
     "file-system": "^2.2.2",
     "node-sass": "^4.10.0",
     "sass-loader": "^7.1.0",

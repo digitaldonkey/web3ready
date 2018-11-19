@@ -38,7 +38,7 @@
 
       <SelectProvider
         v-if="!signerId"
-        :signers="availableSigners"
+        :signers="enabledProviders"
         class="modal-content"
         :selectProvider="selectProvider"
       />
@@ -109,6 +109,26 @@ export default {
       isLoading: true
     }
   },
+  props: {
+    // These props are defined in the web-component.
+    // In development mode they are taken from example-props.js
+    dappName: {
+      type: String,
+      required: true,
+    },
+    requiredNetwork: {
+      type: String,
+      required: true,
+    },
+    rpcUrl: {
+      type: String,
+      required: true,
+    },
+    providers: {
+      type: String,
+      default: null,
+    },
+  },
   computed: {
     showConnectAction() {
       if (this.$store.state.signerId === null) {
@@ -122,18 +142,20 @@ export default {
       return !this.$store.getters.isValidated
     },
     ...mapState([
-      'availableSigners',
+      'enabledProviders',
       'signerId',
       'account',
       'resetProvider',
       'networkId',
-      'requiredNetwork',
     ]),
     ...mapGetters([
       'isValidated',
     ]),
   },
   beforeCreate() {
+    // Verify and save initial properties to store.
+    this.$store.dispatch({ ...{ type: 'initStore' }, ...this.$options.propsData })
+
     // Validate based on last provider selected.
     if (this.$store.state.signerId) {
       if (Vue.prototype.web3ProviderApi[this.$store.state.signerId].createAutovalidateProvider) {

@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 import VuexPersistence from 'vuex-persist'
 import 'custom-event-polyfill'
 
-import config from './conf/example.data'
+import defaultProps from './conf/default.props'
 
 Vue.use(Vuex)
 
@@ -62,14 +62,11 @@ const persist = new VuexPersistence({
 const store = new Vuex.Store({
   plugins: [Web3ReadyPlugin, persist.plugin],
   state: {
-    requiredNetwork: config.requiredNetwork,
-    availableSigners: config.availableSigners,
-    dappName: config.dappName,
-    rpcUrl: config.rpcUrl,
+    enabledProviders: null,
+    dappName: null,
+    rpcUrl: null,
     lastAccountData: null,
-    walletConnect: {
-      bridgeUrl: config.walletConnect.bridgeUrl
-    },
+    walletConnect: null,
     // Final values
     signerId: null,
     provider: null,
@@ -111,7 +108,64 @@ const store = new Vuex.Store({
     }
   },
   actions: {
-    // Actions are required to resolve promises.
+    // Initially setup store and verify required properties.
+    async initStore({ commit }, propsData) {
+      // Verify dappName
+      if (propsData.dappName) {
+        commit('dappName', propsData.dappName)
+      }
+      else {
+        throw new Error('Property dappName missing.')
+      }
+
+      // Verify requiredNetwork
+      if (propsData.requiredNetwork) {
+        commit('requiredNetwork', propsData.requiredNetwork)
+      }
+      else {
+        throw new Error('Property requiredNetwork is missing')
+      }
+
+      // Verify rpcUrl
+      if (propsData.rpcUrl) {
+        commit('rpcUrl', propsData.rpcUrl)
+      }
+      else {
+        throw new Error('Property rpcUrl is missing')
+      }
+
+      // Verify optional enabled providers.
+      if (propsData.enableProviders) {
+        const providers = propsData.enableProviders.split(',')
+
+        if (providers.length) {
+          // eslint-disable-next-line
+          commit('enabledProviders', providers.map((provider) => {
+            return { id: provider }
+          }))
+        }
+        else {
+          throw new Error('No provider is enabled. Require at least one. Remove property to use defaults.')
+        }
+      }
+      else {
+        commit('enabledProviders', defaultProps.enabledProviders)
+      }
+
+      // Verify optional WalletConnect settings.
+      if (typeof propsData.walletConnect === 'object' && propsData.walletConnect.bridgeUrl) {
+        if (propsData.enableProviders.length) {
+          commit('walletConnect', propsData.walletConnect)
+        }
+        else {
+          // throw new Info('WalletConnect settings ore wrong. Using default.')
+        }
+      }
+      else {
+        commit('walletConnect', defaultProps.walletConnect)
+      }
+    },
+
     async provider({ state, commit }) {
       const Web3Module = await import(/* webpackChunkName: "web3" */ './async/web3')
       const provider = await Vue.prototype.web3ProviderApi[state.signerId].createProvider(
@@ -128,6 +182,7 @@ const store = new Vuex.Store({
       )
       commit('provider', () => provider)
     },
+
     async providerAutoValidate({ state, commit }) {
       const Web3Module = await import(/* webpackChunkName: "web3" */ './async/web3')
       const provider = await Vue.prototype.web3ProviderApi[state.signerId].createAutovalidateProvider(
@@ -150,11 +205,13 @@ const store = new Vuex.Store({
         commit('signerId', null)
       }
     },
+
     async resetProvider({ commit }) {
       commit('signerId', null)
       commit('provider', null)
       commit('account', null)
     },
+
     async networkId({ commit }, networkId) {
       // const netId = await Vue.prototype.web3ProviderApi[state.signerId].getNetwork(state.web3())
       if (networkId) {
@@ -162,11 +219,13 @@ const store = new Vuex.Store({
       }
       this.dispatch('callWeb3Ready')
     },
+
     async account({ commit }, account) {
       // await Vue.prototype.web3ProviderApi[state.signerId].getDefaultAccount(state.web3())
       commit('account', account)
       this.dispatch('callWeb3Ready')
     },
+
     callWeb3Ready({ getters }) {
       if (getters.isValidated) {
         const event = new CustomEvent('web3Ready', {
@@ -181,6 +240,21 @@ const store = new Vuex.Store({
   },
   mutations: {
     // Mutations MUST be synchronous.
+    requiredNetwork(state, requiredNetwork) {
+      state.requiredNetwork = requiredNetwork
+    },
+    dappName(state, dappName) {
+      state.dappName = dappName
+    },
+    rpcUrl(state, rpcUrl) {
+      state.rpcUrl = rpcUrl
+    },
+    enabledProviders(state, enabledProviders) {
+      state.enabledProviders = enabledProviders
+    },
+    walletConnect(state, walletConnect) {
+      state.walletConnect = walletConnect
+    },
     signerId(state, signerId) {
       state.signerId = signerId
     },

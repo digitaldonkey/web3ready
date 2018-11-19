@@ -6,9 +6,5 @@ export default {
     bridgeUrl: 'https://bridge.walletconnect.org',
     // bridgeUrl: 'https://test-bridge.walletconnect.org',
   },
-  availableSigners: [
-    { id: 'metamask' },
-    { id: 'walletConnect' },
-    { id: 'ledger' },
-  ],
+  providers: 'metamask,walletConnect,ledger',
 }

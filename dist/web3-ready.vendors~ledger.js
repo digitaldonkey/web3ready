@@ -1,4 +1,4 @@
-(window["web3Ready_jsonp"] = window["web3Ready_jsonp"] || []).push([[7],{
+(window["web3Ready_jsonp"] = window["web3Ready_jsonp"] || []).push([[4],{
 
 /***/ "00fd":
 /***/ (function(module, exports, __webpack_require__) {
@@ -211,7 +211,7 @@ module.exports = function (it, key) {
     stubFalse = __webpack_require__("07c7");
 
 /** Detect free variable `exports`. */
-var freeExports = typeof exports == 'object' && exports && !exports.nodeType && exports;
+var freeExports =  true && exports && !exports.nodeType && exports;
 
 /** Detect free variable `module`. */
 var freeModule = freeExports && typeof module == 'object' && module && !module.nodeType && module;
@@ -6807,7 +6807,7 @@ module.exports = isFunction;
 /* WEBPACK VAR INJECTION */(function(module) {var freeGlobal = __webpack_require__("585a");
 
 /** Detect free variable `exports`. */
-var freeExports = typeof exports == 'object' && exports && !exports.nodeType && exports;
+var freeExports =  true && exports && !exports.nodeType && exports;
 
 /** Detect free variable `module`. */
 var freeModule = freeExports && typeof module == 'object' && module && !module.nodeType && module;

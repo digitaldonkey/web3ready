@@ -1,0 +1,31 @@
+<meta charset="utf-8">
+<title>web3Ready-example.html</title>
+<script src="https://unpkg.com/vue/dist/vue.min.js"></script>
+<script src="./web3-ready.min.js"></script>
+
+<h1>Web3Ready example</h1>
+
+<web3-ready
+    dapp-name="My new Dapp"
+    required-network="2"
+    rpc-url="https://mainnet.infura.io/drupal"
+    enable-providers="metamask,walletConnect,ledger"
+/>
+
+<pre>
+  export default {
+  requiredNetwork: '1',
+  dappName: 'INSERT_A_UNIQUE_DAPP_NAME',
+  rpcUrl: 'https://mainnet.infura.io/drupal',
+  walletConnect: {
+    bridgeUrl: 'https://bridge.walletconnect.org',
+    // bridgeUrl: 'https://test-bridge.walletconnect.org',
+  },
+  availableSigners: [
+    { id: 'metamask' },
+    { id: 'walletConnect' },
+    { id: 'ledger' },
+  ],
+}
+
+</pre>

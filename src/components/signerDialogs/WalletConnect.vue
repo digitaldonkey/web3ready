@@ -206,7 +206,12 @@ export default {
 
       .info {
         text-align: center;
-        padding: 0.5em 0.5em 0;
+        padding: 0.5em 0.5em 1em;
+        @media (min-width: 550px) {
+          & {
+            padding-bottom: 0;
+          }
+        }
       }
     }
   }

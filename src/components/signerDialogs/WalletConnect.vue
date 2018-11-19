@@ -108,8 +108,7 @@ export default {
           this.wcSession = await this.provider.web3.currentProvider.walletconnect.listenSessionStatus(this.POLL_INTERVAL, this.TIMEOUT)
         }
         catch (e) {
-          // eslint-disable-next-line
-          console.log(e, 'ERROR or TIMEOUT @ walletconnect.listenSessionStatus()')
+          // console.log(e, 'ERROR or TIMEOUT @ walletconnect.listenSessionStatus()')
         }
         this.isListening = false
       }

@@ -11,8 +11,7 @@ const Web3ReadyPlugin = (store) => {
   // signerId set
   store.subscribe(async (mutation, state) => {
     if (mutation.type === 'signerId') {
-      // eslint-disable-next-line
-      console.log('signerId@plugin', state.signerId)
+      // console.log('signerId@plugin', state.signerId)
       if (state.signerId === null) {
         if (state.provider) {
           if (typeof store.getters.provider.destroy === 'function') {
@@ -29,8 +28,7 @@ const Web3ReadyPlugin = (store) => {
   // web3 initialized
   store.subscribe(async (mutation, state) => {
     if (mutation.type === 'provider') {
-      // eslint-disable-next-line
-      console.log('web3@plugin', typeof state.provider === 'function' && state.provider().web3)
+      // console.log('web3@plugin', typeof state.provider === 'function' && state.provider().web3)
       if (state.provider === null) {
         store.commit('networkId', null)
         store.commit('account', null)
@@ -40,8 +38,7 @@ const Web3ReadyPlugin = (store) => {
   // networkId set
   store.subscribe(async (mutation, state) => {
     if (mutation.type === 'networkId') {
-      // eslint-disable-next-line
-      console.log('networkId@plugin', state.networkId)
+      // console.log('networkId@plugin', state.networkId)
       if (state.networkId === null) {
         store.commit('account', null)
       }
@@ -85,8 +82,7 @@ const store = new Vuex.Store({
           && state.provider
           && state.account
           && state.networkId.toString() === state.requiredNetwork
-      // eslint-disable-next-line
-      console.log('isValidated @ isValidated()', isValidated)
+      // console.log('isValidated @ isValidated()', isValidated)
       return isValidated
     },
     requiredNetwork(state) {

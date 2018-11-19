@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style.signer" >
+  <div :class="$style.provider" >
     <div :class="logoClassName" />
     <p
       :class="$style.text"
@@ -58,7 +58,7 @@ export default {
 <style lang="scss" module>
   @import "../styles/_abstract";
 
-  .signer {
+  .provider {
     @extend %modal-background;
     position: relative;
 

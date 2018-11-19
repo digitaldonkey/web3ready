@@ -2,13 +2,13 @@
   <ul :class="$style.list">
     <li
       :class="$style.listItem"
-      v-for="signer in signers"
-      :key="signer.id"
+      v-for="provider in providers"
+      :key="provider.id"
     >
       <SelectProviderRow
-        :id="signer.id"
-        :text="getTextData(signer.id)"
-        :isAvailable="getAvailableMethod(signer.id)"
+        :id="provider.id"
+        :text="getTextData(provider.id)"
+        :isAvailable="getAvailableMethod(provider.id)"
         :selectProvider="selectProvider"
       />
     </li>
@@ -23,7 +23,7 @@ export default {
   name: 'SelectProvider',
   components: { SelectProviderRow },
   props: {
-    signers: {
+    providers: {
       type: Array,
       required: true,
     },
@@ -34,7 +34,7 @@ export default {
   },
   methods: {
     getTextData(id) {
-      return this.$t(`globals.signers.${id}`)
+      return this.$t(`globals.providers.${id}`)
     },
     getAvailableMethod(id) {
       return this.web3ProviderApi[id].isAvailable

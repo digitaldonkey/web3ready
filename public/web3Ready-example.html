@@ -7,25 +7,27 @@
 
 <web3-ready
     dapp-name="My new Dapp"
-    required-network="2"
+    required-network="1"
     rpc-url="https://mainnet.infura.io/drupal"
     enable-providers="metamask,walletConnect,ledger"
-/>
+></web3-ready>
 
-<pre>
-  export default {
-  requiredNetwork: '1',
-  dappName: 'INSERT_A_UNIQUE_DAPP_NAME',
-  rpcUrl: 'https://mainnet.infura.io/drupal',
-  walletConnect: {
-    bridgeUrl: 'https://bridge.walletconnect.org',
-    // bridgeUrl: 'https://test-bridge.walletconnect.org',
-  },
-  availableSigners: [
-    { id: 'metamask' },
-    { id: 'walletConnect' },
-    { id: 'ledger' },
-  ],
-}
-
-</pre>
+<hr >
+<h3>API</h3>
+<ul>
+  <li><strong>dapp-name</strong>
+    <br>Unique name for your dapp</li>
+  <li><strong>required-network</strong>
+    <br>Required network Id.
+    <br>Please refer to <code>src/translations.default.js:globals.networks</code> to see valid options.</li>
+  <li><strong>rpc-url</strong>
+    <br>RPC to connect to Ethereum
+    <ul>
+      <li>Must match required-network</li>
+      <li>Set up your own Ethereum node or use a service like <a href="https://infura.io">infura.io</a></li>
+    </ul>
+  </li>
+  <li><strong>enable-providers</strong>
+    <br>List of provider is's separated by comma.<br>Please refer to <code>src/translations.default.js:globals.signers</code> to see valid options
+  </li>
+</ul>

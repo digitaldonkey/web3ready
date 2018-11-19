@@ -38,7 +38,7 @@
 
       <SelectProvider
         v-if="!signerId"
-        :signers="enabledProviders"
+        :providers="enabledProviders"
         class="modal-content"
         :selectProvider="selectProvider"
       />

@@ -70,7 +70,7 @@ export default {
     },
     connectedWithInfo() {
       return this.$t('app.networkStatus.connectedWithInfo', {
-        signer: this.$t(`globals.signers.${this.signerId}.label`),
+        signer: this.$t(`globals.providers.${this.signerId}.label`),
         network: this.$t(`globals.networks.${this.networkId}.label`),
       })
     },

@@ -71,7 +71,7 @@ const messages = {
           label: 'Public POA Network Main',
         },
       },
-      signers: {
+      providers: {
         metamask: {
           label: 'Metamask',
           buttonText: 'Connect with MetaMask',

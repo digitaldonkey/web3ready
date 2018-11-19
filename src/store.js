@@ -78,12 +78,10 @@ const store = new Vuex.Store({
       return null
     },
     isValidated: (state) => {
-      const isValidated = state.networkId
+      return state.networkId
           && state.provider
           && state.account
           && state.networkId.toString() === state.requiredNetwork
-      // console.log('isValidated @ isValidated()', isValidated)
-      return isValidated
     },
     requiredNetwork(state) {
       return state.requiredNetwork.toString()
@@ -187,7 +185,7 @@ const store = new Vuex.Store({
           this.dispatch('account', account)
         },
         (networkId) => {
-          this.dispatch('networkId', networkId)
+          this.dispatch('networkIdRequired', networkId)
         },
         () => {
           this.dispatch('resetProvider')
@@ -209,15 +207,23 @@ const store = new Vuex.Store({
     },
 
     async networkId({ commit }, networkId) {
-      // const netId = await Vue.prototype.web3ProviderApi[state.signerId].getNetwork(state.web3())
       if (networkId) {
         commit('networkId', networkId.toString())
       }
       this.dispatch('callWeb3Ready')
     },
 
+    async networkIdRequired({ commit }, networkId) {
+      if (networkId && networkId === this.getters.requiredNetwork) {
+        commit('networkId', networkId)
+        this.dispatch('callWeb3Ready')
+      }
+      else {
+        this.dispatch('resetProvider')
+      }
+    },
+
     async account({ commit }, account) {
-      // await Vue.prototype.web3ProviderApi[state.signerId].getDefaultAccount(state.web3())
       commit('account', account)
       this.dispatch('callWeb3Ready')
     },

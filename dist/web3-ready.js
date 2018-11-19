@@ -3402,9 +3402,7 @@ var Web3ReadyPlugin = store => {
           switch (_context.prev = _context.next) {
             case 0:
               if (mutation.type === 'signerId') {
-                // eslint-disable-next-line
-                console.log('signerId@plugin', state.signerId);
-
+                // console.log('signerId@plugin', state.signerId)
                 if (state.signerId === null) {
                   if (state.provider) {
                     if (typeof store.getters.provider.destroy === 'function') {
@@ -3442,9 +3440,7 @@ var Web3ReadyPlugin = store => {
           switch (_context2.prev = _context2.next) {
             case 0:
               if (mutation.type === 'provider') {
-                // eslint-disable-next-line
-                console.log('web3@plugin', typeof state.provider === 'function' && state.provider().web3);
-
+                // console.log('web3@plugin', typeof state.provider === 'function' && state.provider().web3)
                 if (state.provider === null) {
                   store.commit('networkId', null);
                   store.commit('account', null);
@@ -3475,9 +3471,7 @@ var Web3ReadyPlugin = store => {
           switch (_context3.prev = _context3.next) {
             case 0:
               if (mutation.type === 'networkId') {
-                // eslint-disable-next-line
-                console.log('networkId@plugin', state.networkId);
-
+                // console.log('networkId@plugin', state.networkId)
                 if (state.networkId === null) {
                   store.commit('account', null);
                 }
@@ -3529,10 +3523,7 @@ var store_store = new vuex_esm.Store({
     },
 
     isValidated: state => {
-      var isValidated = state.networkId && state.provider && state.account && state.networkId.toString() === state.requiredNetwork; // eslint-disable-next-line
-
-      console.log('isValidated @ isValidated()', isValidated);
-      return isValidated;
+      return state.networkId && state.provider && state.account && state.networkId.toString() === state.requiredNetwork;
     },
 
     requiredNetwork(state) {
@@ -3721,7 +3712,7 @@ var store_store = new vuex_esm.Store({
                 account => {
                   _this2.dispatch('account', account);
                 }, networkId => {
-                  _this2.dispatch('networkId', networkId);
+                  _this2.dispatch('networkIdRequired', networkId);
                 }, () => {
                   _this2.dispatch('resetProvider');
                 }, true);
@@ -3780,7 +3771,6 @@ var store_store = new vuex_esm.Store({
               case 0:
                 commit = _ref8.commit;
 
-                // const netId = await Vue.prototype.web3ProviderApi[state.signerId].getNetwork(state.web3())
                 if (networkId) {
                   commit('networkId', networkId.toString());
                 }
@@ -3796,7 +3786,7 @@ var store_store = new vuex_esm.Store({
       }))();
     },
 
-    account(_ref9, account) {
+    networkIdRequired(_ref9, networkId) {
       var _this4 = this;
 
       return _asyncToGenerator(
@@ -3808,12 +3798,16 @@ var store_store = new vuex_esm.Store({
             switch (_context9.prev = _context9.next) {
               case 0:
                 commit = _ref9.commit;
-                // await Vue.prototype.web3ProviderApi[state.signerId].getDefaultAccount(state.web3())
-                commit('account', account);
 
-                _this4.dispatch('callWeb3Ready');
+                if (networkId && networkId === _this4.getters.requiredNetwork) {
+                  commit('networkId', networkId);
 
-              case 3:
+                  _this4.dispatch('callWeb3Ready');
+                } else {
+                  _this4.dispatch('resetProvider');
+                }
+
+              case 2:
               case "end":
                 return _context9.stop();
             }
@@ -3822,8 +3816,33 @@ var store_store = new vuex_esm.Store({
       }))();
     },
 
-    callWeb3Ready(_ref10) {
-      var getters = _ref10.getters;
+    account(_ref10, account) {
+      var _this5 = this;
+
+      return _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee10() {
+        var commit;
+        return regeneratorRuntime.wrap(function _callee10$(_context10) {
+          while (1) {
+            switch (_context10.prev = _context10.next) {
+              case 0:
+                commit = _ref10.commit;
+                commit('account', account);
+
+                _this5.dispatch('callWeb3Ready');
+
+              case 3:
+              case "end":
+                return _context10.stop();
+            }
+          }
+        }, _callee10, this);
+      }))();
+    },
+
+    callWeb3Ready(_ref11) {
+      var getters = _ref11.getters;
 
       if (getters.isValidated) {
         var event = new CustomEvent('web3Ready', {
@@ -5606,6 +5625,7 @@ function _slicedToArray(arr, i) {
 
 
 
+
 class Metamask_Metamask {
   /**
    * createProvider()
@@ -5658,6 +5678,7 @@ class Metamask_Metamask {
    * @param Web3
    * @param accountChange
    * @param networkChange
+   * @param resetProvider
    * @return {*}
    */
 
@@ -5719,6 +5740,7 @@ class Metamask_Metamask {
    * @param accountChange
    * @param networkChange
    * @param resetProvider
+   * @param shouldAutovalidate
    *
    */
 
@@ -5759,12 +5781,13 @@ class Metamask_Metamask {
     return _asyncToGenerator(
     /*#__PURE__*/
     regeneratorRuntime.mark(function _callee3() {
+      var networkId;
       return regeneratorRuntime.wrap(function _callee3$(_context3) {
         while (1) {
           switch (_context3.prev = _context3.next) {
             case 0:
               if (_this.networkId) {
-                _context3.next = 5;
+                _context3.next = 6;
                 break;
               }
 
@@ -5772,14 +5795,15 @@ class Metamask_Metamask {
               return _this.web3.eth.net.getId();
 
             case 3:
-              _this.networkId = _context3.sent;
+              networkId = _context3.sent;
+              _this.networkId = networkId.toString();
 
               _this.networkChange(_this.networkId);
 
-            case 5:
+            case 6:
               return _context3.abrupt("return", _this.networkId);
 
-            case 6:
+            case 7:
             case "end":
               return _context3.stop();
           }
@@ -7190,12 +7214,12 @@ var Metamask_component = normalizeComponent(
 
 Metamask_component.options.__file = "Metamask.vue"
 /* harmony default export */ var signerDialogs_Metamask = (Metamask_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c688a51c-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/signerDialogs/WalletConnect.vue?vue&type=template&id=451c6c6b&
-var WalletConnectvue_type_template_id_451c6c6b_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{class:_vm.$style.signer},[_c('div',{class:_vm.$style.logo}),_c('div',{class:_vm.$style.dialog},[(!_vm.qrImage)?_c('Loading',{attrs:{"centered":true}}):_vm._e(),(_vm.isListening && _vm.qrImage)?_c('div',[_c('img',{attrs:{"src":_vm.qrImage}})]):_vm._e(),(_vm.isListening)?_c('div',{class:_vm.$style.info},[_vm._v("\n      "+_vm._s(_vm.$t("app.walletConnect.deviceStatus.waitingQr"))+"\n    ")]):_vm._e(),(_vm.qrImage && !_vm.isListening)?_c('div',{class:_vm.$style.restartListening},[_c('div',{class:_vm.$style.restartListeningContent},[_c('div',[_vm._v("\n          "+_vm._s(_vm.$t("app.walletConnect.deviceStatus.retry.instructions"))+"\n          "),_c('button',{class:_vm.$style.button,on:{"click":_vm.listenSessionStatus}},[_vm._v(_vm._s(_vm.$t("app.walletConnect.deviceStatus.retry.buttonText"))+"\n          ")])])])]):_vm._e()],1)])}
-var WalletConnectvue_type_template_id_451c6c6b_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c688a51c-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/signerDialogs/WalletConnect.vue?vue&type=template&id=3a3c4926&
+var WalletConnectvue_type_template_id_3a3c4926_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{class:_vm.$style.signer},[_c('div',{class:_vm.$style.logo}),_c('div',{class:_vm.$style.dialog},[(!_vm.qrImage)?_c('Loading',{attrs:{"centered":true}}):_vm._e(),(_vm.isListening && _vm.qrImage)?_c('div',[_c('img',{attrs:{"src":_vm.qrImage}})]):_vm._e(),(_vm.isListening)?_c('div',{class:_vm.$style.info},[_vm._v("\n      "+_vm._s(_vm.$t("app.walletConnect.deviceStatus.waitingQr"))+"\n    ")]):_vm._e(),(_vm.qrImage && !_vm.isListening)?_c('div',{class:_vm.$style.restartListening},[_c('div',{class:_vm.$style.restartListeningContent},[_c('div',[_vm._v("\n          "+_vm._s(_vm.$t("app.walletConnect.deviceStatus.retry.instructions"))+"\n          "),_c('button',{class:_vm.$style.button,on:{"click":_vm.listenSessionStatus}},[_vm._v(_vm._s(_vm.$t("app.walletConnect.deviceStatus.retry.buttonText"))+"\n          ")])])])]):_vm._e()],1)])}
+var WalletConnectvue_type_template_id_3a3c4926_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/signerDialogs/WalletConnect.vue?vue&type=template&id=451c6c6b&
+// CONCATENATED MODULE: ./src/components/signerDialogs/WalletConnect.vue?vue&type=template&id=3a3c4926&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/signerDialogs/WalletConnect.vue?vue&type=script&lang=js&
 
@@ -7340,7 +7364,7 @@ var WalletConnectvue_type_template_id_451c6c6b_staticRenderFns = []
             switch (_context2.prev = _context2.next) {
               case 0:
                 if (!_this2.qrImage) {
-                  _context2.next = 12;
+                  _context2.next = 11;
                   break;
                 }
 
@@ -7351,19 +7375,17 @@ var WalletConnectvue_type_template_id_451c6c6b_staticRenderFns = []
 
               case 5:
                 _this2.wcSession = _context2.sent;
-                _context2.next = 11;
+                _context2.next = 10;
                 break;
 
               case 8:
                 _context2.prev = 8;
                 _context2.t0 = _context2["catch"](2);
-                // eslint-disable-next-line
-                console.log(_context2.t0, 'ERROR or TIMEOUT @ walletconnect.listenSessionStatus()');
 
-              case 11:
+              case 10:
                 _this2.isListening = false;
 
-              case 12:
+              case 11:
               case "end":
                 return _context2.stop();
             }
@@ -7392,8 +7414,8 @@ this["$style"] = (style0.locals || style0)
 
 var WalletConnect_component = normalizeComponent(
   signerDialogs_WalletConnectvue_type_script_lang_js_,
-  WalletConnectvue_type_template_id_451c6c6b_render,
-  WalletConnectvue_type_template_id_451c6c6b_staticRenderFns,
+  WalletConnectvue_type_template_id_3a3c4926_render,
+  WalletConnectvue_type_template_id_3a3c4926_staticRenderFns,
   false,
   WalletConnect_injectStyles,
   null,

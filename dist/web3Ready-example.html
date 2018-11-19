@@ -1,33 +1,64 @@
 <meta charset="utf-8">
-<title>web3Ready-example.html</title>
-<script src="https://unpkg.com/vue/dist/vue.min.js"></script>
-<script src="./web3-ready.min.js"></script>
+<head>
+  <title>web3Ready-example.html</title>
+  <script src="https://unpkg.com/vue/dist/vue.min.js"></script>
+  <script src="./web3-ready.min.js"></script>
+  <style>
+    body {
+      font-family: -apple-system, system-ui, BlinkMacSystemFont, "SF Pro Text", Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 1em;
+    }
+    h1 {
+      margin: 1em 0;
+    }
+    hr {
+      margin: 1em 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Web3Ready example</h1>
+  <hr >
 
-<h1>Web3Ready example</h1>
+  <web3-ready
+      dapp-name="My new Dapp"
+      required-network="1"
+      rpc-url="https://mainnet.infura.io/drupal"
+      enable-providers="metamask,walletConnect,ledger"
+  ></web3-ready>
 
-<web3-ready
-    dapp-name="My new Dapp"
-    required-network="1"
-    rpc-url="https://mainnet.infura.io/drupal"
-    enable-providers="metamask,walletConnect,ledger"
-></web3-ready>
+  <hr >
 
-<hr >
-<h3>API</h3>
-<ul>
-  <li><strong>dapp-name</strong>
-    <br>Unique name for your dapp</li>
-  <li><strong>required-network</strong>
-    <br>Required network Id.
-    <br>Please refer to <code>src/translations.default.js:globals.networks</code> to see valid options.</li>
-  <li><strong>rpc-url</strong>
-    <br>RPC to connect to Ethereum
-    <ul>
-      <li>Must match required-network</li>
-      <li>Set up your own Ethereum node or use a service like <a href="https://infura.io">infura.io</a></li>
-    </ul>
-  </li>
-  <li><strong>enable-providers</strong>
-    <br>List of provider is's separated by comma.<br>Please refer to <code>src/translations.default.js:globals.signers</code> to see valid options
-  </li>
-</ul>
+  <h3>API</h3>
+
+  <ul>
+    <li><strong>dapp-name</strong>
+      <br>Unique name for your dapp</li>
+    <li><strong>required-network</strong>
+      <br>Required network Id.
+      <br>Please refer to <code>src/translations.default.js:globals.networks</code> to see valid options.</li>
+    <li><strong>rpc-url</strong>
+      <br>RPC to connect to Ethereum
+      <ul>
+        <li>Must match required-network</li>
+        <li>Set up your own Ethereum node or use a service like <a href="https://infura.io">infura.io</a></li>
+      </ul>
+    </li>
+    <li><strong>enable-providers</strong>
+      <br>List of provider is's separated by comma.<br>Please refer to <code>src/translations.default.js:globals.signers</code> to see valid options
+    </li>
+  </ul>
+
+  <hr >
+
+  <div id="https-notice"></div>
+  <script>
+    if (document.location.protocol !== 'https:') {
+      var note = document.getElementById('https-notice')
+      note.textContent = 'Note that this page must be serverd via https on order to have all providers available.'
+      note.style.color = 'red'
+    }
+  </script>
+
+</body>

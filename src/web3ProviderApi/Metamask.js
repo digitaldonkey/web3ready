@@ -31,6 +31,7 @@ export default class Metamask {
    * @param Web3
    * @param accountChange
    * @param networkChange
+   * @param resetProvider
    * @return {*}
    */
   static async createAutovalidateProvider(Web3, accountChange, networkChange, resetProvider) {
@@ -69,6 +70,7 @@ export default class Metamask {
    * @param accountChange
    * @param networkChange
    * @param resetProvider
+   * @param shouldAutovalidate
    *
    */
   constructor(Web3, accountChange, networkChange, resetProvider, shouldAutovalidate) {
@@ -104,7 +106,8 @@ export default class Metamask {
    */
   async getNetwork() {
     if (!this.networkId) {
-      this.networkId = await this.web3.eth.net.getId()
+      const networkId = await this.web3.eth.net.getId()
+      this.networkId = networkId.toString()
       this.networkChange(this.networkId)
     }
     return this.networkId

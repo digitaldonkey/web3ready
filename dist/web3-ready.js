@@ -3366,8 +3366,9 @@ var polyfill = __webpack_require__("5373");
 // CONCATENATED MODULE: ./src/conf/default.props.js
 /* harmony default export */ var default_props = ({
   walletConnect: {
-    bridgeUrl: 'https://bridge.walletconnect.org' // bridgeUrl: 'https://test-bridge.walletconnect.org',
-
+    // bridgeUrl: 'https://bridge.walletconnect.org',
+    //bridgeUrl: 'https://test-bridge.walletconnect.org',
+    bridgeUrl: 'http://192.168.99.100:8089'
   },
   enabledProviders: [{
     id: 'metamask'
@@ -7061,12 +7062,12 @@ var AccountIndicator_component = normalizeComponent(
 
 AccountIndicator_component.options.__file = "AccountIndicator.vue"
 /* harmony default export */ var AccountIndicator = (AccountIndicator_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c688a51c-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Modal.vue?vue&type=template&id=7765fd4a&
-var Modalvue_type_template_id_7765fd4a_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{class:_vm.$style.overlay,on:{"click":_vm.clickHandler}},[_c('div',{class:_vm.$style.modal},[_c('div',{class:_vm.$style.header},[(_vm.signerId)?_c('a',{class:_vm.$style.actionBack,attrs:{"href":"#back"}},[_c('span',[_vm._v("←")]),_vm._v(_vm._s(_vm.$t("app.modal.backLink"))+"\n      ")]):_vm._e(),_c('a',{class:_vm.$style.actionCloseX,attrs:{"href":"#"}},[_vm._v("×")])]),_c('div',{class:_vm.$style.modalContent},[_vm._t("default")],2),_c('a',{class:_vm.$style.actionCloseFooter,attrs:{"href":"#close"}},[_vm._v(_vm._s(_vm.$t("app.modal.closeText")))])])])}
-var Modalvue_type_template_id_7765fd4a_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c688a51c-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Modal.vue?vue&type=template&id=68186776&
+var Modalvue_type_template_id_68186776_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{class:_vm.$style.overlay,on:{"click":_vm.clickHandler}},[_c('div',{class:_vm.$style.modal},[_c('div',{class:_vm.$style.header},[(_vm.signerId)?_c('a',{class:_vm.$style.actionBack,attrs:{"href":"#back"}},[_c('span',[_vm._v("←")]),_vm._v(_vm._s(_vm.$t("app.modal.backLink"))+"\n      ")]):_vm._e(),_c('a',{class:_vm.$style.actionCloseX,attrs:{"href":"#"}},[_vm._v("×")])]),_c('div',{class:_vm.$style.modalContent},[_vm._t("default")],2),_c('a',{class:_vm.$style.actionCloseFooter,attrs:{"href":"#close"}},[_vm._v(_vm._s(_vm.$t("app.modal.closeText")))])])])}
+var Modalvue_type_template_id_68186776_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/Modal.vue?vue&type=template&id=7765fd4a&
+// CONCATENATED MODULE: ./src/components/Modal.vue?vue&type=template&id=68186776&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Modal.vue?vue&type=script&lang=js&
 //
@@ -7133,8 +7134,8 @@ this["$style"] = (style0.locals || style0)
 
 var Modal_component = normalizeComponent(
   components_Modalvue_type_script_lang_js_,
-  Modalvue_type_template_id_7765fd4a_render,
-  Modalvue_type_template_id_7765fd4a_staticRenderFns,
+  Modalvue_type_template_id_68186776_render,
+  Modalvue_type_template_id_68186776_staticRenderFns,
   false,
   Modal_injectStyles,
   null,
@@ -9283,7 +9284,7 @@ exports = module.exports = __webpack_require__("2350")(false);
 
 
 // module
-exports.push([module.i, "\n.Modal_overlay_LjK-V{background-color:rgba(0,0,0,.6);display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;position:fixed;top:0;right:0;bottom:0;left:0;text-align:center;max-height:100%;overflow:scroll\n}\n.Modal_modal_2DJAT{width:100%;max-width:880px;padding:20px;max-height:100%\n}\n.Modal_header_3MX3I{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between;-ms-flex-wrap:wrap-reverse;flex-wrap:wrap-reverse;line-height:26px;height:26px;margin-bottom:10px;color:#fff\n}\n.Modal_header_3MX3I>a{color:#fff;text-decoration:none\n}\n.Modal_actionBack_amPUj{font-size:120%;display:inline-block;font-weight:700;text-transform:uppercase\n}\n.Modal_actionBack_amPUj>span{font-size:20px;display:inline-block;padding-right:5px\n}\n.Modal_actionCloseX_3EUxm{display:inline-block;font-size:44px;text-align:right;-webkit-box-flex:1;-ms-flex-positive:1;flex-grow:1;line-height:18px\n}\n.Modal_modalContent_2VEdl{text-align:left;margin-bottom:1em\n}\n.Modal_actionCloseFooter_1h5--{color:#fff;text-decoration:none;font-size:small;padding-bottom:20px\n}", ""]);
+exports.push([module.i, "\n.Modal_overlay_LjK-V{background-color:rgba(0,0,0,.6);display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;position:fixed;top:0;right:0;bottom:0;left:0;text-align:center;max-height:100%;overflow:scroll;z-index:10000\n}\n.Modal_modal_2DJAT{width:100%;max-width:880px;padding:20px;max-height:100%\n}\n.Modal_header_3MX3I{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between;-ms-flex-wrap:wrap-reverse;flex-wrap:wrap-reverse;line-height:26px;height:26px;margin-bottom:10px;color:#fff\n}\n.Modal_header_3MX3I>a{color:#fff;text-decoration:none\n}\n.Modal_actionBack_amPUj{font-size:120%;display:inline-block;font-weight:700;text-transform:uppercase\n}\n.Modal_actionBack_amPUj>span{font-size:20px;display:inline-block;padding-right:5px\n}\n.Modal_actionCloseX_3EUxm{display:inline-block;font-size:44px;text-align:right;-webkit-box-flex:1;-ms-flex-positive:1;flex-grow:1;line-height:18px\n}\n.Modal_modalContent_2VEdl{text-align:left;margin-bottom:1em\n}\n.Modal_actionCloseFooter_1h5--{color:#fff;text-decoration:none;font-size:small;padding-bottom:20px\n}", ""]);
 
 // exports
 exports.locals = {

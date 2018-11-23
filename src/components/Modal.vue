@@ -61,6 +61,7 @@ export default {
     text-align: center;
     max-height: 100%;
     overflow: scroll;
+    z-index: 10000;
   }
 
   .modal {

@@ -4,6 +4,13 @@
   <script src="https://unpkg.com/vue/dist/vue.min.js"></script>
   <script src="./web3-ready.min.js"></script>
   <style>
+    /* Some styles for this page only. */
+    html {
+      box-sizing: border-box;
+    }
+    *, *:before, *:after {
+      box-sizing: inherit;
+    }
     body {
       font-family: -apple-system, system-ui, BlinkMacSystemFont, "SF Pro Text", Roboto, Helvetica, Arial, sans-serif;
       margin: 0;
@@ -15,50 +22,190 @@
     hr {
       margin: 1em 0;
     }
+
+    /* Some styles the demo. */
+
+    #web3-demo {
+      background: #ebf5dc;
+      padding: 1em;
+      position: relative;
+    }
+    #demo-overlay {
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      background: repeating-linear-gradient(
+          45deg,
+          rgba(150, 25, 25, .8),
+          rgba(150, 25, 25, .8) 10px,
+          rgba(133, 133, 133, .8) 10px,
+          rgba(133, 133, 133, .8) 20px
+      );
+    }
+    #demo-overlay-text {
+      color: white;
+      text-align: center;
+      position: absolute;
+      top: 50%;
+      width: 100%;
+    }
+    h3 {
+      margin: 0 0 1em;
+    }
+    .result {
+      max-width: 100%;
+      overflow: scroll;
+      margin: 1em 0;
+    }
+    .button {
+      cursor: pointer;
+      display: inline-block;
+      min-height: 1em;
+      outline: 0;
+      border: 1px solid transparent;
+      background: rgb(64, 153, 255);
+      color: white;
+      vertical-align: baseline;
+      margin: 0 .25em 0 0;
+      padding: .78571429em 1.5em .78571429em;
+      text-transform: none;
+      text-shadow: none;
+      line-height: inherit;
+      font-size: 1rem;
+      font-style: normal;
+      text-align: center;
+      text-decoration: none;
+      border-radius: .28571429rem;
+      will-change: transform;
+      transition: all 0.15s ease 0s;
+      white-space: nowrap;
+      max-width: 19.75em;
+    }
   </style>
 </head>
 <body>
-  <h1>Web3Ready example</h1>
-  <hr >
+<h1>Web3Ready example</h1>
+<hr >
 
-  <web3-ready
-      dapp-name="My new Dapp"
-      required-network="1"
-      rpc-url="https://mainnet.infura.io/drupal"
-      enable-providers="metamask,walletConnect,ledger"
-  ></web3-ready>
+<web3-ready
+    dapp-name="My new Dapp"
+    required-network="1"
+    rpc-url="https://mainnet.infura.io/drupal"
+    enable-providers="metamask,walletConnect,ledger"
+></web3-ready>
 
-  <hr >
+<hr >
 
-  <h3>API</h3>
+<h3>Demo</h3>
+<script>
+  window.addEventListener('web3Ready', function (event) {
+    const {web3, account} = event.detail
+    console.log('web3Ready', {web3, account})
 
-  <ul>
-    <li><strong>dapp-name</strong>
-      <br>Unique name for your dapp</li>
-    <li><strong>required-network</strong>
-      <br>Required network Id.
-      <br>Please refer to <code>src/translations.default.js:globals.networks</code> to see valid options.</li>
-    <li><strong>rpc-url</strong>
-      <br>RPC to connect to Ethereum
-      <ul>
-        <li>Must match required-network</li>
-        <li>Set up your own Ethereum node or use a service like <a href="https://infura.io">infura.io</a></li>
-      </ul>
-    </li>
-    <li><strong>enable-providers</strong>
-      <br>List of provider is's separated by comma.<br>Please refer to <code>src/translations.default.js:globals.signers</code> to see valid options
-    </li>
-  </ul>
+    const overlay = document.getElementById('demo-overlay');
 
-  <hr >
+    if (overlay) {
+      document.getElementById('demo-overlay').remove()
 
-  <div id="https-notice"></div>
-  <script>
-    if (document.location.protocol !== 'https:') {
-      var note = document.getElementById('https-notice')
-      note.textContent = 'Note that this page must be serverd via https on order to have all providers available.'
-      note.style.color = 'red'
+      // Sign typed Data
+      document.getElementById('sign-type-data').onclick=function(){
+        const msgParams = [
+          {
+            type: 'string',      // Any valid solidity type
+            name: 'Message',     // Any string label you want
+            value: 'Hi, Alice!'  // The value to sign
+          }
+        ]
+        web3.currentProvider.sendAsync({
+          method: 'eth_signTypedData',
+          params: [msgParams, account],
+          from: account,
+        }, function (err, result) {
+          if (err) return console.error(err)
+          if (result.error) {
+            return console.error(result.error.message)
+          }
+          document.getElementById('sign-type-data-result').textContent = `Signature: ${result.result}`;
+        })
+      }
+
+      // Personal Sign
+      document.getElementById('personal-sign').onclick=function(){
+        web3.eth.personal.sign(
+            web3.utils.utf8ToHex("Hello world"),
+            account
+        )
+            .then(function (result) {
+              document.getElementById('personal-sign-result').textContent = `Signature: ${result}`;
+            });
+
+
+      }
+
+
+
     }
-  </script>
+
+  })
+</script>
+<div id="web3-demo">
+
+  <div>
+    <h3>Sign typed Data</h3>
+    <p>Sign a typed data message "Hi, Alice!"</p>
+    <button id="sign-type-data" class="button">Sign typed Data</button>
+    <div id="sign-type-data-result" class="result"></div>
+  </div>
+
+  <div>
+    <h3>Personal Sign</h3>
+    <p>Sign message "Hello world"</p>
+    <button id="personal-sign" class="button">Personal Sign</button>
+    <div id="personal-sign-result" class="result"></div>
+  </div>
+
+  <div>
+    <h3>Send me some coins</h3>
+    <p>Send <input type="number" value="0.01" step="0.001" min="0.01" width="3" max="9999999999.99"> to me.</p>
+    <button id="sign-transaction" class="button">Personal Sign</button>
+    <div id="sign-transaction-result" class="result"></div>
+  </div>
+
+  <div id="demo-overlay"><span id="demo-overlay-text">Please connect to Ethereum </span></div>
+</div>
+<hr >
+
+<h3>API</h3>
+
+<ul>
+  <li><strong>dapp-name</strong>
+    <br>Unique name for your dapp</li>
+  <li><strong>required-network</strong>
+    <br>Required network Id.
+    <br>Please refer to <code>src/translations.default.js:globals.networks</code> to see valid options.</li>
+  <li><strong>rpc-url</strong>
+    <br>RPC to connect to Ethereum
+    <ul>
+      <li>Must match required-network</li>
+      <li>Set up your own Ethereum node or use a service like <a href="https://infura.io">infura.io</a></li>
+    </ul>
+  </li>
+  <li><strong>enable-providers</strong>
+    <br>List of provider is's separated by comma.<br>Please refer to <code>src/translations.default.js:globals.signers</code> to see valid options
+  </li>
+</ul>
+
+<hr >
+
+<div id="https-notice"></div>
+<script>
+  if (document.location.protocol !== 'https:') {
+    var note = document.getElementById('https-notice')
+    note.textContent = 'Note that this page must be serverd via https on order to have all providers available.'
+    note.style.color = 'red'
+  }
+</script>
 
 </body>

@@ -38,6 +38,9 @@ hr {
       rgba(133, 133, 133, .8) 20px
   );
 }
+#demo-overlay.demoEnabled {
+  display:none;
+}
 #demo-overlay-text {
   color: white;
   text-align: center;
@@ -48,12 +51,20 @@ hr {
   font-weight: bold;
 }
 h3 {
-  margin: 0 0 1em;
+  margin: 1em 0;
 }
 .result {
   max-width: 100%;
   overflow: scroll;
-  margin: 1em 0;
+  background: hsla(85, 62%, 96%, 1);
+  padding: 1em;
+}
+.result:first-child {
+  margin-top: 1em;
+}
+.result:empty {
+  margin: 0;
+  padding: 0;
 }
 .button {
   cursor: pointer;

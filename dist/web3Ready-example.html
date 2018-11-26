@@ -22,10 +22,9 @@
     const {web3, account} = event.detail
     console.log('web3Ready', {web3, account})
 
-    const overlay = document.getElementById('demo-overlay');
 
-    if (overlay) {
-      document.getElementById('demo-overlay').remove()
+    if (account && web3) {
+      document.getElementById('demo-overlay').classList.add('demoEnabled');
 
       //
       // Sign typed Data
@@ -77,11 +76,13 @@
       // eth_sign
       //
       document.getElementById('eth-sign').onclick= async function(){
+
+        console.log('Currently I don\'t see any way to call web3.eth.sign() and get a return value.')
+
         // Web3js version
         // https://github.com/ethereum/wiki/wiki/JavaScript-API#web3ethsign
         //  web3.eth.sign(address, dataToSign, [, callback])
         // var promise = web3.eth.sign(data, account).then(console.log);
-
 
         // web3js 1.0
         //
@@ -108,6 +109,7 @@
         // Metamask: Signature Request Warnings & eth_sign
         // https://metamask.zendesk.com/hc/en-us/articles/360015488751
 
+        // Sending Async also don't work.
         // web3.currentProvider.sendAsync({
         //   method: 'eth_sign',
         //   params: [account, web3.utils.utf8ToHex("Hello world")],
@@ -123,12 +125,7 @@
         //   document.getElementById('eth-sign--result').textContent = `Signature: ${result.result}`;
         // })
 
-        // web3.eth.sign(web3.utils.utf8ToHex("Hello world"), account)
-        //   .then(function (error, result) {
-        //     console.log('result', {error, result})
-        //     document.getElementById('personal-sign--result').textContent = `Signature: ${result}`;
-        //   })
-
+        // Callback also not called.
         // web3.eth.sign(
         //   account,
         //   web3.utils.sha3("This will display as hex encoded string as we only sign a hash."),
@@ -139,13 +136,14 @@
       }
 
       //
-      // Send Transaction
+      // Call a Contract
       //
       // Read more at
-      // https://web3js.readthedocs.io/en/1.0/web3-eth.html#sendtransaction
+      // https://web3js.readthedocs.io/en/1.0/web3-eth.html#call
       //
       document.getElementById('eth-call').onclick=function(){
 
+        var abi = '[{"constant":true,"inputs":[],"name":"contractExists","outputs":[{"name":"result","type":"bool"}],"payable":false,"stateMutability":"pure","type":"function"},{"constant":true,"inputs":[{"name":"hash","type":"bytes32"}],"name":"validateUserByHash","outputs":[{"name":"result","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"adminRetrieveDonations","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"adminDeleteRegistry","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"accountAdmin","type":"address"}],"name":"adminSetAccountAdministrator","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"registrationDisabled","type":"bool"}],"name":"adminSetRegistrationDisabled","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"hash","type":"bytes32"}],"name":"newUser","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":false,"name":"hash","type":"bytes32"}],"name":"AccountCreated","type":"event"}]'
         var contractDeployed = [
           {netId: '3', address: '0xa0ce7d9f76dd13236dbdefd4df44f26b5a8e0d10'},
           {netId: '42', address: '0xcc99a4e99f29472c134779fbb3f9d2c37c54bdda'}
@@ -159,21 +157,16 @@
               }
               else {
                 // https://web3js.readthedocs.io/en/1.0/web3-eth-contract.html?highlight=call#new-contract
-                var abi = '[{"constant":true,"inputs":[],"name":"contractExists","outputs":[{"name":"result","type":"bool"}],"payable":false,"stateMutability":"pure","type":"function"},{"constant":true,"inputs":[{"name":"hash","type":"bytes32"}],"name":"validateUserByHash","outputs":[{"name":"result","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"adminRetrieveDonations","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"adminDeleteRegistry","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"accountAdmin","type":"address"}],"name":"adminSetAccountAdministrator","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"registrationDisabled","type":"bool"}],"name":"adminSetRegistrationDisabled","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"hash","type":"bytes32"}],"name":"newUser","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":false,"name":"hash","type":"bytes32"}],"name":"AccountCreated","type":"event"}]'
                 var contract = new web3.eth.Contract(JSON.parse(abi), currentNetworkContract[0].address)
-                console.log(contract)
-
                 contract.methods.newUser(web3.utils.randomHex(32)).send({from: account})
                     .on('transactionHash', function(hash){
-                      console.log('transactionHash', hash)
                       document.getElementById('eth-call--result').textContent = `Transaction hash: ${hash}`;
                     })
                     .on('receipt', function(receipt){
-                      console.log(receipt)
                       document.getElementById('eth-call--receipt').textContent = `Mined in block: ${receipt.blockHash}`;
                     })
                     .on('confirmation', function(confirmationNumber, receipt){
-                      document.getElementById('eth-call--confirmations').textContent = `Transaction confirmations count: ${confirmationNumber}`;
+                      document.getElementById('eth-call--confirmations').textContent = `Block/Transaction confirmations count: ${confirmationNumber}`;
                     })
                     .on('error', function (error) {
                       document.getElementById('eth-call--result').textContent = error.message;
@@ -181,15 +174,6 @@
               }
             });
 
-
-        // web3.eth.sendTransaction(transactionObject [, callback])
-        // web3.eth.sendTransaction({
-        //   from: account,
-        //   to: '0xaEC98826319EF42aAB9530A23306d5a9b113E23D',
-        //   value: web3.utils.toWei(document.getElementById('sign-transaction--amount').value)
-        // }, function (result) {
-        //   document.getElementById('eth-call-result').textContent = `Signature: ${result}`;
-        // })
       }
 
       //
@@ -205,11 +189,29 @@
           from: account,
           to: '0xaEC98826319EF42aAB9530A23306d5a9b113E23D',
           value: web3.utils.toWei(document.getElementById('sign-transaction--amount').value)
-        }, function (result) {
-          document.getElementById('sign-transaction--result').textContent = `Signature: ${result}`;
         })
+            .on('transactionHash', function(hash){
+              document.getElementById('sign-transaction--result').textContent = `Transaction hash: ${hash}`;
+            })
+            .on('receipt', function(receipt){
+              document.getElementById('sign-transaction--receipt').textContent = `Mined in block: ${receipt.blockHash}`;
+            })
+            .on('confirmation', function(confirmationNumber, receipt){
+              document.getElementById('sign-transaction--confirmations').textContent = `Block/Transaction confirmations count: ${confirmationNumber}`;
+            })
+            .on('error', function (error) {
+              document.getElementById('sign-transaction--result').textContent = error.message;
+            })
       }
 
+    }
+    else {
+      // Disable Demo & Remove last results
+      var results = document.getElementsByClassName('result')
+      for (var i = 0; i < results.length; i++) {
+        results[i].textContent = ''
+      }
+      document.getElementById('demo-overlay').classList.remove('demoEnabled');
     }
   })
 </script>
@@ -219,37 +221,49 @@
     <h3>Sign typed Data</h3>
     <p>Sign a typed data message "Hi, Alice!"</p>
     <button id="sign-type-data" class="button">Sign typed Data</button>
-    <div id="sign-type-data--result" class="result"></div>
+    <div>
+      <div id="sign-type-data--result" class="result"></div>
+    </div>
   </div>
 
   <div class="demo-block">
     <h3>Personal Sign</h3>
     <p>Sign message "Hello world"</p>
     <button id="personal-sign" class="button">Personal Sign</button>
-    <div id="personal-sign--result" class="result"></div>
+    <div>
+      <div id="personal-sign--result" class="result"></div>
+    </div>
   </div>
 
   <div class="demo-block">
     <h3>Eth Sign</h3>
     <p>Sign message "Hello world" --> Not working in Metamask. Not supported anymore?</p>
     <button id="eth-sign" class="button" disabled="disabled">Eth Sign</button>
-    <div id="eth-sign--result" class="result"></div>
+    <div>
+      <div id="eth-sign--result" class="result"></div>
+    </div>
   </div>
 
   <div class="demo-block">
     <h3>Call Contract</h3>
     <p>Call a Contract. Theis requires you to be on Kovan or Ropsten network.</p>
     <button id="eth-call" class="button">Call a contract</button>
-    <div id="eth-call--result" class="result"></div>
-    <div id="eth-call--receipt" class="result"></div>
-    <div id="eth-call--confirmations" class="result"></div>
+    <div>
+      <div id="eth-call--result" class="result"></div>
+      <div id="eth-call--receipt" class="result"></div>
+      <div id="eth-call--confirmations" class="result"></div>
+    </div>
   </div>
 
   <div class="demo-block">
     <h3>Send me some coins</h3>
     <p>Send <input id="sign-transaction--amount" type="number" value="0.1" step="0.001" min="0.01" width="3" max="999.99"> to me.</p>
     <button id="sign-transaction" class="button">Send some coins</button>
-    <div id="sign-transaction--result" class="result"></div>
+    <div>
+      <div id="sign-transaction--result" class="result"></div>
+      <div id="sign-transaction--receipt" class="result"></div>
+      <div id="sign-transaction--confirmations" class="result"></div>
+    </div>
   </div>
 
   <div id="demo-overlay">

@@ -50,7 +50,7 @@ export default class Metamask {
    * @return {boolean}
    */
   static isAvailable() {
-    return window.ethereum || (typeof window.web3 !== 'undefined' && window.web3.currentProvider)
+    return window.ethereum || (typeof window.web3 !== 'undefined')
   }
 
   /**

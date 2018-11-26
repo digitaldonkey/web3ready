@@ -186,6 +186,7 @@ export default {
     dialogClick(event) {
       if (event.target.hash === '#back') {
         this.$store.commit('signerId', null)
+        this.$store.dispatch('resetProvider')
         event.preventDefault()
       }
       else if (!this.isDialogContent(event)) {

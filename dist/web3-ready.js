@@ -2154,12 +2154,12 @@ function normalizeComponent (
   }
 }
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c688a51c-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/App.vue?vue&type=template&id=7d5557b5&shadow
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c688a51c-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/App.vue?vue&type=template&id=9976e912&shadow
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{class:_vm.$style.wrapper,attrs:{"id":"connect-web3"}},[_c('span',{staticClass:"web3-ready-info"},[(_vm.showConnectAction)?_c('button',{class:[_vm.$style.button, _vm.$style.buttonPrimary],on:{"click":function($event){_vm.isDialogOpen = true}}},[_vm._v("\n      "+_vm._s(_vm.$t("app.main.connectButton"))+"\n    ")]):_vm._e(),(_vm.signerId !== null && !_vm.isValidated)?_c('Loading'):_vm._e(),(_vm.signerId !== null && _vm.isValidated)?_c('span',[_c('NetworkIndicator',{attrs:{"network_id":_vm.networkId,"required_network":_vm.requiredNetwork,"tiny":true}}),_c('AccountIndicator',{attrs:{"account":_vm.account,"tiny":true}}),_c('button',{class:[_vm.$style.button, _vm.$style.buttonTransparent],on:{"click":_vm.changeProvider}},[_vm._v(_vm._s(_vm.$t("app.main.changeButton")))])],1):_vm._e()],1),(_vm.isDialogOpen && !_vm.isValidated)?_c('Modal',{attrs:{"signerId":_vm.signerId,"clickHandler":_vm.dialogClick}},[(!_vm.signerId)?_c('SelectProvider',{staticClass:"modal-content",attrs:{"providers":_vm.enabledProviders,"selectProvider":_vm.selectProvider}}):_vm._e(),(_vm.signerId === 'metamask' && !_vm.isValidated)?_c('Metamask',{staticClass:"modal-content"}):_vm._e(),(_vm.signerId === 'walletConnect' && !_vm.isValidated)?_c('WalletConnect',{staticClass:"modal-content"}):_vm._e(),(_vm.signerId === 'ledger' && !_vm.isValidated)?_c('Ledger',{staticClass:"modal-content"}):_vm._e()],1):_vm._e()],1)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/App.vue?vue&type=template&id=7d5557b5&shadow
+// CONCATENATED MODULE: ./src/App.vue?vue&type=template&id=9976e912&shadow
 
 // EXTERNAL MODULE: ./node_modules/regenerator-runtime/runtime.js
 var runtime = __webpack_require__("96cf");
@@ -3522,6 +3522,7 @@ var store_store = new vuex_esm.Store({
       return null;
     },
 
+    // eslint-disable-next-line
     isValidated: state => {
       return state.networkId && state.provider && state.account && state.networkId.toString() === state.requiredNetwork;
     },
@@ -3736,6 +3737,8 @@ var store_store = new vuex_esm.Store({
     },
 
     resetProvider(_ref7) {
+      var _this3 = this;
+
       return _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee7() {
@@ -3749,7 +3752,9 @@ var store_store = new vuex_esm.Store({
                 commit('provider', null);
                 commit('account', null);
 
-              case 4:
+                _this3.dispatch('callWeb3Ready');
+
+              case 5:
               case "end":
                 return _context7.stop();
             }
@@ -3759,7 +3764,7 @@ var store_store = new vuex_esm.Store({
     },
 
     networkId(_ref8, networkId) {
-      var _this3 = this;
+      var _this4 = this;
 
       return _asyncToGenerator(
       /*#__PURE__*/
@@ -3775,7 +3780,7 @@ var store_store = new vuex_esm.Store({
                   commit('networkId', networkId.toString());
                 }
 
-                _this3.dispatch('callWeb3Ready');
+                _this4.dispatch('callWeb3Ready');
 
               case 3:
               case "end":
@@ -3787,7 +3792,7 @@ var store_store = new vuex_esm.Store({
     },
 
     networkIdRequired(_ref9, networkId) {
-      var _this4 = this;
+      var _this5 = this;
 
       return _asyncToGenerator(
       /*#__PURE__*/
@@ -3799,12 +3804,12 @@ var store_store = new vuex_esm.Store({
               case 0:
                 commit = _ref9.commit;
 
-                if (networkId && networkId === _this4.getters.requiredNetwork) {
+                if (networkId && networkId === _this5.getters.requiredNetwork) {
                   commit('networkId', networkId);
 
-                  _this4.dispatch('callWeb3Ready');
+                  _this5.dispatch('callWeb3Ready');
                 } else {
-                  _this4.dispatch('resetProvider');
+                  _this5.dispatch('resetProvider');
                 }
 
               case 2:
@@ -3817,7 +3822,7 @@ var store_store = new vuex_esm.Store({
     },
 
     account(_ref10, account) {
-      var _this5 = this;
+      var _this6 = this;
 
       return _asyncToGenerator(
       /*#__PURE__*/
@@ -3828,11 +3833,14 @@ var store_store = new vuex_esm.Store({
             switch (_context10.prev = _context10.next) {
               case 0:
                 commit = _ref10.commit;
-                commit('account', account);
 
-                _this5.dispatch('callWeb3Ready');
+                if (_this6.state.account !== account) {
+                  commit('account', account);
 
-              case 3:
+                  _this6.dispatch('callWeb3Ready');
+                }
+
+              case 2:
               case "end":
                 return _context10.stop();
             }
@@ -3843,16 +3851,17 @@ var store_store = new vuex_esm.Store({
 
     callWeb3Ready(_ref11) {
       var getters = _ref11.getters;
-
-      if (getters.isValidated) {
-        var event = new CustomEvent('web3Ready', {
-          detail: {
-            web3: getters.provider.web3,
-            account: this.state.account
-          }
-        });
-        window.dispatchEvent(event);
-      }
+      // console.log('callWeb3Ready', {
+      //   web3: (getters.provider && getters.provider.web3) || null,
+      //   account: this.state.account,
+      // })
+      var event = new CustomEvent('web3Ready', {
+        detail: {
+          web3: getters.provider && getters.provider.web3 || null,
+          account: this.state.account
+        }
+      });
+      window.dispatchEvent(event);
     }
 
   },
@@ -5754,7 +5763,10 @@ class Metamask_Metamask {
 
     this.networkChange = networkChange; // Reset the provider if validation fails or lock status change.
 
-    this.resetProvider = resetProvider; // Refresh every POLL_INTERVAL [ms].
+    this.resetProvider = resetProvider; // Bugfix metamask inconsistency.
+    // toChecksumAddress might be called before web3 is loaded. Helper to provide a consistently formatted address.
+
+    this.toChecksumAddress = Web3.utils.toChecksumAddress; // Refresh every POLL_INTERVAL [ms].
 
     this.POLL_INTERVAL = 800;
     this.shouldWatch = true; // Ask unlock only if user requested it.
@@ -5871,7 +5883,8 @@ class Metamask_Metamask {
                 _accounts2 = _slicedToArray(_accounts, 1);
                 _this2.account = _accounts2[0];
 
-                _this2.accountChange(_this2.account);
+                // Working around "Address is returned inconsistently": https://github.com/MetaMask/metamask-extension/issues/5826
+                _this2.accountChange(_this2.toChecksumAddress(_this2.account));
 
                 _this2.watchAccountChange();
               }
@@ -7863,6 +7876,7 @@ Object.defineProperty(external_Vue_default.a.prototype, 'web3ProviderApi', {
     dialogClick(event) {
       if (event.target.hash === '#back') {
         this.$store.commit('signerId', null);
+        this.$store.dispatch('resetProvider');
         event.preventDefault();
       } else if (!this.isDialogContent(event)) {
         this.isDialogOpen = false;

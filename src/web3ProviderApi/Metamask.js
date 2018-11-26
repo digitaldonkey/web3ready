@@ -83,6 +83,9 @@ export default class Metamask {
     this.networkChange = networkChange
     // Reset the provider if validation fails or lock status change.
     this.resetProvider = resetProvider
+    // Bugfix metamask inconsistency.
+    // toChecksumAddress might be called before web3 is loaded. Helper to provide a consistently formatted address.
+    this.toChecksumAddress = Web3.utils.toChecksumAddress
 
     // Refresh every POLL_INTERVAL [ms].
     this.POLL_INTERVAL = 800
@@ -139,7 +142,8 @@ export default class Metamask {
 
     if (accounts && accounts.length > 0) {
       [this.account] = accounts
-      this.accountChange(this.account)
+      // Working around "Address is returned inconsistently": https://github.com/MetaMask/metamask-extension/issues/5826
+      this.accountChange(this.toChecksumAddress(this.account))
       this.watchAccountChange()
     }
   }
@@ -179,6 +183,7 @@ export default class Metamask {
     }
     return null
   }
+
 
   /**
    * createWeb3Instance()

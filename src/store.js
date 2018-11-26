@@ -77,6 +77,7 @@ const store = new Vuex.Store({
       }
       return null
     },
+    // eslint-disable-next-line
     isValidated: (state) => {
       return state.networkId
           && state.provider
@@ -204,6 +205,7 @@ const store = new Vuex.Store({
       commit('signerId', null)
       commit('provider', null)
       commit('account', null)
+      this.dispatch('callWeb3Ready')
     },
 
     async networkId({ commit }, networkId) {
@@ -224,20 +226,24 @@ const store = new Vuex.Store({
     },
 
     async account({ commit }, account) {
-      commit('account', account)
-      this.dispatch('callWeb3Ready')
+      if (this.state.account !== account) {
+        commit('account', account)
+        this.dispatch('callWeb3Ready')
+      }
     },
 
     callWeb3Ready({ getters }) {
-      if (getters.isValidated) {
-        const event = new CustomEvent('web3Ready', {
-          detail: {
-            web3: getters.provider.web3,
-            account: this.state.account,
-          }
-        })
-        window.dispatchEvent(event)
-      }
+      // console.log('callWeb3Ready', {
+      //   web3: (getters.provider && getters.provider.web3) || null,
+      //   account: this.state.account,
+      // })
+      const event = new CustomEvent('web3Ready', {
+        detail: {
+          web3: (getters.provider && getters.provider.web3) || null,
+          account: this.state.account,
+        }
+      })
+      window.dispatchEvent(event)
     }
   },
   mutations: {

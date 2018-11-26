@@ -3367,8 +3367,7 @@ var polyfill = __webpack_require__("5373");
 /* harmony default export */ var default_props = ({
   walletConnect: {
     // bridgeUrl: 'https://bridge.walletconnect.org',
-    //bridgeUrl: 'https://test-bridge.walletconnect.org',
-    bridgeUrl: 'http://192.168.99.100:8089'
+    bridgeUrl: 'https://test-bridge.walletconnect.org'
   },
   enabledProviders: [{
     id: 'metamask'
@@ -5721,7 +5720,7 @@ class Metamask_Metamask {
 
 
   static isAvailable() {
-    return window.ethereum || typeof window.web3 !== 'undefined' && window.web3.currentProvider;
+    return window.ethereum || typeof window.web3 !== 'undefined';
   }
   /**
    * Optionally destroy watchers, if you need.

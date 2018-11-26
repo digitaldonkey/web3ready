@@ -20,6 +20,10 @@ module.exports = {
         {
           from: './public/web3Ready-example.html',
           to: 'web3Ready-example.html',
+        },
+        {
+          from: './public/web3Ready-example.css',
+          to: 'web3Ready-example.css',
         }
       ]),
     ],

@@ -11,7 +11,7 @@
 <web3-ready
     dapp-name="My new Dapp"
     required-network="42"
-    rpc-url="https://mainnet.infura.io/drupal"
+    rpc-url="https://kovan.infura.io/drupal"
     enable-providers="metamask,walletConnect,ledger"
 ></web3-ready>
 <hr >
@@ -187,7 +187,7 @@
         // web3.eth.sendTransaction(transactionObject [, callback])
         web3.eth.sendTransaction({
           from: account,
-          to: '0xaEC98826319EF42aAB9530A23306d5a9b113E23D',
+          to: account,
           value: web3.utils.toWei(document.getElementById('sign-transaction--amount').value)
         })
             .on('transactionHash', function(hash){
@@ -238,7 +238,7 @@
   <div class="demo-block">
     <h3>Eth Sign</h3>
     <p>Sign message "Hello world" --> Not working in Metamask. Not supported anymore?</p>
-    <button id="eth-sign" class="button" disabled="disabled">Eth Sign</button>
+    <button id="eth-sign" class="button">Eth Sign</button>
     <div>
       <div id="eth-sign--result" class="result"></div>
     </div>
@@ -256,7 +256,7 @@
   </div>
 
   <div class="demo-block">
-    <h3>Send me some coins</h3>
+    <h3>Send yourself some coins</h3>
     <p>Send <input id="sign-transaction--amount" type="number" value="0.1" step="0.001" min="0.01" width="3" max="999.99"> to me.</p>
     <button id="sign-transaction" class="button">Send some coins</button>
     <div>

@@ -7,6 +7,7 @@
 
       <div v-if="isListening && qrImage">
         <img :src="qrImage"/>
+        <a :href="uri">Confirm on mobile</a>
       </div>
       <div
         v-if="isListening"
@@ -80,6 +81,9 @@ export default {
     },
   },
   computed: {
+    uri() {
+      return this.provider.uri
+    },
     isValidNetwork() {
       return this.networkId === this.requiredNetwork
     },

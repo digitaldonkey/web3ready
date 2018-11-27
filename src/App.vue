@@ -187,15 +187,14 @@ export default {
       if (event.target.hash === '#back') {
         this.$store.commit('signerId', null)
         this.$store.dispatch('resetProvider')
-        event.preventDefault()
       }
       else if (!this.isDialogContent(event)) {
         this.isDialogOpen = false
         if (!this.isValidated) {
           this.$store.commit('signerId', null)
         }
-        event.preventDefault()
       }
+      event.preventDefault()
     },
     isDialogContent(event) {
       // Clicks outside .modal-content will close dialogue.

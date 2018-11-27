@@ -2154,12 +2154,12 @@ function normalizeComponent (
   }
 }
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c688a51c-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/App.vue?vue&type=template&id=9976e912&shadow
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c688a51c-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/App.vue?vue&type=template&id=1dafb80b&shadow
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{class:_vm.$style.wrapper,attrs:{"id":"connect-web3"}},[_c('span',{staticClass:"web3-ready-info"},[(_vm.showConnectAction)?_c('button',{class:[_vm.$style.button, _vm.$style.buttonPrimary],on:{"click":function($event){_vm.isDialogOpen = true}}},[_vm._v("\n      "+_vm._s(_vm.$t("app.main.connectButton"))+"\n    ")]):_vm._e(),(_vm.signerId !== null && !_vm.isValidated)?_c('Loading'):_vm._e(),(_vm.signerId !== null && _vm.isValidated)?_c('span',[_c('NetworkIndicator',{attrs:{"network_id":_vm.networkId,"required_network":_vm.requiredNetwork,"tiny":true}}),_c('AccountIndicator',{attrs:{"account":_vm.account,"tiny":true}}),_c('button',{class:[_vm.$style.button, _vm.$style.buttonTransparent],on:{"click":_vm.changeProvider}},[_vm._v(_vm._s(_vm.$t("app.main.changeButton")))])],1):_vm._e()],1),(_vm.isDialogOpen && !_vm.isValidated)?_c('Modal',{attrs:{"signerId":_vm.signerId,"clickHandler":_vm.dialogClick}},[(!_vm.signerId)?_c('SelectProvider',{staticClass:"modal-content",attrs:{"providers":_vm.enabledProviders,"selectProvider":_vm.selectProvider}}):_vm._e(),(_vm.signerId === 'metamask' && !_vm.isValidated)?_c('Metamask',{staticClass:"modal-content"}):_vm._e(),(_vm.signerId === 'walletConnect' && !_vm.isValidated)?_c('WalletConnect',{staticClass:"modal-content"}):_vm._e(),(_vm.signerId === 'ledger' && !_vm.isValidated)?_c('Ledger',{staticClass:"modal-content"}):_vm._e()],1):_vm._e()],1)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/App.vue?vue&type=template&id=9976e912&shadow
+// CONCATENATED MODULE: ./src/App.vue?vue&type=template&id=1dafb80b&shadow
 
 // EXTERNAL MODULE: ./node_modules/regenerator-runtime/runtime.js
 var runtime = __webpack_require__("96cf");
@@ -6621,12 +6621,12 @@ var SelectProvidervue_type_template_id_197297ab_staticRenderFns = []
 
 // CONCATENATED MODULE: ./src/components/SelectProvider.vue?vue&type=template&id=197297ab&
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c688a51c-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/SelectProviderRow.vue?vue&type=template&id=56cfc484&
-var SelectProviderRowvue_type_template_id_56cfc484_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{class:_vm.$style.provider},[_c('div',{class:_vm.logoClassName}),_c('p',{class:_vm.$style.text,domProps:{"innerHTML":_vm._s(_vm.descriptionText)}}),_c('div',{class:_vm.buttonClassName},[_c('button',{attrs:{"disabled":_vm.isDisabled},on:{"click":function($event){_vm.selectProvider(_vm.id)}}},[_vm._v("\n      "+_vm._s(_vm.text.buttonText)+"\n    ")])])])}
-var SelectProviderRowvue_type_template_id_56cfc484_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c688a51c-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/SelectProviderRow.vue?vue&type=template&id=497b0bc4&
+var SelectProviderRowvue_type_template_id_497b0bc4_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{class:_vm.$style.provider},[_c('div',{class:_vm.logoClassName}),_c('p',{class:_vm.$style.text,domProps:{"innerHTML":_vm._s(_vm.descriptionText)}}),_c('div',{class:_vm.buttonClassName},[_c('button',{attrs:{"disabled":_vm.isDisabled},on:{"click":function($event){$event.stopPropagation();_vm.selectProvider(_vm.id)}}},[_vm._v("\n      "+_vm._s(_vm.text.buttonText)+"\n    ")])])])}
+var SelectProviderRowvue_type_template_id_497b0bc4_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/SelectProviderRow.vue?vue&type=template&id=56cfc484&
+// CONCATENATED MODULE: ./src/components/SelectProviderRow.vue?vue&type=template&id=497b0bc4&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/SelectProviderRow.vue?vue&type=script&lang=js&
 //
@@ -6704,8 +6704,8 @@ this["$style"] = (style0.locals || style0)
 
 var SelectProviderRow_component = normalizeComponent(
   components_SelectProviderRowvue_type_script_lang_js_,
-  SelectProviderRowvue_type_template_id_56cfc484_render,
-  SelectProviderRowvue_type_template_id_56cfc484_staticRenderFns,
+  SelectProviderRowvue_type_template_id_497b0bc4_render,
+  SelectProviderRowvue_type_template_id_497b0bc4_staticRenderFns,
   false,
   SelectProviderRow_injectStyles,
   null,
@@ -7877,16 +7877,15 @@ Object.defineProperty(external_Vue_default.a.prototype, 'web3ProviderApi', {
       if (event.target.hash === '#back') {
         this.$store.commit('signerId', null);
         this.$store.dispatch('resetProvider');
-        event.preventDefault();
       } else if (!this.isDialogContent(event)) {
         this.isDialogOpen = false;
 
         if (!this.isValidated) {
           this.$store.commit('signerId', null);
         }
-
-        event.preventDefault();
       }
+
+      event.preventDefault();
     },
 
     isDialogContent(event) {

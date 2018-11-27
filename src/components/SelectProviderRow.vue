@@ -8,7 +8,7 @@
     <div :class="buttonClassName">
       <button
         :disabled="isDisabled"
-        @click="selectProvider(id)"
+        @click.stop="selectProvider(id)"
       >
         {{ text.buttonText }}
       </button>

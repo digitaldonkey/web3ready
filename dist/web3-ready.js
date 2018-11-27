@@ -7227,17 +7227,18 @@ var Metamask_component = normalizeComponent(
 
 Metamask_component.options.__file = "Metamask.vue"
 /* harmony default export */ var signerDialogs_Metamask = (Metamask_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c688a51c-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/signerDialogs/WalletConnect.vue?vue&type=template&id=3a3c4926&
-var WalletConnectvue_type_template_id_3a3c4926_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{class:_vm.$style.signer},[_c('div',{class:_vm.$style.logo}),_c('div',{class:_vm.$style.dialog},[(!_vm.qrImage)?_c('Loading',{attrs:{"centered":true}}):_vm._e(),(_vm.isListening && _vm.qrImage)?_c('div',[_c('img',{attrs:{"src":_vm.qrImage}})]):_vm._e(),(_vm.isListening)?_c('div',{class:_vm.$style.info},[_vm._v("\n      "+_vm._s(_vm.$t("app.walletConnect.deviceStatus.waitingQr"))+"\n    ")]):_vm._e(),(_vm.qrImage && !_vm.isListening)?_c('div',{class:_vm.$style.restartListening},[_c('div',{class:_vm.$style.restartListeningContent},[_c('div',[_vm._v("\n          "+_vm._s(_vm.$t("app.walletConnect.deviceStatus.retry.instructions"))+"\n          "),_c('button',{class:_vm.$style.button,on:{"click":_vm.listenSessionStatus}},[_vm._v(_vm._s(_vm.$t("app.walletConnect.deviceStatus.retry.buttonText"))+"\n          ")])])])]):_vm._e()],1)])}
-var WalletConnectvue_type_template_id_3a3c4926_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c688a51c-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/signerDialogs/WalletConnect.vue?vue&type=template&id=2f876d38&
+var WalletConnectvue_type_template_id_2f876d38_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{class:_vm.$style.signer},[_c('div',{class:_vm.$style.logo}),_c('div',{class:_vm.$style.dialog},[(!_vm.qrImage)?_c('Loading',{attrs:{"centered":true}}):_vm._e(),(_vm.isListening && _vm.qrImage)?_c('div',[_c('img',{attrs:{"src":_vm.qrImage}}),_c('a',{attrs:{"href":_vm.uri}},[_vm._v("Confirm on mobile")])]):_vm._e(),(_vm.isListening)?_c('div',{class:_vm.$style.info},[_vm._v("\n      "+_vm._s(_vm.$t("app.walletConnect.deviceStatus.waitingQr"))+"\n    ")]):_vm._e(),(_vm.qrImage && !_vm.isListening)?_c('div',{class:_vm.$style.restartListening},[_c('div',{class:_vm.$style.restartListeningContent},[_c('div',[_vm._v("\n          "+_vm._s(_vm.$t("app.walletConnect.deviceStatus.retry.instructions"))+"\n          "),_c('button',{class:_vm.$style.button,on:{"click":_vm.listenSessionStatus}},[_vm._v(_vm._s(_vm.$t("app.walletConnect.deviceStatus.retry.buttonText"))+"\n          ")])])])]):_vm._e()],1)])}
+var WalletConnectvue_type_template_id_2f876d38_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/signerDialogs/WalletConnect.vue?vue&type=template&id=3a3c4926&
+// CONCATENATED MODULE: ./src/components/signerDialogs/WalletConnect.vue?vue&type=template&id=2f876d38&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/signerDialogs/WalletConnect.vue?vue&type=script&lang=js&
 
 
 
+//
 //
 //
 //
@@ -7327,6 +7328,10 @@ var WalletConnectvue_type_template_id_3a3c4926_staticRenderFns = []
     }
   },
   computed: _objectSpread({
+    uri() {
+      return this.provider.uri;
+    },
+
     isValidNetwork() {
       return this.networkId === this.requiredNetwork;
     },
@@ -7427,8 +7432,8 @@ this["$style"] = (style0.locals || style0)
 
 var WalletConnect_component = normalizeComponent(
   signerDialogs_WalletConnectvue_type_script_lang_js_,
-  WalletConnectvue_type_template_id_3a3c4926_render,
-  WalletConnectvue_type_template_id_3a3c4926_staticRenderFns,
+  WalletConnectvue_type_template_id_2f876d38_render,
+  WalletConnectvue_type_template_id_2f876d38_staticRenderFns,
   false,
   WalletConnect_injectStyles,
   null,

@@ -16,8 +16,11 @@ before_script: greenkeeper-lockfile-update
 script:
 - npm run lint
 after_script: greenkeeper-lockfile-upload
-after_success:
-  - npm run travis-deploy-once "npm run semantic-release"
+deploy:
+  provider: script
+  skip_cleanup: true
+  script:
+  - npx travis-deploy-once "npx semantic-release"
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/

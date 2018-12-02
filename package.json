@@ -2,38 +2,54 @@
   "name": "web3ready",
   "description": "Web3 wrapper providing multiple TX signers",
   "author": "Thorsten Krug <thorsten.krug@consensys.net>",
-  "version": "0.1.0",
+  "version": "0.0.0-development",
   "scripts": {
     "serve": "vue-cli-service serve --name web3-ready --target lib ./src/main.js",
     "build": "vue-cli-service build --target wc-async --name web3-ready ./src/App.vue",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "travis-deploy-once": "travis-deploy-once",
+    "semantic-release": "semantic-release",
+    "commit": "git-cz"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   },
   "dependencies": {
-    "@ledgerhq/hw-transport-u2f": "^4.28.0",
-    "@ledgerhq/web3-subprovider": "^4.28.0",
+    "@ledgerhq/hw-transport-u2f": "^4.31.0",
+    "@ledgerhq/web3-subprovider": "^4.31.0",
     "@vue/web-component-wrapper": "^1.2.0",
     "custom-event-polyfill": "^1.0.6",
     "qr-image": "^3.2.0",
     "v-tooltip": "^2.0.0-rc.33",
     "vue": "^2.5.17",
-    "vue-i18n": "^8.3.1",
+    "vue-i18n": "^8.4.0",
     "vue-web-component": "^1.2.0",
     "vuex": "^3.0.1",
     "vuex-persist": "^2.0.0",
-    "walletconnect-web3-provider": "^0.7.26",
+    "walletconnect-web3-provider": "^0.7.27",
     "web3": "^1.0.0-beta.36",
     "web3-provider-engine": "^14.1.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.1.1",
-    "@vue/cli-plugin-eslint": "^3.1.5",
-    "@vue/cli-service": "^3.1.4",
+    "@vue/cli-plugin-babel": "^3.2.0",
+    "@vue/cli-plugin-eslint": "^3.2.1",
+    "@vue/cli-service": "^3.2.0",
     "@vue/eslint-config-airbnb": "^4.0.0",
+    "commitizen": "^3.0.5",
     "copy-webpack-plugin": "^4.6.0",
+    "cz-conventional-changelog": "^2.1.0",
     "file-system": "^2.2.2",
     "node-sass": "^4.10.0",
     "sass-loader": "^7.1.0",
+    "semantic-release": "^15.12.3",
     "svg-url-loader": "^2.3.2",
+    "travis-deploy-once": "^5.0.9",
     "vue-template-compiler": "^2.5.17"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/digitaldonkey/web3ready.git"
   }
 }

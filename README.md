@@ -1,5 +1,7 @@
 # web3-ready
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/digitaldonkey/web3ready.svg)](https://greenkeeper.io/)
+
 Web3-ready takes away the burden of implementing different providers while developing a web3 application. 
 
 Development goals

@@ -20,6 +20,7 @@ after_success:
 - npm run build
 deploy:
   provider: script
+  api_key: "$GITHUB_OAUTH_TOKEN"
   skip_cleanup: true
   script:
   - npx travis-deploy-once "npx semantic-release"

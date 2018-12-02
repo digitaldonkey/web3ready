@@ -2,7 +2,7 @@
   "name": "web3ready",
   "description": "Web3 wrapper providing multiple TX signers",
   "author": "Thorsten Krug <thorsten.krug@consensys.net>",
-  "version": "0.0.0-development",
+  "version": "1.1.0",
   "scripts": {
     "serve": "vue-cli-service serve --name web3-ready --target lib ./src/main.js",
     "build": "vue-cli-service build --target wc-async --name web3-ready ./src/App.vue",
@@ -33,6 +33,7 @@
     "web3-provider-engine": "^14.1.0"
   },
   "devDependencies": {
+    "@semantic-release/git": "github:semantic-release/git",
     "@vue/cli-plugin-babel": "^3.2.0",
     "@vue/cli-plugin-eslint": "^3.2.1",
     "@vue/cli-service": "^3.2.0",
@@ -51,5 +52,21 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/digitaldonkey/web3ready.git"
+  },
+  "release": {
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      [
+        "@semantic-release/github",
+        {
+          "assets": [
+            "dist/**"
+          ]
+        }
+      ],
+      "@semantic-release/git"
+    ],
+    "preset": "angular"
   }
 }

@@ -1,9 +1,8 @@
 {
-  "name": "web3multisign",
+  "name": "web3ready",
   "description": "Web3 wrapper providing multiple TX signers",
   "author": "Thorsten Krug <thorsten.krug@consensys.net>",
   "version": "0.1.0",
-  "private": true,
   "scripts": {
     "serve": "vue-cli-service serve --name web3-ready --target lib ./src/main.js",
     "build": "vue-cli-service build --target wc-async --name web3-ready ./src/App.vue",

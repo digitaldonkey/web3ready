@@ -1,6 +1,6 @@
 {
   "name": "web3ready",
-  "description": "Web3 wrapper providing multiple TX signers",
+  "description": "Web3 wrapper providing multiple TX signers ",
   "author": "Thorsten Krug <thorsten.krug@consensys.net>",
   "version": "1.0.0",
   "scripts": {

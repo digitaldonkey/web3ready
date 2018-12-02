@@ -69,6 +69,13 @@ npm run serve
 npm run build
 ```
 
+Commit with a **semantic-release** friendly commit message
+
+```
+npm run commit
+```
+
+
 Testing this build
 
 ```

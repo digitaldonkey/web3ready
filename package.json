@@ -65,7 +65,7 @@
           ]
         }
       ],
-      "@semantic-release/git"
+      "@semantic-release/npm"
     ],
     "preset": "angular"
   }

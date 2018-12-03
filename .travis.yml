@@ -17,6 +17,7 @@ script:
 - npm run build
 after_script:
 - greenkeeper-lockfile-upload
+
 jobs:
   include:
   # Define the release stage that runs semantic-release

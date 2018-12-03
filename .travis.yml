@@ -48,6 +48,6 @@ jobs:
         local-dir: dist
         keep-history: true
         target-branch: gh-pages
-        repo: https://github.com/web3ready/web3ReadyDemo
+        repo: web3ready/web3ReadyDemo
         on:
           branch: master

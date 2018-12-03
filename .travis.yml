@@ -7,7 +7,6 @@ notifications:
 node_js:
   - '11'
 before_install:
-- npm install -g npm@latest
 - npm install -g greenkeeper-lockfile@1
 install:
 - npm install

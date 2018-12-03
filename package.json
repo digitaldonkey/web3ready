@@ -55,18 +55,9 @@
   },
   "release": {
     "plugins": [
-      ["@semantic-release/commit-analyzer", {
-        "preset": "angular"
-      }],
+      "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",
-      [
-        "@semantic-release/github",
-        {
-          "assets": [
-            "dist/"
-          ]
-        }
-      ],
+      "@semantic-release/github",
       "@semantic-release/npm"
     ]
   }

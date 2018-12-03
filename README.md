@@ -30,7 +30,12 @@ Design credits got to [Balance Manager](https://manager.balance.io/).
 <script src="https://unpkg.com/vue"></script>
 <script src="https://dist/web3-ready.min.js"></script>
 ...
-<web3-ready />
+<web3-ready
+    dapp-name="My new Dapp"
+    required-network="42"
+    rpc-url="https://mainnet.infura.io/drupal"
+    enable-providers="metamask,walletConnect,ledger"
+></web3-ready>
 
 <script>
 window.addEventListener("web3Ready", function(web3, account){ 
@@ -39,20 +44,33 @@ window.addEventListener("web3Ready", function(web3, account){
 });
 </script>
 ```
+### Properties 
+<ul>
+  <li><strong>dapp-name</strong>
+    <br>Unique name for your dapp</li>
+  <li><strong>required-network</strong>
+    <br>Required network Id.
+    <br>Please refer to <code>src/translations.default.js:globals.networks</code> to see valid options.</li>
+  <li><strong>rpc-url</strong>
+    <br>RPC to connect to Ethereum
+    <ul>
+      <li>Must match required-network</li>
+      <li>Set up your own Ethereum node or use a service like <a href="https://infura.io">infura.io</a></li>
+    </ul>
+  </li>
+  <li><strong>enable-providers</strong>
+    <br>List of provider is's separated by comma.<br>Please refer to <code>src/translations.default.js:globals.signers</code> to see valid options
+  </li>
+</ul>
 
-* https is highly recommended and partly required (currently Ledger can't work without)
+To integrate in your website make sure the site is served via **https**. This is partly **required** (at least for Ledger).
 
 ## Todo's
 
-* Add Tresor
-* Provide a parameterized webComponent and clean up config 
-	* rpcUrl (required for any non-Metamask provider)
-	* Enables Signers (let the dev limot the options)
-	* requiredNetwork
-	* Language
+* Add Tresor provider
 * Lazy load Provider dialogues
-* Add logger
-* Provide a public/demo-wc.html template to improve demo
+* provide CDN based and non-CDN version
+
 
 ## Project setup
 ```
@@ -60,6 +78,7 @@ npm install
 ```
 
 ### Compiles and hot-reloads for development
+
 ```
 npm run serve
 ```
@@ -69,6 +88,7 @@ npm run serve
 npm run build
 ```
 
+### Git
 Commit with a **semantic-release** friendly commit message
 
 ```
@@ -76,21 +96,14 @@ npm run commit
 ```
 
 
-Testing this build
+### Testing this build
 
 ```
-npm install -g serve
-serve -s dist
+npm run build
 ```
-
-
-### Run your tests
-```
-npm run test
-```
+Test the web-comüonent with dist/index.html
 
 ### Lints and fixes files
 ```
 npm run lint
 ```
-

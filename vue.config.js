@@ -19,7 +19,7 @@ module.exports = {
       new CopyWebpackPlugin([
         {
           from: './public/web3Ready-example.html',
-          to: 'web3Ready-example.html',
+          to: 'index.html',
         },
         {
           from: './public/web3Ready-example.css',

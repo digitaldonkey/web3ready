@@ -39,6 +39,7 @@ jobs:
         local-dir: dist
         keep-history: true
         target-branch: gh-pages
+        repo: web3ready/dev
         on:
           branch: dev
       # Demo page for Releases
@@ -48,6 +49,6 @@ jobs:
         local-dir: dist
         keep-history: true
         target-branch: gh-pages
-        repo: web3ready/web3ReadyDemo
+        repo: web3ready/latest
         on:
           branch: master

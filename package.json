@@ -60,8 +60,8 @@
       [
         "@semantic-release/github",
         {
-          "build": [
-            "dist/*"
+          "assets": [
+            "dist/"
           ]
         }
       ],

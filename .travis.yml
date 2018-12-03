@@ -37,7 +37,7 @@ jobs:
         skip-cleanup: true
         github-token: $GH_TOKEN
         local-dir: dist
-        keep-history: true
+        keep-history: false
         target-branch: gh-pages
         repo: web3ready/dev
         on:
@@ -47,7 +47,7 @@ jobs:
         skip-cleanup: true
         github-token: $GH_TOKEN
         local-dir: dist
-        keep-history: true
+        keep-history: false
         target-branch: gh-pages
         repo: web3ready/latest
         on:

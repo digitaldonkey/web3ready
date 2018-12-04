@@ -72,15 +72,7 @@ import web3ApiProviderApi from './conf/web3ProviderApi'
 
 // Components
 import Loading from './components/Loading'
-import SelectProvider from './components/SelectProvider'
-import NetworkIndicator from './components/NetworkIndicator'
-import AccountIndicator from './components/AccountIndicator'
 import Modal from './components/Modal'
-
-// @todo Make following async to reduce initial size?
-import Metamask from './components/signerDialogs/Metamask'
-import WalletConnect from './components/signerDialogs/WalletConnect'
-import Ledger from './components/signerDialogs/Ledger'
 
 // Vue globals.
 Vue.use(VTooltip)
@@ -95,13 +87,13 @@ export default {
   i18n,
   components: {
     Loading,
-    SelectProvider,
-    Metamask,
-    WalletConnect,
-    Ledger,
-    NetworkIndicator,
-    AccountIndicator,
     Modal,
+    SelectProvider: () => import('./components/SelectProvider'),
+    Metamask: () => import('./components/signerDialogs/Metamask'),
+    WalletConnect: () => import('./components/signerDialogs/WalletConnect'),
+    Ledger: () => import('./components/signerDialogs/Ledger'),
+    NetworkIndicator: () => import('./components/NetworkIndicator'),
+    AccountIndicator: () => import('./components/AccountIndicator'),
   },
   data() {
     return {

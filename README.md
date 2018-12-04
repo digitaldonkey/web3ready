@@ -1,10 +1,15 @@
 # web3-ready
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/digitaldonkey/web3ready.svg)](https://greenkeeper.io/)
+[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
 Web3-ready takes away the burden of implementing different providers while developing a web3 application. 
 
-Development goals
+**Demo**
+
+[https://web3ready.github.io/latest](https://web3ready.github.io/latest)
+
+**Development goals**
 
 * **Minimal footprint**: Try to only load the bare minimum of code initially. Lazy load more if required
 * **Don't store any user data**. We only persist the last selected web3 provider. In case this provider supports auto-reconnect we can initialize on page load. 
@@ -22,7 +27,7 @@ Some of the current screens.
 ![Connect with WalletConnect](https://github.com/digitaldonkey/web3ready/blob/master/docs/walletConnect.png?raw=true)
 ![Connect with Ledger](https://github.com/digitaldonkey/web3ready/blob/master/docs/ledger.png?raw=true)
 
-Design credits got to [Balance Manager](https://manager.balance.io/).
+Design credits go to [Balance Manager](https://manager.balance.io/).
 
 ## Usage
 

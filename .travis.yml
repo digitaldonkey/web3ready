@@ -29,6 +29,7 @@ jobs:
       # Deploy github release
       - provider: script
         skip_cleanup: true
+        tarballDir: "dist",
         script: npx semantic-release
         on:
           branch: master

@@ -57,13 +57,13 @@
     "plugins": [
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",
-      "@semantic-release/github",
-      ["@semantic-release/github", {
-        "assets": [
-          {"path": [["dist", "!dist/demo.html"]], "label": "JS browser distribution"}
-        ]
-      }],
-      ["@semantic-release/npm", {
+      [ "@semantic-release/github", {
+          "assets": [["dist", "!dist/demo.html"]]
+        }
+      ],
+      [
+        "@semantic-release/npm",
+        {
           "npmPublish": true,
           "tarballDir": "dist"
         }

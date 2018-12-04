@@ -7,12 +7,12 @@
 
       <div v-if="isListening && qrImage">
         <img :src="qrImage"/>
-        <a :href="uri">Confirm on mobile</a>
       </div>
       <div
         v-if="isListening"
         :class="$style.info">
         {{ $t("app.walletConnect.deviceStatus.waitingQr") }}
+        <a :href="uri">{{ $t("app.walletConnect.deviceStatus.clickOnMobile") }}</a>
       </div>
 
       <div :class="$style.restartListening" v-if="qrImage && !isListening">
@@ -82,7 +82,7 @@ export default {
   },
   computed: {
     uri() {
-      return this.provider.uri
+      return this.provider.uri.replace('ethereum:', 'ethereum://')
     },
     isValidNetwork() {
       return this.networkId === this.requiredNetwork

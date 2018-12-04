@@ -23,12 +23,13 @@ const messages = {
       },
       walletConnect: {
         deviceStatus: {
-          waitingQr: 'Scan QR code with a WalletConnect-compatible wallet',
+          waitingQr: 'Scan QR code with a WalletConnect-compatible wallet.',
+          clickOnMobile: 'Connect on mobile',
           retry: {
             instructions: 'Session timed out.',
             buttonText: 'Try again',
           }
-        }
+        },
       },
       ledger: {
         deviceStatus: {

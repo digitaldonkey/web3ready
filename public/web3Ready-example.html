@@ -2,8 +2,8 @@
 <head>
   <title>web3Ready-example.html</title>
   <script src="https://unpkg.com/vue/dist/vue.min.js"></script>
-  <script src="./web3-ready.min.js"></script>
-  <link rel="stylesheet" href="./web3Ready-example.css">
+  <script src="https://unpkg.com/web3ready/dist/web3-ready.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/web3ready/dist/web3Ready-example.css">
 </head>
 <body>
 <h1>Web3Ready example</h1>
@@ -24,15 +24,18 @@
 
 
     if (account && web3) {
+      // Remove overlay.
       document.getElementById('demo-overlay').classList.add('demoEnabled');
 
-      //
-      // Sign typed Data
-      //
-      // Read more at
-      // https://medium.com/metamask/scaling-web3-with-signtypeddata-91d6efc8b290
-      //
+      // Demo examples.
+
       document.getElementById('sign-type-data').onclick=function(){
+        //
+        // Sign typed Data
+        //
+        // Read more at
+        // https://medium.com/metamask/scaling-web3-with-signtypeddata-91d6efc8b290
+        //
         const msgParams = [
           {
             type: 'string',
@@ -58,25 +61,23 @@
         })
       }
 
-      //
-      // personal_sign
-      //
-      // Read more at
-      // https://github.com/ethereum/go-ethereum/wiki/Management-APIs#personal_sign
-      //
       document.getElementById('personal-sign').onclick=function(){
+        //
+        // personal_sign
+        //
+        // Read more at
+        // https://github.com/ethereum/go-ethereum/wiki/Management-APIs#personal_sign
+        //
         web3.eth.personal.sign(web3.utils.utf8ToHex("This should be a readable text."), account)
             .then(function (result) {
               document.getElementById('personal-sign--result').textContent = `Signature: ${result}`;
             })
       }
 
-
-      //
-      // eth_sign
-      //
       document.getElementById('eth-sign').onclick= async function(){
-
+        //
+        // eth_sign
+        //
         console.log('Currently I don\'t see any way to call web3.eth.sign() and get a return value.')
 
         // Web3js version
@@ -135,14 +136,13 @@
         // )
       }
 
-      //
-      // Call a Contract
-      //
-      // Read more at
-      // https://web3js.readthedocs.io/en/1.0/web3-eth.html#call
-      //
       document.getElementById('eth-call').onclick=function(){
-
+        //
+        // Call a Contract
+        //
+        // Read more at
+        // https://web3js.readthedocs.io/en/1.0/web3-eth.html#call
+        //
         var abi = '[{"constant":true,"inputs":[],"name":"contractExists","outputs":[{"name":"result","type":"bool"}],"payable":false,"stateMutability":"pure","type":"function"},{"constant":true,"inputs":[{"name":"hash","type":"bytes32"}],"name":"validateUserByHash","outputs":[{"name":"result","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"adminRetrieveDonations","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"adminDeleteRegistry","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"accountAdmin","type":"address"}],"name":"adminSetAccountAdministrator","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"registrationDisabled","type":"bool"}],"name":"adminSetRegistrationDisabled","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"hash","type":"bytes32"}],"name":"newUser","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":false,"name":"hash","type":"bytes32"}],"name":"AccountCreated","type":"event"}]'
         var contractDeployed = [
           {netId: '3', address: '0xa0ce7d9f76dd13236dbdefd4df44f26b5a8e0d10'},
@@ -176,37 +176,36 @@
 
       }
 
-      //
-      // Send Transaction
-      //
-      // Read more at
-      // https://web3js.readthedocs.io/en/1.0/web3-eth.html#sendtransaction
-      //
       document.getElementById('sign-transaction').onclick=function(){
-
+        //
+        // Send Transaction
+        //
+        // Read more at
+        // https://web3js.readthedocs.io/en/1.0/web3-eth.html#sendtransaction
+        //
         // web3.eth.sendTransaction(transactionObject [, callback])
         web3.eth.sendTransaction({
           from: account,
           to: '0xaEC98826319EF42aAB9530A23306d5a9b113E23D',
           value: web3.utils.toWei(document.getElementById('sign-transaction--amount').value)
         })
-            .on('transactionHash', function(hash){
-              document.getElementById('sign-transaction--result').textContent = `Transaction hash: ${hash}`;
-            })
-            .on('receipt', function(receipt){
-              document.getElementById('sign-transaction--receipt').textContent = `Mined in block: ${receipt.blockHash}`;
-            })
-            .on('confirmation', function(confirmationNumber, receipt){
-              document.getElementById('sign-transaction--confirmations').textContent = `Block/Transaction confirmations count: ${confirmationNumber}`;
-            })
-            .on('error', function (error) {
-              document.getElementById('sign-transaction--result').textContent = error.message;
-            })
+        .on('transactionHash', function(hash){
+          document.getElementById('sign-transaction--result').textContent = `Transaction hash: ${hash}`;
+        })
+        .on('receipt', function(receipt){
+          document.getElementById('sign-transaction--receipt').textContent = `Mined in block: ${receipt.blockHash}`;
+        })
+        .on('confirmation', function(confirmationNumber, receipt){
+          document.getElementById('sign-transaction--confirmations').textContent = `Block/Transaction confirmations count: ${confirmationNumber}`;
+        })
+        .on('error', function (error) {
+          document.getElementById('sign-transaction--result').textContent = error.message;
+        })
       }
 
     }
     else {
-      // Disable Demo & Remove last results
+      // Disable Demo & clear last results.
       var results = document.getElementsByClassName('result')
       for (var i = 0; i < results.length; i++) {
         results[i].textContent = ''
@@ -287,7 +286,7 @@
 &lt;web3-ready
     dapp-name="My new Dapp"
     required-network="42"
-    rpc-url="https://mainnet.infura.io/drupal"
+    rpc-url="https://kovan.infura.io/drupal"
     enable-providers="metamask,walletConnect,ledger"
 &gt;&lt;/web3-ready&gt;
 </pre>

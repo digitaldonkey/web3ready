@@ -17,7 +17,7 @@ script:
 - npm run build
 after_script:
 - greenkeeper-lockfile-upload
-before_deployment:
+before_deploy:
 - if [ $TRAVIS_BRANCH == "master" ]; then
   echo "Create tar file before_deployment on master branch"
   mkdir release && tar --exclude='./dist/demo.html' -s /^dist/web3ready/ -zcvf release/web3ready-release.tar.gz dist

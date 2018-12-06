@@ -18,9 +18,10 @@ script:
 after_script:
 - greenkeeper-lockfile-upload
 before_deploy:
-- if [ $TRAVIS_BRANCH == "master" ]; then
-  echo "Create tar file before_deployment on master branch"
-  mkdir release && tar --exclude='./dist/demo.html' -s /^dist/web3ready/ -zcvf release/web3ready-release.tar.gz dist
+- |
+  if [ $TRAVIS_BRANCH == "master" ]; then
+    echo "Create tar file before_deployment on master branch"
+    mkdir release && tar --exclude='./dist/demo.html' -s /^dist/web3ready/ -zcvf release/web3ready-release.tar.gz dist
   fi
 
 jobs:

@@ -72,6 +72,9 @@ import web3ApiProviderApi from './conf/web3ProviderApi'
 
 // Components
 import Loading from './components/Loading'
+import AsyncLoading from './components/AsyncLoading'
+import AsyncError from './components/AsyncError'
+
 import Modal from './components/Modal'
 
 // Vue globals.
@@ -80,6 +83,12 @@ Object.defineProperty(Vue.prototype, 'web3ProviderApi', {
   value: web3ApiProviderApi,
 })
 
+const asyncWrap = {
+  loading: AsyncLoading,
+  error: AsyncError,
+  delay: 200,
+  timeout: 8000,
+}
 
 export default {
   name: 'App',
@@ -88,12 +97,13 @@ export default {
   components: {
     Loading,
     Modal,
-    SelectProvider: () => import('./components/SelectProvider'),
-    Metamask: () => import('./components/signerDialogs/Metamask'),
-    WalletConnect: () => import('./components/signerDialogs/WalletConnect'),
-    Ledger: () => import('./components/signerDialogs/Ledger'),
-    NetworkIndicator: () => import('./components/NetworkIndicator'),
-    AccountIndicator: () => import('./components/AccountIndicator'),
+    // SelectProvider: () => import('./components/SelectProvider'),
+    SelectProvider: () => ({ ...asyncWrap, component: import('./components/SelectProvider') }),
+    Metamask: () => ({ ...asyncWrap, component: import('./components/signerDialogs/Metamask') }),
+    WalletConnect: () => ({ ...asyncWrap, component: import('./components/signerDialogs/WalletConnect') }),
+    Ledger: () => ({ ...asyncWrap, component: import('./components/signerDialogs/Ledger') }),
+    NetworkIndicator: () => ({ ...asyncWrap, component: import('./components/NetworkIndicator') }),
+    AccountIndicator: () => ({ ...asyncWrap, component: import('./components/AccountIndicator') }),
   },
   data() {
     return {
@@ -209,7 +219,7 @@ export default {
 
 <!--
   Import Global styles
-  Allow inlining common icons only once.
+  Allow inlineing common icons only once.
 
   Note: Image paths resolve as SCSS import doesn't work.
 -->

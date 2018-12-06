@@ -36,7 +36,9 @@ jobs:
         skip_cleanup: true
         script: npx semantic-release
         on:
-          branch: master
+          branches:
+            only:
+              - master
       # Demo page for dev branch
       - provider: pages
         skip-cleanup: true
@@ -46,7 +48,9 @@ jobs:
         target-branch: gh-pages
         repo: web3ready/dev
         on:
-          branch: dev
+          branches:
+            only:
+            - dev
       # Demo page for Releases
       - provider: pages
         skip-cleanup: true
@@ -56,4 +60,6 @@ jobs:
         target-branch: gh-pages
         repo: web3ready/latest
         on:
-          branch: master
+          branches:
+            only:
+            - master

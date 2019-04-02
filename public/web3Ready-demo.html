@@ -1,0 +1,22 @@
+<meta charset="utf-8">
+<head>
+  <title>web3Ready-demo</title>
+  <script src="https://unpkg.com/vue/dist/vue.min.js"></script>
+  <script src="https://unpkg.com/web3ready/dist/web3-ready.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/web3ready/dist/web3Ready-demo.css">
+</head>
+<body>
+<h1>Web3Ready example</h1>
+<hr >
+<web3-ready
+    dapp-name="My new Dapp"
+    required-network="42"
+    rpc-url="https://kovan.infura.io/drupal"
+    enable-providers="metamask,walletConnect,ledger"
+></web3-ready>
+<hr >
+<!-- This file is used in production/web-component mode: `npm run build` -->
+
+<%= require('html-loader!./web3Ready-demo.inc.html') %>
+
+</body>

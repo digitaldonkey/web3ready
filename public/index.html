@@ -6,15 +6,16 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <script src="https://unpkg.com/@webcomponents/custom-elements"></script>
+    <link rel="stylesheet" href="./web3Ready-demo.css">
+
     <title>web3-ready</title>
   </head>
   <body>
     <noscript>
       <strong>We're sorry but web3-ready doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
-
+    <!-- This file is used in development mode: `npm run serve` -->
     <div id="app"></div>
-
-    <!-- built files will be auto injected -->
+    <%= require('html-loader!./web3Ready-demo.inc.html') %>
   </body>
 </html>

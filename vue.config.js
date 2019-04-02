@@ -18,12 +18,12 @@ module.exports = {
     plugins: [
       new CopyWebpackPlugin([
         {
-          from: './public/web3Ready-example.html',
+          from: './public/web3Ready-demo.html',
           to: 'index.html',
         },
         {
-          from: './public/web3Ready-example.css',
-          to: 'web3Ready-example.css',
+          from: './public/web3Ready-demo.css',
+          to: 'web3Ready-demo.css',
         }
       ]),
     ],

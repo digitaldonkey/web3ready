@@ -89,7 +89,7 @@ const store = new Vuex.Store({
     },
     walletConnectConfig(state) {
       return {
-        bridgeUrl: state.walletConnect.bridgeUrl,
+        bridge: state.walletConnect.bridge,
         dappName: state.dappName,
         rpcUrl: state.rpcUrl
       }

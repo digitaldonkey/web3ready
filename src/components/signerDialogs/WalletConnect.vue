@@ -3,7 +3,13 @@
     <div :class="$style.logo"/>
     <div :class="$style.dialog">
 
-      <Loading v-if="!qrImage" :centered="true"/>
+      <Loading v-if="!provider" :centered="true"/>
+
+      <NetworkIndicator
+          v-if="provider"
+          :network_id="networkId"
+          :required_network="requiredNetwork"
+      />
 
       <div v-if="isListening && qrImage">
         <img :src="qrImage"/>
@@ -35,6 +41,8 @@
 <script>
 import { mapState, mapGetters } from 'vuex'
 import Loading from '../Loading'
+import NetworkIndicator from '../NetworkIndicator'
+
 
 export default {
   name: 'WalletConnect',
@@ -44,23 +52,22 @@ export default {
       TIMEOUT: 5 * 60 * 1000, // 5 min. 5 * 60 * 1000
       qrImage: null,
       isListening: null,
-      wcSession: null,
     }
   },
   components: {
     Loading,
+    NetworkIndicator,
   },
   created() {
     if (this.provider) {
-      // this.getQrImage()
       this.initSession()
     }
   },
   watch: {
     provider: {
       handler(provider) {
+        console.log('provider CHANGED at watch')
         if (provider) {
-          // this.getQrImage()
           this.initSession()
         }
       }
@@ -72,10 +79,10 @@ export default {
         }
       }
     },
-    wcSession: {
-      handler(session) {
-        if (session) {
-          this.provider.web3.eth.getAccounts()
+    account: {
+      handler(account) {
+        if (account) {
+          this.listenSessionStatus()
         }
       }
     },
@@ -102,21 +109,36 @@ export default {
   methods: {
     async initSession() {
       // This will cause walletConnect to initialize a Session.
-      await this.provider.web3.currentProvider.walletconnect.initSession()
-      this.qrImage = await this.provider.image
+
+      console.log('init Session @ connected:', this.provider.walletConnector.connected)
+
+      if (this.provider.walletConnector.connected) {
+        console.log('Found Session', this.provider)
+        this.provider.getNetwork()
+        this.provider.getDefaultAccount()
+      }
+      else {
+        console.log('Creating Session')
+        this.provider.walletConnector.createSession()
+          .then(this.listenSessionStatus.bind(this))
+      }
     },
     async listenSessionStatus() {
-      if (this.qrImage) {
-        this.isListening = true
-        try {
-          this.wcSession = await this.provider.web3.currentProvider.walletconnect.listenSessionStatus(this.POLL_INTERVAL, this.TIMEOUT)
-        }
-        catch (e) {
-          // console.log(e, 'ERROR or TIMEOUT @ walletconnect.listenSessionStatus()')
-        }
+      console.log('HERE listenSessionStatus()')
+
+      console.log('is connected?', this.provider.walletConnector && this.provider.walletConnector.connected)
+
+      if (this.provider.walletConnector && this.provider.walletConnector.connected) {
         this.isListening = false
+        this.qrImage = null
+        this.provider.getNetwork()
+        this.provider.getDefaultAccount()
       }
-    }
+      else {
+        this.isListening = true
+        this.qrImage = this.provider.image
+      }
+    },
   },
 }
 </script>

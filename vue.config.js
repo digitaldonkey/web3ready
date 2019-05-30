@@ -2,7 +2,7 @@ const fs = require('fs')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = {
-  baseUrl: '.',
+  publicPath: '.',
   productionSourceMap: false,
   css: {
     modules: true,

@@ -27,10 +27,8 @@ export default class WalletConnect {
     return true
   }
 
-  destroy() {
-    this.shouldWatch = false
-    this.web3.currentProvider.walletconnect.stopLastListener()
-    this.web3.currentProvider.walletconnect.engine.stop()
+  static destroy() {
+    console.log('CALLED DESTROY, but nothing done?')
   }
 
   /* ****************** NON API METHODS ****************** */
@@ -42,8 +40,9 @@ export default class WalletConnect {
    */
   async getNetwork() {
     if (!this.networkId) {
-      this.networkId = await this.web3.eth.net.getId()
-      this.networkChange(this.networkId)
+      this.networkId = this.walletConnector.chainId
+      console.log('getNetwork()', this.networkId)
+      this.networkChange(this.walletConnector.chainId)
     }
     return this.networkId
   }
@@ -67,72 +66,83 @@ export default class WalletConnect {
    * @param libraries
    */
   constructor(Web3, accountChange, networkChange, libraries) {
-    this.qrImage = libraries.qrImage
-
-    const walletConnectProvider = new libraries.WalletConnectProvider(store.getters.walletConnectConfig)
-
-    this.web3 = new Web3(walletConnectProvider)
     this.accountChange = accountChange
     this.networkChange = networkChange
-
-    // Display QR Code URI
     this._uri = null
     this._account = null
-    this.networkId = null
+    this._networkId = null
 
-    this.POLL_INTERVAL = 1000
-    this.shouldWatch = true
-    this.watchAccountChange()
-    this.getNetwork()
+
+    this.qrImage = libraries.qrImage
+
+    const config = Object.assign({}, store.getters.walletConnectConfig, { qrcode: false })
+
+    this.walletConnectProvider = new libraries.WalletConnectProvider(config)
+    this.web3 = new Web3(this.walletConnectProvider)
+
+    // TODO The getConnector Method doesn't seem to work. Revalidate.
+    // eslint-disable-next-line
+    this.walletConnector = this.walletConnectProvider._walletConnector
+
+    this.walletConnector.on('connect', (error, payload) => {
+      // Single OnConnect. Not Reconnect.
+      if (error) {
+        throw error
+      }
+      // Get provided accounts and chainId
+      // console.log("walletConnector.on('connect')", payload.params[0])
+      [this.account] = payload.params[0].accounts
+      this.networkId = payload.params[0].chainId
+    })
+
+    this.walletConnector.on('session_update', (error, payload) => {
+      if (error) {
+        throw error
+      }
+      // get updated accounts and chainId
+      // console.log("walletConnector.on('session_update')", payload.params[0])
+      [this.account] = payload.params[0].accounts
+      this.networkId = payload.params[0].chainId
+    })
+  }
+
+  get networkId() {
+    if (!this._networkId) {
+      this.networkId = this.walletConnector.chainId
+    }
+    return this._networkId
+  }
+
+  set networkId(val) {
+    console.log('NETWORK CHANGE')
+    this._networkId = val
+    this.networkChange(val)
   }
 
   get account() {
+    if (!this._account) {
+      [this.account] = this.walletConnector.accounts
+    }
     return this._account
   }
 
   set account(val) {
+    console.log('ACCOUNT CHANGE')
     this._account = val
     this.accountChange(val)
   }
 
   get uri() {
     if (!this._uri) {
-      return this.getUri()
+      this._uri = this.walletConnector.uri
     }
     return this._uri
   }
 
   get image() {
-    return this.getImage()
-  }
-
-  async getUri() {
-    return this.web3.currentProvider.walletconnect.uri
-  }
-
-  async getImage() {
-    this._uri = await this.getUri()
+    console.log('URI at getImage()', this.uri)
     const buffer = this.qrImage.imageSync(this.uri, { type: 'svg' })
     return `data:image/svg+xml;charset=UTF-8,${buffer}`
-  }
-
-  /**
-   * checkAccount.
-   *
-   * This function polls for account changes.
-   *
-   * @see https://github.com/MetaMask/faq/blob/master/DEVELOPERS.md#ear-listening-for-selected-account-changes
-   *
-   * @returns {Promise<void>}
-   */
-  async watchAccountChange() {
-    if (this.web3.currentProvider.walletconnect.accounts.length) {
-      [this.account] = this.web3.currentProvider.walletconnect.accounts
-    }
-    else if (this.shouldWatch) {
-      await WalletConnect.waitFor(this.POLL_INTERVAL)
-      this.watchAccountChange()
-    }
   }
 
   /**

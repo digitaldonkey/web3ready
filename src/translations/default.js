@@ -59,6 +59,9 @@ const messages = {
         '4': {
           label: 'Rinkeby',
         },
+        '5': {
+          label: 'Görli',
+        },
         '8': {
           label: 'Ubiq',
         },

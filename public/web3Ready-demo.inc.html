@@ -50,9 +50,14 @@
         // Read more at
         // https://github.com/ethereum/go-ethereum/wiki/Management-APIs#personal_sign
         //
-        web3.eth.personal.sign(web3.utils.utf8ToHex("This should be a readable text."), account)
-            .then(function (result) {
-              document.getElementById('personal-sign--result').textContent = `Signature: ${result}`;
+        web3.eth.personal.sign(web3.utils.utf8ToHex("This should be a readable text."), account, null,
+            function (error, result) {
+              if(!error) {
+                document.getElementById('personal-sign--result').textContent = `Signature: ${result}`;
+              }
+              else {
+                console.log('Error at web3.eth.personal.sign', {error, result})
+              }
             })
       }
 

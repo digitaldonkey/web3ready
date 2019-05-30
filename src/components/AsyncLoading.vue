@@ -3,8 +3,9 @@
 </template>
 
 <script>
-  import Loading from './Loading'
-  export default {
+import Loading from './Loading'
+
+export default {
   name: 'AsyncLoading',
   components: {
     Loading

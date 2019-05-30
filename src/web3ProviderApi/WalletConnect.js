@@ -28,7 +28,7 @@ export default class WalletConnect {
   }
 
   static destroy() {
-    console.log('CALLED DESTROY, but nothing done?')
+    // TODO Don't know ho to stop.
   }
 
   /* ****************** NON API METHODS ****************** */
@@ -41,8 +41,7 @@ export default class WalletConnect {
   async getNetwork() {
     if (!this.networkId) {
       this.networkId = this.walletConnector.chainId
-      console.log('getNetwork()', this.networkId)
-      this.networkChange(this.walletConnector.chainId)
+      this.networkChange(this.networkId)
     }
     return this.networkId
   }
@@ -114,7 +113,6 @@ export default class WalletConnect {
   }
 
   set networkId(val) {
-    console.log('NETWORK CHANGE')
     this._networkId = val
     this.networkChange(val)
   }
@@ -127,7 +125,6 @@ export default class WalletConnect {
   }
 
   set account(val) {
-    console.log('ACCOUNT CHANGE')
     this._account = val
     this.accountChange(val)
   }
@@ -140,7 +137,6 @@ export default class WalletConnect {
   }
 
   get image() {
-    console.log('URI at getImage()', this.uri)
     const buffer = this.qrImage.imageSync(this.uri, { type: 'svg' })
     return `data:image/svg+xml;charset=UTF-8,${buffer}`
   }

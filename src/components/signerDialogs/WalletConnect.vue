@@ -66,7 +66,6 @@ export default {
   watch: {
     provider: {
       handler(provider) {
-        console.log('provider CHANGED at watch')
         if (provider) {
           this.initSession()
         }
@@ -110,24 +109,16 @@ export default {
     async initSession() {
       // This will cause walletConnect to initialize a Session.
 
-      console.log('init Session @ connected:', this.provider.walletConnector.connected)
-
       if (this.provider.walletConnector.connected) {
-        console.log('Found Session', this.provider)
         this.provider.getNetwork()
         this.provider.getDefaultAccount()
       }
       else {
-        console.log('Creating Session')
         this.provider.walletConnector.createSession()
           .then(this.listenSessionStatus.bind(this))
       }
     },
     async listenSessionStatus() {
-      console.log('HERE listenSessionStatus()')
-
-      console.log('is connected?', this.provider.walletConnector && this.provider.walletConnector.connected)
-
       if (this.provider.walletConnector && this.provider.walletConnector.connected) {
         this.isListening = false
         this.qrImage = null

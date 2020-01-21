@@ -24,7 +24,7 @@
     "@walletconnect/web3-provider": "^1.0.0-beta.25",
     "custom-event-polyfill": "^1.0.7",
     "qr-image": "^3.2.0",
-    "v-tooltip": "^2.0.2",
+    "v-tooltip": "^2.0.3",
     "vue": "^2.6.10",
     "vue-i18n": "^8.11.2",
     "vue-web-component": "^1.2.0",

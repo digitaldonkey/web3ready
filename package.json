@@ -45,7 +45,7 @@
     "cz-conventional-changelog": "^2.1.0",
     "file-system": "^2.2.2",
     "html-loader": "^0.5.5",
-    "node-sass": "^4.12.0",
+    "node-sass": "^4.14.0",
     "sass-loader": "^7.1.0",
     "semantic-release": "^15.13.14",
     "svg-url-loader": "^2.3.2",

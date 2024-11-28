@@ -48,7 +48,7 @@
     "node-sass": "^4.12.0",
     "sass-loader": "^7.1.0",
     "semantic-release": "^15.13.14",
-    "svg-url-loader": "^2.3.2",
+    "svg-url-loader": "^3.0.0",
     "travis-deploy-once": "^5.0.11",
     "vue-template-compiler": "^2.6.10"
   },
